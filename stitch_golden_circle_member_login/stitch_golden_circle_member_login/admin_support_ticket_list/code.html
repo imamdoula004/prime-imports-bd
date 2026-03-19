@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Support Ticket List - Prime Imports BD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between px-4 py-4">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">confirmation_number</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Support Tickets</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Prime Imports BD Admin</p>
+</div>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<div class="px-4 py-4 space-y-4">
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">search</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-primary focus:border-primary text-sm placeholder-slate-400" placeholder="Search Ticket ID, Customer..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4 text-sm font-medium">
+                    All Tickets
+                </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    New <span class="bg-red-500/20 text-red-500 text-[10px] px-1.5 py-0.5 rounded-full">12</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    Pending
+                </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 text-sm font-medium text-slate-600 dark:text-slate-300">
+                    Resolved
+                </button>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50 dark:bg-slate-800/50">
+<tr>
+<th class="px-4 py-3 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider">ID &amp; Customer</th>
+<th class="px-4 py-3 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider">Subject &amp; Date</th>
+<th class="px-4 py-3 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="ticket-row active:bg-slate-50 dark:active:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<div class="text-sm font-semibold">#TIC-8821</div>
+<div class="text-xs text-slate-500">Rahat Chowdhury</div>
+</td>
+<td class="px-4 py-4">
+<div class="text-sm truncate max-w-[120px]">Shipping Delay</div>
+<div class="text-[10px] text-slate-400">Oct 24, 2023</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="inline-flex items-center rounded-full bg-red-100 dark:bg-red-900/30 px-2 py-0.5 text-xs font-medium text-red-700 dark:text-red-400">New</span>
+</td>
+</tr>
+<tr class="ticket-row active:bg-slate-50 dark:active:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<div class="text-sm font-semibold">#TIC-8819</div>
+<div class="text-xs text-slate-500">Ayesha Siddiqua</div>
+</td>
+<td class="px-4 py-4">
+<div class="text-sm truncate max-w-[120px]">Payment Failed</div>
+<div class="text-[10px] text-slate-400">Oct 23, 2023</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">Pending</span>
+</td>
+</tr>
+<tr class="ticket-row active:bg-slate-50 dark:active:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<div class="text-sm font-semibold">#TIC-8815</div>
+<div class="text-xs text-slate-500">Tanvir Ahmed</div>
+</td>
+<td class="px-4 py-4">
+<div class="text-sm truncate max-w-[120px]">Product Inquiry</div>
+<div class="text-[10px] text-slate-400">Oct 22, 2023</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">Resolved</span>
+</td>
+</tr>
+<tr class="ticket-row active:bg-slate-50 dark:active:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<div class="text-sm font-semibold">#TIC-8812</div>
+<div class="text-xs text-slate-500">Nabil Hassan</div>
+</td>
+<td class="px-4 py-4">
+<div class="text-sm truncate max-w-[120px]">Return Policy</div>
+<div class="text-[10px] text-slate-400">Oct 21, 2023</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="inline-flex items-center rounded-full bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">Resolved</span>
+</td>
+</tr>
+<tr class="ticket-row active:bg-slate-50 dark:active:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<div class="text-sm font-semibold">#TIC-8810</div>
+<div class="text-xs text-slate-500">Samiul Alam</div>
+</td>
+<td class="px-4 py-4">
+<div class="text-sm truncate max-w-[120px]">Order Correction</div>
+<div class="text-[10px] text-slate-400">Oct 20, 2023</div>
+</td>
+<td class="px-4 py-4 text-right">
+<span class="inline-flex items-center rounded-full bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">Pending</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold">
+                View Older Tickets
+                <span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 px-6 pb-6 pt-3 flex justify-between items-center z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">confirmation_number</span>
+<span class="text-[10px] font-bold">Tickets</span>
+</a>
+<div class="relative -top-8">
+<button class="bg-primary size-14 rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white border-4 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Customers</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</a>
+</nav>
+</body></html>

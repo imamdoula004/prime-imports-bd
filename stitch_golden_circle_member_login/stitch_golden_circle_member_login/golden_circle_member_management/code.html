@@ -1,0 +1,224 @@
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#0f0fbd", // Deep blue base
+            "accent-gold": "#d4af37", // Gold for "Golden Circle"
+            "background-light": "#f6f6f8",
+            "background-dark": "#101022",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Header Navigation -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10 backdrop-blur-md bg-opacity-80">
+<div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div class="flex flex-col items-center flex-1">
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight">Golden Circle</h2>
+<p class="text-accent-gold text-[10px] font-bold uppercase tracking-widest">Prime Imports BD</p>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="flex size-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">person_add</span>
+</button>
+</div>
+</div>
+<!-- Search Section -->
+<div class="px-4 py-3">
+<label class="flex flex-col min-w-40 h-12 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-slate-200/50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700">
+<div class="text-slate-500 dark:text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 px-3 text-base font-medium" placeholder="Search member name or phone..."/>
+<div class="flex items-center pr-4">
+<span class="material-symbols-outlined text-slate-400 text-xl">tune</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Quick Stats Summary -->
+<div class="flex gap-3 p-4 overflow-x-auto no-scrollbar">
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-primary/10 dark:bg-primary/20 border border-primary/20">
+<p class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Total Members</p>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-extrabold">1,284</p>
+<p class="text-emerald-500 text-xs font-bold">+12%</p>
+</div>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-1 rounded-xl p-4 bg-accent-gold/10 dark:bg-accent-gold/20 border border-accent-gold/20">
+<p class="text-slate-600 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">GC Savings (3%)</p>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-extrabold">৳4.5M</p>
+<p class="text-emerald-500 text-xs font-bold">+5%</p>
+</div>
+</div>
+</div>
+<!-- Member Table/List Header -->
+<div class="px-4 pt-4 pb-2 flex justify-between items-end">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-bold">Member Directory</h3>
+<span class="text-primary dark:text-accent-gold text-xs font-bold">Sort by: Recent</span>
+</div>
+<!-- Member List (Mobile-Optimized Table) -->
+<div class="flex flex-col gap-px bg-slate-200 dark:bg-slate-800 mx-4 rounded-xl overflow-hidden mb-24 border border-slate-200 dark:border-slate-800 shadow-xl">
+<!-- Row 1 -->
+<div class="flex flex-col p-4 bg-background-light dark:bg-slate-900/80">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 relative">
+<span class="material-symbols-outlined text-primary">person</span>
+<div class="absolute -top-1 -right-1 size-5 bg-accent-gold rounded-full flex items-center justify-center border-2 border-slate-900 shadow-sm">
+<span class="material-symbols-outlined text-[10px] text-white font-bold">workspace_premium</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Tanvir Ahmed</h4>
+<p class="text-xs text-slate-500">+880 1712 345678</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Active</span>
+</div>
+<div class="flex justify-between items-center text-xs mt-1 border-t border-slate-100 dark:border-slate-800 pt-2">
+<div class="flex flex-col">
+<span class="text-slate-400 uppercase text-[9px] font-bold">Joined</span>
+<span class="text-slate-700 dark:text-slate-300">12 Oct 2023</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-slate-400 uppercase text-[9px] font-bold">3% Savings</span>
+<span class="text-accent-gold font-bold">৳12,450.00</span>
+</div>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="flex flex-col p-4 bg-background-light dark:bg-slate-900/80">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center border border-slate-300 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-400">person</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Sultana Kamal</h4>
+<p class="text-xs text-slate-500">+880 1922 887766</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Active</span>
+</div>
+<div class="flex justify-between items-center text-xs mt-1 border-t border-slate-100 dark:border-slate-800 pt-2">
+<div class="flex flex-col">
+<span class="text-slate-400 uppercase text-[9px] font-bold">Joined</span>
+<span class="text-slate-700 dark:text-slate-300">05 Nov 2023</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-slate-400 uppercase text-[9px] font-bold">3% Savings</span>
+<span class="text-accent-gold font-bold">৳8,120.50</span>
+</div>
+</div>
+</div>
+<!-- Row 3 (Suspended State) -->
+<div class="flex flex-col p-4 bg-background-light dark:bg-slate-900/80 opacity-80">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center border border-slate-300 dark:border-slate-700">
+<span class="material-symbols-outlined text-slate-400">person</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Rahat Chowdhury</h4>
+<p class="text-xs text-slate-500">+880 1811 112233</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-rose-500/10 text-rose-500 border border-rose-500/20">Suspended</span>
+</div>
+<div class="flex justify-between items-center text-xs mt-1 border-t border-slate-100 dark:border-slate-800 pt-2">
+<div class="flex flex-col">
+<span class="text-slate-400 uppercase text-[9px] font-bold">Joined</span>
+<span class="text-slate-700 dark:text-slate-300">22 Sep 2023</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-slate-400 uppercase text-[9px] font-bold">3% Savings</span>
+<span class="text-slate-500 font-bold">৳3,400.00</span>
+</div>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="flex flex-col p-4 bg-background-light dark:bg-slate-900/80">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30 relative">
+<span class="material-symbols-outlined text-primary">person</span>
+<div class="absolute -top-1 -right-1 size-5 bg-accent-gold rounded-full flex items-center justify-center border-2 border-slate-900 shadow-sm">
+<span class="material-symbols-outlined text-[10px] text-white font-bold">workspace_premium</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Ayesha Siddiqua</h4>
+<p class="text-xs text-slate-500">+880 1515 990011</p>
+</div>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">Active</span>
+</div>
+<div class="flex justify-between items-center text-xs mt-1 border-t border-slate-100 dark:border-slate-800 pt-2">
+<div class="flex flex-col">
+<span class="text-slate-400 uppercase text-[9px] font-bold">Joined</span>
+<span class="text-slate-700 dark:text-slate-300">18 Dec 2023</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-slate-400 uppercase text-[9px] font-bold">3% Savings</span>
+<span class="text-accent-gold font-bold">৳24,900.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 flex border-t border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark/95 backdrop-blur-lg px-4 pb-6 pt-2 z-20">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-bold uppercase">Dashboard</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary dark:text-accent-gold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">group</span>
+<p class="text-[10px] font-bold uppercase">Members</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-[10px] font-bold uppercase">Inventory</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-bold uppercase">Settings</p>
+</a>
+</div>
+</div>
+<style>
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Golden Circle Login - Prime Imports BD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#002D62", // Deep Navy from logo
+                        gold: {
+                            light: "#F5D78D",
+                            DEFAULT: "#E8C167",
+                            dark: "#B88E2F",
+                        },
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#0A0F1D",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "16px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #F5D78D 0%, #E8C167 50%, #B88E2F 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<div class="h-12 w-full"></div>
+<header class="px-6 py-4 flex items-center justify-between">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+<span class="material-icons-round">arrow_back_ios_new</span>
+</button>
+<div class="flex-1 flex justify-center">
+<img alt="Prime Imports BD Logo" class="h-12 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeDAP1Cgi4dHw63Tz0WYrUjCDqXgYzI1tgUWcUsq71ebP-A1efT8w2-oTb1xauPJmn3UYCghRuFBXmGEMORpeOsTHDMASkEPSBWiEGptuWMvEhqOLmf1Z5RJK_T4n_Adh4HRtxrDpRE2XkmRxrovUQh4YisvPQ0PkJqVOplE943z_ZgM9DBoGoGcmB8eaOkn3vFEOk0sliVBWwMp_xvQP9yjIqfS7nFVbxr28mfI8MosOsu3YHX4c0EGSQx21dyT-Y7KNQlBYEZqw"/>
+</div>
+<div class="w-10"></div> 
+</header>
+<main class="flex-1 px-8 pt-6 pb-12 max-w-md mx-auto w-full">
+<div class="mb-10 text-center">
+<div class="inline-flex items-center justify-center p-1 rounded-full bg-gold/10 dark:bg-gold/5 mb-6">
+<div class="gold-gradient p-3 rounded-full shadow-lg shadow-gold/20">
+<span class="material-icons-round text-primary text-3xl">workspace_premium</span>
+</div>
+</div>
+<h1 class="text-3xl font-bold tracking-tight mb-2 dark:text-white">Golden Circle</h1>
+<p class="text-slate-500 dark:text-slate-400 font-medium">Member Login Portal</p>
+</div>
+<div class="bg-primary rounded-2xl p-5 mb-10 relative overflow-hidden shadow-xl">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-gold/10 rounded-full blur-2xl"></div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-gold flex items-center justify-center flex-shrink-0">
+<span class="text-primary font-bold text-xl">3%</span>
+</div>
+<div>
+<h3 class="text-gold font-semibold text-lg leading-tight">Exclusive Benefit</h3>
+<p class="text-white/80 text-sm">Instant 3% discount on all imported goods for members.</p>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-600 dark:text-slate-400 px-1">Phone Number</label>
+<div class="flex gap-3">
+<div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 border-2 border-transparent focus-within:border-gold px-3 rounded-2xl transition-all">
+<span class="text-sm font-medium text-slate-500">🇧🇩</span>
+<span class="text-sm font-medium text-slate-900 dark:text-slate-100">+880</span>
+</div>
+<div class="flex-1">
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-2 border-transparent focus:border-gold focus:ring-0 rounded-2xl py-4 px-4 text-lg font-medium placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-all" placeholder="01XXX-XXXXXX" type="tel"/>
+</div>
+</div>
+</div>
+<button class="w-full gold-gradient py-4 rounded-2xl text-primary font-bold text-lg shadow-lg shadow-gold/20 active:scale-[0.98] transition-transform">
+                Continue to Secure Login
+            </button>
+<div class="relative py-4 flex items-center">
+<div class="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+<span class="flex-shrink mx-4 text-slate-400 text-sm font-medium">or</span>
+<div class="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
+</div>
+<button class="w-full border-2 border-slate-200 dark:border-slate-800 py-4 rounded-2xl text-slate-700 dark:text-slate-300 font-semibold flex items-center justify-center gap-3 active:bg-slate-50 dark:active:bg-slate-900 transition-colors">
+<span class="material-icons-round text-xl">mail_outline</span>
+                Continue with Email
+            </button>
+</div>
+</main>
+<footer class="px-8 py-8 text-center space-y-4">
+<p class="text-xs text-slate-400 leading-relaxed px-4">
+            By continuing, you agree to Prime Imports BD's 
+            <a class="text-primary dark:text-gold font-medium" href="#">Terms of Service</a> &amp; 
+            <a class="text-primary dark:text-gold font-medium" href="#">Privacy Policy</a>.
+        </p>
+<div class="flex justify-center gap-6 pt-2">
+<a class="text-slate-400 text-xs font-medium uppercase tracking-widest hover:text-gold transition-colors" href="#">Help Center</a>
+<span class="text-slate-300 dark:text-slate-800">•</span>
+<a class="text-slate-400 text-xs font-medium uppercase tracking-widest hover:text-gold transition-colors" href="#">Join Member Club</a>
+</div>
+<div class="h-1.5 w-32 bg-slate-300 dark:bg-slate-700 mx-auto rounded-full mt-8"></div>
+</footer>
+<div class="hidden fixed bottom-12 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full ios-blur shadow-2xl flex items-center gap-3" id="toast">
+<span class="material-icons-round text-gold">verified</span>
+<span class="text-sm font-medium">Secure connection established</span>
+</div>
+
+</body></html>

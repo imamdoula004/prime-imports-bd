@@ -1,0 +1,13 @@
+[2026-03-08T07:24:12.470Z] Starting Optimized Image Pipeline (Mode: PRECHECK)
+[2026-03-08T07:24:18.410Z] Found 3 products to process.
+[2026-03-08T07:24:18.413Z] Processing Product: 100-plus-isotonic-drink-325ml-malaysia-original-energy-boost-bangladesh - 100 Plus Isotonic Drink 325ml Malaysia Original Energy Boost Bangladesh
+[2026-03-08T07:24:29.292Z] [DEBUG] Found 20 candidates for 100-plus-isotonic-drink-325ml-malaysia-original-energy-boost-bangladesh
+[2026-03-08T07:24:38.381Z] [PREVIEW] Product 100-plus-isotonic-drink-325ml-malaysia-original-energy-boost-bangladesh standardized to local sandbox. Source: https://www.marketdaybd.com/wp-content/uploads/2024/12/100-Plus-Original-Isotonic-Drink-325ml-Malaysia-%E2%80%93-Refreshing-Energy-Boost-600x600.jpg
+[2026-03-08T07:24:38.389Z] Processing Product: 100-plus-lemon-lime-320-ml-malaysia-import-refreshing-isotonic-drink - 100 Plus Lemon Lime – 320 ml | Malaysia Import | Refreshing Isotonic Drink
+[2026-03-08T07:24:49.314Z] [DEBUG] Found 20 candidates for 100-plus-lemon-lime-320-ml-malaysia-import-refreshing-isotonic-drink
+[2026-03-08T07:24:50.898Z] [PREVIEW] Product 100-plus-lemon-lime-320-ml-malaysia-import-refreshing-isotonic-drink standardized to local sandbox. Source: https://www.marketdaybd.com/wp-content/uploads/2024/10/horlicks-instant-hot-malty-goodness-drink-400g-uk-bangladesh-300x300.jpg
+[2026-03-08T07:24:50.899Z] Processing Product: 100-plus-original-soft-drinks-330ml-24-pieces - 100 Plus Original Soft Drinks 330ml 24 Pieces
+[2026-03-08T07:25:05.232Z] [DEBUG] Found 20 candidates for 100-plus-original-soft-drinks-330ml-24-pieces
+[2026-03-08T07:25:11.080Z] [PREVIEW] Product 100-plus-original-soft-drinks-330ml-24-pieces standardized to local sandbox. Source: https://chocolateshopbd.com/wp-content/uploads/2024/10/100-Plus-Original1-600x600.png
+[2026-03-08T07:25:11.081Z] Pipeline execution finished. Success: 3/3
+[2026-03-08T07:25:11.083Z] Precheck complete. Review images in /sandbox/precheck/ and approve to proceed to full execution.

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1152d4",
+              "gold": "#D4AF37",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Be Vietnam Pro"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark antialiased">
+<!-- Screen Wrapper (Simulating Mobile Viewport) -->
+<div class="relative mx-auto min-h-screen max-w-[430px] overflow-hidden bg-white shadow-2xl">
+<!-- Background Overlay (Dimmer) -->
+<div class="absolute inset-0 z-40 bg-slate-900/40 backdrop-blur-sm"></div>
+<!-- Navigation Drawer (Side Panel) -->
+<aside class="absolute inset-y-0 left-0 z-50 flex w-10/12 flex-col bg-white shadow-2xl">
+<!-- Close Button Area -->
+<div class="flex items-center justify-end p-4">
+<button class="flex h-10 w-10 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<!-- Profile Summary Section -->
+<div class="px-6 pb-8">
+<div class="flex items-center gap-4 mb-4">
+<div class="relative">
+<img alt="User Profile" class="h-16 w-16 rounded-full border-2 border-primary/10 object-cover" data-alt="Professional headshot of a smiling male customer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcR0738_wLaC9HMX0tKJWT_qMuGA-IMP8Kr0UdizVuf_--mvPQu31c3I1UxAjx05QORtqQO1aj_FesOVS0K4chBnqoh2i7p20nqf9wk2eAhLHJJez5MHhReyu3Ah5aFxCLqYx6D3LhAzkbGojL7xWaIil6I1vjP_Q6NffvPenVQKXPzg7_h52U5y3foOxYku45fJxm3CHNUroKdJWWX-tyreW89BdjtNAfnvjbnWXvr1v77JhyRpA8mxmiRA_5CqBhogTwG4qpur0"/>
+<div class="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-gold border-2 border-white shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-white filled-icon">workspace_premium</span>
+</div>
+</div>
+<div>
+<h2 class="text-xl font-bold text-slate-900 leading-tight">Ahmed Sharif</h2>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-gold filled-icon">stars</span>
+<span class="text-xs font-semibold tracking-wide text-gold uppercase">Golden Circle Member</span>
+</div>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-2 gap-3 mt-6">
+<div class="rounded-lg bg-primary/5 p-3">
+<p class="text-[10px] font-bold uppercase tracking-wider text-primary/60">Points</p>
+<p class="text-lg font-bold text-primary">2,450</p>
+</div>
+<div class="rounded-lg bg-gold/5 p-3 border border-gold/10">
+<p class="text-[10px] font-bold uppercase tracking-wider text-gold/60">Tier</p>
+<p class="text-lg font-bold text-gold">Elite</p>
+</div>
+</div>
+</div>
+<!-- Menu Items Scrollable Area -->
+<nav class="flex-1 overflow-y-auto px-4 py-2">
+<ul class="space-y-1">
+<li>
+<a class="group flex items-center gap-4 rounded-xl px-4 py-3.5 text-slate-600 transition-all hover:bg-slate-50 active:scale-95" href="#">
+<span class="material-symbols-outlined text-gold transition-transform group-hover:scale-110">home</span>
+<span class="text-[15px] font-semibold">Home</span>
+</a>
+</li>
+<li>
+<a class="group flex items-center gap-4 rounded-xl px-4 py-3.5 text-slate-600 transition-all hover:bg-slate-50 active:scale-95" href="#">
+<span class="material-symbols-outlined text-gold transition-transform group-hover:scale-110">grid_view</span>
+<span class="text-[15px] font-semibold">Categories</span>
+</a>
+</li>
+<li>
+<a class="group flex items-center gap-4 rounded-xl px-4 py-3.5 text-slate-600 transition-all hover:bg-slate-50 active:scale-95" href="#">
+<span class="material-symbols-outlined text-gold transition-transform group-hover:scale-110">package_2</span>
+<span class="text-[15px] font-semibold">My Orders</span>
+</a>
+</li>
+<li>
+<a class="group flex items-center gap-4 rounded-xl px-4 py-3.5 text-slate-600 transition-all hover:bg-slate-50 active:scale-95" href="#">
+<span class="material-symbols-outlined text-gold transition-transform group-hover:scale-110">military_tech</span>
+<span class="text-[15px] font-semibold">Golden Circle Rewards</span>
+</a>
+</li>
+<li class="pt-2">
+<div class="mx-4 h-px bg-slate-100"></div>
+</li>
+<li class="pt-2">
+<a class="group flex items-center gap-4 rounded-xl bg-primary px-4 py-3.5 text-white shadow-lg shadow-primary/20 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined filled-icon">headset_mic</span>
+<span class="text-[15px] font-semibold">Support</span>
+</a>
+</li>
+<li>
+<a class="group flex items-center gap-4 rounded-xl px-4 py-3.5 text-slate-600 transition-all hover:bg-slate-50 active:scale-95" href="#">
+<span class="material-symbols-outlined text-gold transition-transform group-hover:scale-110">settings</span>
+<span class="text-[15px] font-semibold">Settings</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Bottom Brand/Logout Area -->
+<div class="border-t border-slate-50 p-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gold text-white font-bold italic">PI</div>
+<span class="text-sm font-bold text-slate-900">Prime Imports BD</span>
+</div>
+<button class="flex items-center gap-1 text-xs font-bold text-rose-500 uppercase tracking-wider">
+                        Logout
+                        <span class="material-symbols-outlined text-[18px]">logout</span>
+</button>
+</div>
+<p class="mt-4 text-[10px] text-slate-400 text-center">App Version 2.4.1 (Premium Build)</p>
+</div>
+</aside>
+<!-- Main Content Background (Hidden/Blurred) -->
+<main class="h-full w-full bg-slate-50 p-6">
+<header class="flex items-center justify-between">
+<div class="h-10 w-10 rounded-full bg-white shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">menu</span>
+</div>
+<div class="h-10 w-10 rounded-full bg-white shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">shopping_cart</span>
+</div>
+</header>
+<div class="mt-8">
+<div class="h-48 w-full rounded-2xl bg-slate-200" data-alt="Abstract soft grey pattern for background"></div>
+<div class="mt-4 h-6 w-3/4 rounded bg-slate-200"></div>
+<div class="mt-2 h-4 w-1/2 rounded bg-slate-200"></div>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div class="h-40 rounded-2xl bg-slate-200"></div>
+<div class="h-40 rounded-2xl bg-slate-200"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Visual Only) -->
+<div class="absolute bottom-0 left-0 right-0 flex items-center border-t border-slate-100 bg-white/80 px-6 pb-8 pt-3 backdrop-blur-md">
+<a class="flex flex-1 flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined filled-icon">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-bold">Search</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="text-[10px] font-bold">Orders</span>
+</a>
+<a class="flex flex-1 flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+</div>
+</div>
+</body></html>

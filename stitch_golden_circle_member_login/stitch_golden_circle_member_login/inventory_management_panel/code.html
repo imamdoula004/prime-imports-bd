@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prime Imports BD - Inventory Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#E9C46A", // From the logo's gold/yellow
+                        secondary: "#002B5B", // From the logo's deep blue
+                        "background-light": "#F8F9FA",
+                        "background-dark": "#050B18", // Very dark blue for premium feel
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "12px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .ios-blur {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(233, 196, 106, 0.4);
+        }.switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #E9C46A;
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<nav class="sticky top-0 z-50 bg-white/80 dark:bg-secondary/80 ios-blur border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg">
+<img alt="Prime Imports BD Logo" class="w-8 h-8 rounded-full object-contain" onerror="this.src='https://placehold.co/40x40?text=PI'" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT13_yXZM5n05dqFgdFuVOVIgSAXBDpvDi6kY8WsvuFEAhOHr8yPUZkQ9hb-UBmQ4lYUnSipGOKwrYaqXzPec9HVoakoLEMfKwNzQ_YaK5AmksIPfdL8yllnChRjFwmE9DdhlTEnHwLgLvR9p0ho_CMCR8E5DuZMkcicHhacWrDvc-i5GxCUkQTH18ApJDmaqnPdKoUWndgtub8VprBMkzPTUBC2RpIl0L134XLqJ7NVUeRdZnMc4m99AEh-41WOeaotfAJA6MtbI"/>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight">Inventory</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Prime Imports BD Admin</p>
+</div>
+</div>
+<button class="p-2 bg-slate-100 dark:bg-slate-800 rounded-full">
+<span class="material-icons-round text-slate-600 dark:text-slate-300">notifications</span>
+</button>
+</nav>
+<header class="p-4 grid grid-cols-2 gap-3">
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-slate-500 mb-1 uppercase tracking-wider font-semibold">Total Stock</p>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold">1,284</span>
+<span class="text-xs text-green-500 pb-1 flex items-center"><span class="material-icons-round text-sm">trending_up</span> 4%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-slate-500 mb-1 uppercase tracking-wider font-semibold">Low Items</p>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-orange-500">12</span>
+<span class="text-xs text-slate-400 pb-1">Alerts</span>
+</div>
+</div>
+</header>
+<div class="px-4 mb-4">
+<div class="relative group">
+<span class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 pl-10 pr-4 py-3 rounded-xl focus:border-primary transition-all text-sm" placeholder="Search products by name or SKU..." type="text"/>
+</div>
+</div>
+<main class="px-4 space-y-4">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex gap-4">
+<div class="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-xl flex-shrink-0 flex items-center justify-center">
+<span class="material-icons-round text-slate-400">shopping_bag</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-semibold text-slate-900 dark:text-white">Premium Italian Olive Oil</h3>
+<span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-[10px] font-bold uppercase rounded-md">In Stock</span>
+</div>
+<p class="text-xs text-slate-500 mt-1 italic">Imported from Tuscany • 500ml</p>
+</div>
+</div>
+<div class="p-4 grid grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Market Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-slate-400 text-xs">৳</span>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-none pl-4 pr-1 py-1 rounded text-sm font-medium" type="number" value="1250"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-primary uppercase">Actual Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-primary text-xs">৳</span>
+<input class="w-full bg-primary/10 border-none pl-4 pr-1 py-1 rounded text-sm font-bold text-primary" type="number" value="1100"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Stock Qty</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-none px-2 py-1 rounded text-sm font-medium" type="number" value="48"/>
+</div>
+</div>
+<div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Mark Sold Out</span>
+<label class="switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<button class="bg-primary hover:opacity-90 transition-opacity text-secondary px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+<span class="material-icons-round text-sm">save</span>
+                    Update
+                </button>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex gap-4">
+<div class="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-xl flex-shrink-0 flex items-center justify-center">
+<span class="material-icons-round text-slate-400">cake</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-semibold text-slate-900 dark:text-white">Belgian Dark Truffles</h3>
+<span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 text-[10px] font-bold uppercase rounded-md">Low Stock</span>
+</div>
+<p class="text-xs text-slate-500 mt-1 italic">70% Cocoa • 250g Box</p>
+</div>
+</div>
+<div class="p-4 grid grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Market Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-slate-400 text-xs">৳</span>
+<input class="w-full bg-slate-50 dark:bg-slate-800/50 border-none pl-4 pr-1 py-1 rounded text-sm font-medium" type="number" value="850"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-primary uppercase">Actual Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-primary text-xs">৳</span>
+<input class="w-full bg-primary/10 border-none pl-4 pr-1 py-1 rounded text-sm font-bold text-primary" type="number" value="799"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-orange-500 uppercase">Stock Qty</label>
+<input class="w-full bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/50 px-2 py-1 rounded text-sm font-bold text-orange-600 dark:text-orange-400 focus:ring-0" type="number" value="5"/>
+</div>
+</div>
+<div class="px-4 py-3 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-slate-600 dark:text-slate-400">Mark Sold Out</span>
+<label class="switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<button class="bg-primary text-secondary px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1">
+<span class="material-icons-round text-sm">save</span>
+                    Update
+                </button>
+</div>
+</div>
+<div class="bg-white/60 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm opacity-80">
+<div class="p-4 border-b border-slate-100 dark:border-slate-800 flex gap-4">
+<div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-xl flex-shrink-0 flex items-center justify-center grayscale">
+<span class="material-icons-round text-slate-400">inventory_2</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h3 class="font-semibold text-slate-400 dark:text-slate-500">Japanese Matcha Tea</h3>
+<span class="px-2 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-500 text-[10px] font-bold uppercase rounded-md">Sold Out</span>
+</div>
+<p class="text-xs text-slate-400 mt-1 italic">Ceremonial Grade • 40g Tin</p>
+</div>
+</div>
+<div class="p-4 grid grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Market Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-slate-400 text-xs">৳</span>
+<input class="w-full bg-transparent border-none pl-4 pr-1 py-1 rounded text-sm font-medium text-slate-400 cursor-not-allowed" disabled="" type="number" value="2200"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Actual Price</label>
+<div class="relative">
+<span class="absolute left-1 top-1/2 -translate-y-1/2 text-slate-400 text-xs">৳</span>
+<input class="w-full bg-transparent border-none pl-4 pr-1 py-1 rounded text-sm font-medium text-slate-400 cursor-not-allowed" disabled="" type="number" value="1950"/>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-bold text-slate-400 uppercase">Stock Qty</label>
+<input class="w-full bg-transparent border-none px-2 py-1 rounded text-sm font-medium text-slate-400" type="number" value="0"/>
+</div>
+</div>
+<div class="px-4 py-3 bg-slate-50/30 dark:bg-slate-800/10 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-xs font-medium text-slate-400 dark:text-slate-500">Mark Sold Out</span>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<button class="bg-slate-200 dark:bg-slate-800 text-slate-500 px-4 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 cursor-not-allowed">
+<span class="material-icons-round text-sm">lock</span>
+                    Update
+                </button>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-secondary/95 ios-blur border-t border-slate-200 dark:border-slate-800 px-6 py-3 pb-8 flex items-center justify-between z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-icons-round">inventory</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Inventory</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors">
+<span class="material-icons-round">analytics</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Insights</span>
+</button>
+<div class="relative -top-8">
+<button class="w-14 h-14 bg-primary text-secondary rounded-full flex items-center justify-center shadow-xl border-4 border-background-light dark:border-background-dark">
+<span class="material-icons-round text-3xl font-bold">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors">
+<span class="material-icons-round">local_shipping</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Orders</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary transition-colors">
+<span class="material-icons-round">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Config</span>
+</button>
+</nav>
+<div class="fixed bottom-28 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 shadow-2xl transition-all opacity-0 translate-y-4 pointer-events-none" id="toast">
+<span class="material-icons-round text-primary">check_circle</span>
+        Inventory updated successfully
+    </div>
+<script>
+        // Simple UI interaction for demo
+        document.querySelectorAll('button').forEach(btn => {
+            if (btn.innerText.includes('Update') && !btn.classList.contains('cursor-not-allowed')) {
+                btn.onclick = () => {
+                    const toast = document.getElementById('toast');
+                    toast.classList.remove('opacity-0', 'translate-y-4');
+                    toast.classList.add('opacity-100', 'translate-y-0');
+                    setTimeout(() => {
+                        toast.classList.add('opacity-0', 'translate-y-4');
+                        toast.classList.remove('opacity-100', 'translate-y-0');
+                    }, 2000);
+                }
+            }
+        });
+    </script>
+
+</body></html>

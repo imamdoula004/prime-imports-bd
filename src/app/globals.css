@@ -1,26 +1,211 @@
 @import "tailwindcss";
+@source "../**/*.{ts,tsx}";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* IKEA + Instacart Premium Palette */
+  --color-brand-blue-50: #f0f4f8;
+  --color-brand-blue-100: #d9e2ec;
+  --color-brand-blue-500: #102a43;
+  /* Premium Navy - Matches Business Logo */
+  --color-brand-blue-600: #002147;
+  --color-brand-blue-700: #001b3a;
+  --color-brand-blue-800: #00152d;
+  --color-brand-blue-900: #000e1f;
+
+  --color-brand-gold-400: #D4AF37;
+  --color-brand-gold-500: #b88e2f;
+
+  --color-soft-grey: #f5f5f5;
+  --color-ikea-yellow: #ffdb00;
+  --color-ikea-blue: #0058a3;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
+
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Breakpoints */
+  --breakpoint-xs: 480px;
+
+  /* Viewport Sync */
+  --v-offset: 0px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
+  height: -webkit-fill-available;
+  @apply max-w-[100vw] overflow-x-hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  @apply bg-white text-slate-900 font-sans antialiased selection:bg-brand-blue-600 selection:text-white;
+}
+
+@layer components {
+
+  /* IKEA Style Clean Product Cards */
+  .premium-card {
+    @apply bg-white rounded-sm border border-slate-100 transition-all duration-300 hover:shadow-lg hover:border-slate-200 overflow-hidden flex flex-col h-full;
+  }
+
+  /* Professional Navy Buttons as requested */
+  .premium-button {
+    @apply bg-brand-blue-600 text-white px-6 py-3 rounded-md font-bold uppercase tracking-widest text-[11px] transition-all duration-200 hover:bg-brand-blue-700 hover:shadow-xl active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed border-none flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-900/10;
+  }
+
+  .glass-panel {
+    @apply bg-white/90 backdrop-blur-md border border-slate-100 shadow-sm;
+  }
+
+  .badge-instock {
+    @apply bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded-sm text-[9px] font-black tracking-widest uppercase;
+  }
+
+  .badge-outstock {
+    @apply bg-slate-50 text-slate-400 border border-slate-100 px-2 py-0.5 rounded-sm text-[9px] font-black tracking-widest uppercase;
+  }
+
+  /* Large Scandinavian Typography */
+  .brand-title-large {
+    @apply text-5xl md:text-7xl font-black text-brand-blue-900 uppercase tracking-tighter leading-[0.85] mb-6;
+  }
+
+  /* Functional Sidebar as requested */
+  .sidebar-blur {
+    @apply bg-[#fcfcfc] border-r border-slate-100 sticky top-0 h-screen;
+  }
+}
+
+/* Zero-Latency Animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.15s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Hide scrollbar utility */
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Scroll Snapping */
+@utility snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+@utility snap-start {
+  scroll-snap-align: start;
+}
+
+/* Responsive Containers */
+.container-pbd {
+  @apply mx-auto px-4 md:px-5 w-full;
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .container-pbd {
+    max-width: 1100px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container-pbd {
+    max-width: 1400px;
+  }
+}
+
+@media (min-width: 1680px) {
+  .container-pbd {
+    max-width: 1600px;
+  }
+}
+
+/* Standard Dense Grid - Reverted */
+.product-grid-dense {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4;
+}
+
+/* Ultra Dense Discovery Grid - For Product Pages */
+.discovery-grid-ultra {
+  @apply grid gap-3 md:gap-4;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .discovery-grid-ultra {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .discovery-grid-ultra {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 1536px) {
+  .discovery-grid-ultra {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+.carousel-container {
+  @apply flex overflow-x-auto gap-4 md:gap-5 scroll-smooth no-scrollbar snap-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-item-compact {
+  @apply flex-none w-[140px] md:w-[170px] snap-start;
+}
+
+.carousel-item-standard {
+  @apply flex-none w-[160px] md:w-[215px] snap-start;
 }

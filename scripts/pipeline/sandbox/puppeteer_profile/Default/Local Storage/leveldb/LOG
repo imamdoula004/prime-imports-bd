@@ -1,0 +1,54 @@
+2026/03/12-00:08:31.567 16c Reusing MANIFEST C:\Users\Imam Ud Doula\Desktop\primeimportsbdu\scripts\pipeline\sandbox\puppeteer_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/03/12-00:08:31.614 16c Recovering log #3
+2026/03/12-00:08:31.628 16c Reusing old log C:\Users\Imam Ud Doula\Desktop\primeimportsbdu\scripts\pipeline\sandbox\puppeteer_profile\Default\Local Storage\leveldb/000003.log 
+2026/03/12-00:19:33.040 2540 Level-0 table #5: started
+2026/03/12-00:19:33.056 2540 Level-0 table #5: 16403 bytes OK
+2026/03/12-00:19:33.062 2540 Delete type=0 #3
+2026/03/12-00:24:40.091 2540 Level-0 table #7: started
+2026/03/12-00:24:40.104 2540 Level-0 table #7: 35480 bytes OK
+2026/03/12-00:24:40.111 2540 Delete type=0 #4
+2026/03/12-00:36:26.649 16c Level-0 table #9: started
+2026/03/12-00:36:26.681 16c Level-0 table #9: 29482 bytes OK
+2026/03/12-00:36:26.691 16c Delete type=0 #6
+2026/03/12-00:44:53.807 2540 Level-0 table #11: started
+2026/03/12-00:44:53.822 2540 Level-0 table #11: 26138 bytes OK
+2026/03/12-00:44:53.829 2540 Delete type=0 #8
+2026/03/12-00:46:32.746 16c Level-0 table #13: started
+2026/03/12-00:46:32.848 16c Level-0 table #13: 35406 bytes OK
+2026/03/12-00:46:32.864 16c Delete type=0 #10
+2026/03/12-00:52:01.102 16c Level-0 table #15: started
+2026/03/12-00:52:01.121 16c Level-0 table #15: 28223 bytes OK
+2026/03/12-00:52:01.127 16c Delete type=0 #12
+2026/03/12-00:52:01.133 16c Compacting 4@0 + 1@1 files
+2026/03/12-00:52:01.152 16c Generated table #16@0: 8 keys, 19424 bytes
+2026/03/12-00:52:01.152 16c Compacted 4@0 + 1@1 files => 19424 bytes
+2026/03/12-00:52:01.155 16c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/12-00:52:01.157 16c Delete type=2 #7
+2026/03/12-00:52:01.158 16c Delete type=2 #9
+2026/03/12-00:52:01.158 16c Delete type=2 #11
+2026/03/12-00:52:01.158 16c Delete type=2 #13
+2026/03/12-00:52:01.158 16c Delete type=2 #15
+2026/03/12-01:09:56.316 2540 Level-0 table #18: started
+2026/03/12-01:09:56.327 2540 Level-0 table #18: 15290 bytes OK
+2026/03/12-01:09:56.331 2540 Delete type=0 #14
+2026/03/12-01:15:04.519 2540 Level-0 table #20: started
+2026/03/12-01:15:04.532 2540 Level-0 table #20: 37251 bytes OK
+2026/03/12-01:15:04.536 2540 Delete type=0 #17
+2026/03/12-01:24:26.673 16c Level-0 table #22: started
+2026/03/12-01:24:26.710 16c Level-0 table #22: 24720 bytes OK
+2026/03/12-01:24:26.747 16c Delete type=0 #19
+2026/03/12-01:30:00.183 16c Level-0 table #24: started
+2026/03/12-01:30:00.205 16c Level-0 table #24: 24256 bytes OK
+2026/03/12-01:30:00.212 16c Delete type=0 #21
+2026/03/12-01:30:00.213 16c Compacting 4@0 + 1@1 files
+2026/03/12-01:30:00.239 16c Generated table #25@0: 8 keys, 1480 bytes
+2026/03/12-01:30:00.239 16c Compacted 4@0 + 1@1 files => 1480 bytes
+2026/03/12-01:30:00.242 16c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/12-01:30:00.244 16c Delete type=2 #16
+2026/03/12-01:30:00.244 16c Delete type=2 #18
+2026/03/12-01:30:00.244 16c Delete type=2 #20
+2026/03/12-01:30:00.244 16c Delete type=2 #22
+2026/03/12-01:30:00.244 16c Delete type=2 #24
+2026/03/12-01:37:44.956 2540 Level-0 table #27: started
+2026/03/12-01:37:44.986 2540 Level-0 table #27: 40663 bytes OK
+2026/03/12-01:37:45.012 2540 Delete type=0 #23

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Golden Circle Rewards Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f2b90d",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#121212",
+                        "navy-deep": "#0a0c14",
+                        "gold-accent": "#d4af37"
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gold-shimmer {
+            background: linear-gradient(135deg, #f2b90d 0%, #d4af37 50%, #f2b90d 100%);
+        }
+        .navy-gradient {
+            background: linear-gradient(180deg, #1a1c2c 0%, #0a0c14 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-navy-deep overflow-x-hidden pb-20">
+<!-- Header Section -->
+<div class="flex items-center bg-transparent p-4 pb-2 justify-between z-10">
+<div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-2xl">arrow_back_ios</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">Golden Circle Rewards</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+<!-- Profile Section -->
+<div class="flex p-6 @container">
+<div class="flex w-full flex-col gap-6 items-center">
+<div class="flex gap-4 flex-col items-center">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-28 w-28 border-4 border-primary shadow-[0_0_20px_rgba(242,185,13,0.3)]" data-alt="Professional portrait of a premium male member" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB8kLNNbUS38_qR5btRRuc_6I_lrNyO5qDMsK72I7GCRuWUAJLyWEci6BPKnnG2TBASjr75rPyvC7Wf_KCly7W7jAIQmgcZ40gaBLXV_w_4-hLN9VN06KQBYfWbfWHt4EtApf4lYr1HreapSvMLlQkbXLi9F-nW5BDtov7xuTOUcEAKbvzwkkrWwwjRUSgsbsiHLv9KNUhxgrB7vyDcekI_f0SrfFc4VpP3F40XoKQMG89INHVu30Rj3wOTiL10q3ozXNPHBwfNDo");'></div>
+<div class="absolute bottom-0 right-0 bg-primary rounded-full p-1 border-2 border-navy-deep">
+<span class="material-symbols-outlined text-black text-sm font-bold">verified</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-extrabold leading-tight tracking-tight text-center">Welcome, Elite Member</p>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-primary font-bold text-sm tracking-widest uppercase">Platinum Status</span>
+<span class="h-1 w-1 rounded-full bg-slate-500"></span>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Prime Imports BD</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hero Discount Badge -->
+<div class="px-4 mb-6">
+<div class="relative overflow-hidden rounded-xl gold-shimmer p-6 shadow-xl shadow-primary/10">
+<!-- Abstract patterns -->
+<div class="absolute top-0 right-0 -mr-8 -mt-8 size-40 rounded-full bg-white/10 blur-3xl"></div>
+<div class="absolute bottom-0 left-0 -ml-8 -mb-8 size-32 rounded-full bg-black/5 blur-2xl"></div>
+<div class="relative z-10 flex flex-col gap-1">
+<p class="text-black/60 text-xs font-extrabold tracking-[0.2em] uppercase">Active Status</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-black text-4xl font-black leading-tight">3%</h3>
+<p class="text-black text-xl font-bold">Lifetime Discount</p>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<p class="text-black/80 text-sm font-semibold">Exclusive Golden Circle Benefit</p>
+<span class="material-symbols-outlined text-black">stars</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="flex flex-wrap gap-4 px-4 mb-8">
+<div class="flex min-w-[140px] flex-1 flex-col gap-2 rounded-xl p-5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">payments</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Savings</p>
+</div>
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-black">৳25,400</p>
+</div>
+<div class="flex min-w-[140px] flex-1 flex-col gap-2 rounded-xl p-5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">military_tech</span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Points Earned</p>
+</div>
+<p class="text-slate-900 dark:text-slate-100 text-2xl font-black">12,850 <span class="text-xs font-medium text-slate-400">pts</span></p>
+</div>
+</div>
+<!-- Section Title: Deals -->
+<div class="flex items-center justify-between px-4 mb-4">
+<h3 class="text-slate-900 dark:text-slate-100 text-lg font-extrabold tracking-tight">Golden Circle Only</h3>
+<a class="text-primary text-sm font-bold" href="#">View All</a>
+</div>
+<!-- Horizontal Carousel -->
+<div class="flex gap-4 px-4 overflow-x-auto hide-scrollbar pb-6">
+<!-- Card 1 -->
+<div class="flex-none w-64 flex flex-col gap-3">
+<div class="relative h-44 w-full rounded-xl overflow-hidden group">
+<img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Premium minimalist luxury watch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-LwiSNBPZA4K1dZPLSAN9uMbFtEFBFxnJHzT04xDZYP4mFcgVJHYvik6ea0GF6GpsGBGtyBkIsZyyUouX25n5NCddQsEs5Ep40ApceMSfQZk-umNPrzi9JEqwUbWlLtZ5U4uUUqF_A-LVl4RBlQBilG3axODU1A3Eu3LYszkNPfRJ7EkCuFIIkvLXnXsduU6NQSd8VZdU4YaNOFsRGdZ_jnMdpyJZdslG0BflqHg5nFTybCUKj9aJ5UDas0ZakMf5qzn2wamhrqM"/>
+<div class="absolute top-2 right-2 bg-black/70 backdrop-blur-md px-2 py-1 rounded-lg">
+<p class="text-primary text-[10px] font-black tracking-widest uppercase">Save 15%</p>
+</div>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">Chronos Elite Watch</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Limited Golden Circle Edition</p>
+<div class="flex items-center gap-2 mt-2">
+<p class="text-primary font-bold text-sm">৳45,000</p>
+<p class="text-slate-500 text-[10px] line-through">৳52,000</p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex-none w-64 flex flex-col gap-3">
+<div class="relative h-44 w-full rounded-xl overflow-hidden group">
+<img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Red premium performance sneakers" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzyi_jSZ_Ks5uFhjGVYD7mTxfGQZ2AfuDARmEwZTxPr4IMImTr581zqju4O69-0RSYHJlefjuYw75LVVHxvP_SyqBCCVZb71sXCNlnvJ0Lzycd0twcQ4QzhHgGZc4_i44xim0c0rzYeMIZYs_lJO50gRTJ-0nyBrgkfLrwa7SznANrHkucpHLLXYHtOyrf3lX1hcPR4KxGGB2zA_ma6bOAOpis3854PguW8FUMXcUrqdskCESe0WjYgRB4JjaBwDKMXa4tCFP22vA"/>
+<div class="absolute top-2 right-2 bg-black/70 backdrop-blur-md px-2 py-1 rounded-lg">
+<p class="text-primary text-[10px] font-black tracking-widest uppercase">Save 10%</p>
+</div>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">Velocity Pro Runners</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Advanced Performance Series</p>
+<div class="flex items-center gap-2 mt-2">
+<p class="text-primary font-bold text-sm">৳12,500</p>
+<p class="text-slate-500 text-[10px] line-through">৳14,000</p>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex-none w-64 flex flex-col gap-3">
+<div class="relative h-44 w-full rounded-xl overflow-hidden group">
+<img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High-end noise cancelling headphones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5CBp54BL3b5J_9H7HTm0RTNVWDHARE5TrseOFkLxgPRC2emFSvzrpvldxQtikpCFDDHegYLMvItYFclZtTOAVl60w_yZiXVqSAOD9UZrOwywCmcIy3mSPX9btpZKa-TGtaq-qmF7sZWX0b6FFDthTGtuzeMbRicUyvFK_cYhM6RWd1_lpumjQ94MhyQjBpf9GTNh6ZBC7_NOlKao1hgQ0jnn5RT4dsS-9NI8Ml9u_52WZB_m4YHF_43NKINlxLZ5N5m2yv-KJz60"/>
+<div class="absolute top-2 right-2 bg-black/70 backdrop-blur-md px-2 py-1 rounded-lg">
+<p class="text-primary text-[10px] font-black tracking-widest uppercase">Exclusive</p>
+</div>
+</div>
+<div>
+<p class="text-slate-900 dark:text-slate-100 font-bold text-sm">Aura Noise Cancel Gen 2</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Next-gen Sound Isolation</p>
+<div class="flex items-center gap-2 mt-2">
+<p class="text-primary font-bold text-sm">৳32,000</p>
+<p class="text-slate-500 text-[10px] line-through">৳35,000</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 dark:border-white/10 bg-white dark:bg-navy-deep px-6 pb-6 pt-3 flex items-center justify-between">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-2xl">workspace_premium</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Rewards</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined text-2xl">local_offer</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Deals</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Profile</span>
+</a>
+</div>
+</div>
+</body></html>

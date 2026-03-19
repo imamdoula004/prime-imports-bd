@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Member Detail &amp; Edit Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4d125",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#1a180a",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(244, 209, 37, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark">
+<!-- Overlay for Modal Context -->
+<div class="absolute inset-0 bg-black/60 backdrop-blur-sm z-0"></div>
+<!-- Slide-in Panel (Right Side for Admin Desktop/Full Screen on Mobile) -->
+<div class="absolute right-0 top-0 h-full w-full max-w-md bg-background-light dark:bg-background-dark shadow-2xl border-l border-slate-200 dark:border-primary/10 flex flex-col z-10">
+<!-- Header -->
+<div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-primary/10">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">close</span>
+</button>
+<h2 class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">Member Profile</h2>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">more_vert</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Profile Section -->
+<div class="flex flex-col items-center p-6 bg-gradient-to-b from-primary/5 to-transparent">
+<div class="relative">
+<div class="size-32 rounded-full border-2 border-primary p-1">
+<img alt="Ahmed Zubayer" class="w-full h-full rounded-full object-cover" data-alt="Close up portrait of a young man smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB41fhI9SrXbpppYfuuz8CePZrUSn9sYR3dn7JcCh52UDm64AdJJKYZpj_QB4ythTGZ_yQVFwwBzhQQhRpIB3O5XpzZePwP7yIxRM1Wrq3DK0joN46fMUS9Pf_ZoCTeyUmOF4xU8QMWbJOCcb5_IMFH5CHa2P-LA937kdDMnzk0OTxmSChXiXxojeB3kOj0wSlBzWN9r8QxjnYonSrM_bW3UevsG2s-ak3yWtjw9VrDt_n7YRvlat-rLb00i9hV5SxBKz4IoaAZCmg"/>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-background-dark size-8 rounded-full flex items-center justify-center border-4 border-background-dark">
+<span class="material-symbols-outlined text-sm font-bold">verified</span>
+</div>
+</div>
+<div class="mt-4 text-center">
+<h1 class="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Ahmed Zubayer</h1>
+<div class="flex items-center justify-center gap-2 mt-1">
+<span class="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-primary/30">Golden Circle</span>
+</div>
+<p class="text-slate-500 dark:text-primary/60 text-sm mt-1 font-medium">Member ID: GC-88291</p>
+</div>
+</div>
+<!-- Action Fields -->
+<div class="px-6 space-y-6">
+<!-- Field: Phone -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">Phone Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary/60 text-xl">call</span>
+<input class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-slate-900 dark:text-slate-100" type="text" value="+880 1712 345678"/>
+</div>
+</div>
+<!-- Toggle: Discount Status -->
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-primary/5 rounded-xl border border-slate-200 dark:border-primary/20">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">percent</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">3% Extra Discount</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 leading-none">Apply to all future orders</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-primary/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Recent Orders Section -->
+<div class="space-y-4 pt-2">
+<div class="flex items-center justify-between">
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100">Recent Orders</h3>
+<button class="text-primary text-sm font-bold">See All</button>
+</div>
+<div class="space-y-3">
+<!-- Order Item 1 -->
+<div class="flex items-center gap-4 p-3 bg-white dark:bg-primary/5 rounded-xl border border-slate-100 dark:border-primary/10">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Order #PI-9281</p>
+<p class="text-xs text-slate-500">Oct 24, 2023</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">৳14,500</p>
+<p class="text-xs text-emerald-500 font-medium">Saved ৳435</p>
+</div>
+</div>
+<!-- Order Item 2 -->
+<div class="flex items-center gap-4 p-3 bg-white dark:bg-primary/5 rounded-xl border border-slate-100 dark:border-primary/10">
+<div class="size-12 rounded-lg bg-slate-100 dark:bg-background-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Order #PI-8872</p>
+<p class="text-xs text-slate-500">Sep 15, 2023</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">৳8,200</p>
+<p class="text-xs text-emerald-500 font-medium">Saved ৳246</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Padding for bottom buttons -->
+<div class="h-32"></div>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 border-t border-slate-200 dark:border-primary/10 bg-background-light dark:bg-background-dark flex flex-col gap-3">
+<button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 active:scale-[0.98]">
+                    Save Changes
+                </button>
+<button class="w-full bg-slate-100 dark:bg-primary/10 hover:bg-slate-200 dark:hover:bg-primary/20 text-slate-900 dark:text-primary font-bold py-4 rounded-xl transition-all active:scale-[0.98]">
+                    View Order History
+                </button>
+</div>
+</div>
+</div>
+</body></html>

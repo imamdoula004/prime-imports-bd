@@ -126,27 +126,27 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             </Link>
 
             {/* Info Section */}
-            <div className="p-4 flex flex-col flex-1 gap-2.5">
+            <div className="p-3 md:p-4 flex flex-col flex-1">
                 {/* Stock Status */}
-                <div className={`text-[10px] font-bold uppercase tracking-[0.12em] px-2 py-1 rounded inline-block self-start ${status.classes}`}>
+                <div className={`text-[8px] md:text-[9px] font-black uppercase tracking-[0.15em] mb-2 px-2 py-1 rounded inline-block self-start ${status.classes}`}>
                     {status.label}
                 </div>
-                
-                <Link href={`/products/${product.slug || product.id}`} className="block">
-                    <h3 className="text-brand-blue-950 font-semibold text-[16px] leading-[1.4] line-clamp-2 uppercase tracking-tight h-[2.8em] hover:text-brand-blue-600 transition-colors">
+
+                <Link href={`/products/${product.slug || product.id}`} className="block mb-1.5">
+                    <h3 className="text-brand-blue-950 font-bold text-xs md:text-sm leading-[1.3] line-clamp-2 uppercase tracking-tight h-[2.6em] hover:text-brand-blue-600 transition-colors">
                         {product.name || product.title}
                     </h3>
                 </Link>
 
                 <div className="mt-auto space-y-2">
                     {/* Pricing with Golden Circle */}
-                    <div className="flex flex-col gap-1">
-                        <div className="flex items-baseline gap-2 flex-wrap">
-                            <span className="text-[24px] font-bold text-brand-blue-950 leading-tight">
+                    <div className="flex flex-col gap-1.5 mb-1.5">
+                        <div className="flex items-baseline gap-1.5 flex-wrap min-h-[1.2rem]">
+                            <span className="text-xl md:text-2xl font-black text-brand-blue-950 leading-none">
                                 ৳{price.toLocaleString()}
                             </span>
                             {originalPrice > price && (
-                                <span className="text-[14px] text-red-500 line-through font-semibold">
+                                <span className="text-sm md:text-base text-red-500 line-through font-black">
                                     ৳{originalPrice.toLocaleString()}
                                 </span>
                             )}
@@ -187,11 +187,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                                 </button>
                             </div>
                         ) : (
-                             <button
+                            <button
                                 onClick={handleAdd}
-                                className="w-full flex items-center justify-center gap-2 py-3 bg-brand-blue-900 text-white rounded-lg text-[16px] font-semibold tracking-wide hover:bg-black transition-all duration-120 active:scale-[0.97] shadow-lg shadow-brand-blue-900/10 group"
+                                className="w-full flex items-center justify-center gap-2 h-8 md:h-10 bg-brand-blue-600 text-white rounded-lg text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all duration-150 active:scale-[0.98] shadow-lg shadow-brand-blue-900/10 group"
                             >
-                                <ShoppingCart size={18} className="group-hover:translate-x-0.5 transition-transform" /> Add to Cart
+                                <ShoppingCart size={14} className="group-hover:translate-x-0.5 transition-transform" /> Add to Cart
                             </button>
                         )
                     ) : (

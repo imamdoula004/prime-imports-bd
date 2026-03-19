@@ -101,14 +101,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     alt={product.name || product.title || 'Premium Import'}
                     fill
                     sizes="(max-width: 768px) 50vw, 20vw"
-                    className="object-contain p-3 transition-transform duration-500 group-hover:scale-105 rounded-[8px]"
+                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-105 rounded-[8px]"
                     priority={priority}
                 />
-
-                {/* Business Logo Watermark - Solid and Accurate */}
-                <div className="absolute bottom-3 right-3 w-8 h-8 z-20 drop-shadow-md">
-                    <Image src="/brand_logo_new.png" alt="Prime Logo" fill className="object-contain" />
-                </div>
 
                 {/* Badges */}
                 <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
@@ -126,14 +121,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             </Link>
 
             {/* Info Section */}
-            <div className="p-3 md:p-4 flex flex-col flex-1">
+            <div className="p-2 md:p-3 flex flex-col flex-1">
                 {/* Stock Status */}
-                <div className={`text-[8px] md:text-[9px] font-black uppercase tracking-[0.15em] mb-2 px-2 py-1 rounded inline-block self-start ${status.classes}`}>
+                <div className={`text-[7px] md:text-[8px] font-black uppercase tracking-[0.1em] mb-1.5 px-1.5 py-0.5 rounded inline-block self-start ${status.classes}`}>
                     {status.label}
                 </div>
 
-                <Link href={`/products/${product.slug || product.id}`} className="block mb-1.5">
-                    <h3 className="text-brand-blue-950 font-bold text-xs md:text-sm leading-[1.3] line-clamp-2 uppercase tracking-tight h-[2.6em] hover:text-brand-blue-600 transition-colors">
+                <Link href={`/products/${product.slug || product.id}`} className="block mb-1">
+                    <h3 className="text-brand-blue-950 font-bold text-[10px] md:text-xs leading-[1.2] line-clamp-2 uppercase tracking-tight h-[2.4em] hover:text-brand-blue-600 transition-colors">
                         {product.name || product.title}
                     </h3>
                 </Link>
@@ -141,12 +136,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                 <div className="mt-auto space-y-2">
                     {/* Pricing with Golden Circle */}
                     <div className="flex flex-col gap-1.5 mb-1.5">
-                        <div className="flex items-baseline gap-1.5 flex-wrap min-h-[1.2rem]">
-                            <span className="text-xl md:text-2xl font-black text-brand-blue-950 leading-none">
+                        <div className="flex items-baseline gap-1 flex-wrap min-h-[1rem]">
+                            <span className="text-base md:text-lg font-black text-brand-blue-950 leading-none">
                                 ৳{price.toLocaleString()}
                             </span>
                             {originalPrice > price && (
-                                <span className="text-sm md:text-base text-red-500 line-through font-black">
+                                <span className="text-[10px] md:text-xs text-red-500 line-through font-black">
                                     ৳{originalPrice.toLocaleString()}
                                 </span>
                             )}
@@ -154,13 +149,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                         {isHydrated && price > 0 && (
                             <div className="flex items-center">
                                 {typeof window !== 'undefined' && localStorage.getItem('golden_circle_member') === 'true' ? (
-                                    <div className="bg-brand-gold-50/80 text-brand-gold-700 text-[8px] md:text-[9px] font-black px-2 py-0.5 rounded flex items-center gap-1 uppercase tracking-widest border border-brand-gold-100">
-                                        <Star size={10} className="fill-brand-gold-500 text-brand-gold-500" />
-                                        Members save ৳{Math.round(price * 0.03).toLocaleString()}
+                                    <div className="bg-brand-gold-50/80 text-[7px] md:text-[8px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5 uppercase tracking-widest border border-brand-gold-100 text-brand-gold-700">
+                                        <Star size={9} className="fill-brand-gold-500 text-brand-gold-500" />
+                                        Save ৳{Math.round(price * 0.03).toLocaleString()}
                                     </div>
                                 ) : (
-                                    <Link href="/golden-circle" className="bg-brand-blue-50/80 hover:bg-brand-blue-100 text-brand-blue-700 transition-colors text-[8px] md:text-[9px] font-black px-2 py-0.5 rounded flex items-center gap-1 uppercase tracking-widest border border-brand-blue-100" onClick={(e) => e.stopPropagation()}>
-                                        <Star size={10} className="text-brand-blue-500" />
+                                    <Link href="/golden-circle" className="bg-brand-blue-50/80 hover:bg-brand-blue-100 text-brand-blue-700 transition-colors text-[7px] md:text-[8px] font-black px-1.5 py-0.5 rounded flex items-center gap-0.5 uppercase tracking-widest border border-brand-blue-100" onClick={(e) => e.stopPropagation()}>
+                                        <Star size={9} className="text-brand-blue-500" />
                                         Save ৳{Math.round(price * 0.03).toLocaleString()} <span className="underline decoration-1 underline-offset-2 ml-0.5">Join</span>
                                     </Link>
                                 )}

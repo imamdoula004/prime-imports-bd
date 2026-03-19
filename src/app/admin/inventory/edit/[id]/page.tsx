@@ -56,6 +56,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         price: '',
         oldPrice: '',
         category: CATEGORIES[0],
+        subcategory: '',
+        productType: '',
+        gender: 'Unisex',
         stock: '',
         brand: '',
         sku: '',
@@ -76,6 +79,9 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                         price: data.price?.toString() || '',
                         oldPrice: data.oldPrice?.toString() || '',
                         category: data.category || CATEGORIES[0],
+                        subcategory: data.subcategory || '',
+                        productType: data.productType || '',
+                        gender: data.gender || 'Unisex',
                         stock: data.stock?.toString() || '',
                         brand: data.brand || '',
                         sku: data.sku || '',
@@ -125,16 +131,19 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             const previousStock = currentDoc.exists() ? (currentDoc.data().stock || 0) : 0;
             const newStock = parseInt(formData.stock);
 
-            await updateDoc(docRef, {
+            const updateData = {
                 ...formData,
                 price: parseFloat(formData.price),
                 oldPrice: formData.oldPrice ? parseFloat(formData.oldPrice) : null,
                 buyingPrice: formData.buyingPrice ? parseFloat(formData.buyingPrice) : null,
                 stock: newStock,
                 image: imageUrl,
+                imageURL: imageUrl,
                 normalizedCategory: formData.category,
                 updatedAt: serverTimestamp(),
-            });
+            };
+
+            await updateDoc(docRef, updateData);
 
             // Trigger restock notification if stock goes from 0 to > 0
             if (previousStock === 0 && newStock > 0) {

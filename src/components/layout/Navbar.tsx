@@ -49,8 +49,8 @@ export function Navbar() {
                 <div className="flex items-center gap-4 md:gap-8 min-h-[40px] md:min-h-[50px]">
                     {/* Logo */}
                     <Link href="/" className="shrink-0 flex items-center gap-2 group hover:opacity-80 transition-opacity">
-                        <div className="relative w-8 h-8 md:w-10 md:h-10">
-                            <Image src="/brand_logo.jpeg" alt="Logo" fill className="object-contain" priority />
+                        <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-slate-100">
+                            <Image src="/brand_logo.jpeg" alt="Logo" fill className="object-cover" priority />
                         </div>
                         <span className="hidden lg:block font-black text-brand-blue-900 uppercase tracking-tighter text-lg leading-none">
                             <span className="text-brand-blue-600">PRIME</span> <span className="text-brand-gold-500">IMPORTS</span> <span className="text-brand-blue-600">BD</span>
@@ -88,8 +88,10 @@ export function Navbar() {
 
                         {/* Filter Toggle */}
                         <button
-                            onClick={() => setIsFilterOpen(true)}
-                            className="p-2 rounded-xl text-brand-blue-900 hover:bg-slate-50 transition-all active:scale-90 relative md:flex hidden items-center gap-2 group"
+                            onClick={() => {
+                                setIsFilterOpen(true);
+                            }}
+                            className="p-2 rounded-xl text-brand-blue-900 hover:bg-slate-50 transition-all active:scale-90 flex items-center gap-2 group"
                         >
                             <SlidersHorizontal size={22} strokeWidth={2.5} className="group-hover:text-brand-blue-600 transition-colors" />
                             <span className="text-[10px] font-black uppercase tracking-widest hidden lg:block">Filters</span>

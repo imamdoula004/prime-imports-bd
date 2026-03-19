@@ -2,71 +2,70 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
+
+const ADMIN_EMAILS = ['primeimportsbdu@gmail.com'];
 
 interface AdminAuthContextType {
+    user: User | null;
     isAuthenticated: boolean;
-    login: (username: string, password: string) => Promise<boolean>;
+    login: (email: string, pass: string) => Promise<boolean>;
     logout: () => void;
+    loading: boolean;
 }
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
 export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
+    const [user, setUser] = useState<User | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     const pathname = usePathname();
 
-    // Persist login state in session storage for simple production-ready persistence during session
     useEffect(() => {
-        const auth = sessionStorage.getItem('admin_auth');
-        if (auth === 'true') {
-            setIsAuthenticated(true);
-        }
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser && ADMIN_EMAILS.includes(firebaseUser.email || '')) {
+                setUser(firebaseUser);
+                setIsAuthenticated(true);
+            } else {
+                setUser(null);
+                setIsAuthenticated(false);
+            }
+            setLoading(false);
+        });
+
+        return () => unsubscribe();
     }, []);
 
-    const login = async (username: string, password: string) => {
+    const login = async (email: string, pass: string) => {
         try {
-            const response = await fetch('/api/admin/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                setIsAuthenticated(true);
-                sessionStorage.setItem('admin_auth', 'true');
-                return true;
+            if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
+                return false;
             }
-            return false;
+            await signInWithEmailAndPassword(auth, email, pass);
+            return true;
         } catch (error) {
             console.error('Login error:', error);
             return false;
         }
     };
 
-    const logout = () => {
-        setIsAuthenticated(false);
-        sessionStorage.removeItem('admin_auth');
+    const logout = async () => {
+        await signOut(auth);
         router.push('/admin/login');
     };
 
     // Protect admin routes
     useEffect(() => {
-        if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !isAuthenticated) {
-            // Check session storage again in case state hasn't updated but storage has
-            const auth = sessionStorage.getItem('admin_auth');
-            if (auth !== 'true') {
-                router.push('/admin/login');
-            } else {
-                setIsAuthenticated(true);
-            }
+        if (!loading && pathname.startsWith('/admin') && pathname !== '/admin/login' && !isAuthenticated) {
+            router.push('/admin/login');
         }
-    }, [pathname, isAuthenticated, router]);
+    }, [pathname, isAuthenticated, router, loading]);
 
     return (
-        <AdminAuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AdminAuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
             {children}
         </AdminAuthContext.Provider>
     );

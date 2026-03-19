@@ -12,18 +12,18 @@ const ALL_CATEGORIES = [
     { name: 'Tea & Coffee', icon: <Coffee size={22} />, text: 'Tea & Coffee' },
     { name: 'Chocolate Bars', icon: <Sparkles size={22} />, text: 'Chocolates' },
     { name: 'Biscuits & Cookies', icon: <Cookie size={22} />, text: 'Biscuits' },
-    { name: 'Snacks & Sweets', icon: <Sparkle size={22} />, text: 'Snacks' },
+    { name: 'Snacks & Confectionery', icon: <Sparkle size={22} />, text: 'Snacks' },
     { name: 'Cosmetics & Beauty', icon: <HeartPulse size={22} />, text: 'Beauty' },
-    { name: 'Grocery Essentials', icon: <Utensils size={22} />, text: 'Grocery' },
+    { name: 'Grocery and Essentials', icon: <Utensils size={22} />, text: 'Grocery' },
     { name: 'Dairy & Cheese', icon: <Refrigerator size={22} />, text: 'Dairy' },
-    { name: 'Baby Care', icon: <Baby size={22} />, text: 'Baby Care' },
+    { name: 'Baby Care Imports', icon: <Baby size={22} />, text: 'Baby' },
     { name: 'Home & Kitchen', icon: <Box size={22} />, text: 'Home' },
     { name: 'Hampers & Gifts', icon: <Gift size={22} />, text: 'Gifts' },
 ];
 
 const DEFAULT_CATEGORIES = [
     'Beverages & Drinks', 'Tea & Coffee', 'Chocolate Bars',
-    'Biscuits & Cookies', 'Snacks & Sweets', 'Cosmetics & Beauty', 'Grocery Essentials'
+    'Biscuits & Cookies', 'Snacks & Confectionery', 'Cosmetics & Beauty', 'Grocery and Essentials'
 ];
 
 export function HomepageCategoryBar() {

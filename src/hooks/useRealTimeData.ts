@@ -325,34 +325,70 @@ export function useRealTimeMembers() {
     return { members, loading };
 }
 
-export function useRealTimeProducts(category?: string, searchQuery?: string, sort?: string) {
+export function useRealTimeProducts(
+    category?: string, 
+    searchQuery?: string, 
+    sort?: string,
+    filters?: {
+        brands?: string[];
+        genders?: string[];
+        subcategories?: string[];
+    }
+) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let isMounted = true;
-        // Only show loading if we don't have existing products for this query
-        if (products.length === 0) {
-            setLoading(true);
-        }
+        if (products.length === 0) setLoading(true);
 
         const productsRef = collection(db, 'products');
         let q = query(productsRef);
 
+        // 1. Category Filter (Primary)
         if (category && category !== 'All Imports') {
-            q = query(productsRef, where('category', '==', category));
+            q = query(q, where('category', '==', category));
         }
 
+        // 2. Search Keyword Filter
         if (searchQuery) {
             const firstWord = searchQuery.toLowerCase().trim().split(' ')[0];
-            if (firstWord) {
-                // If filtering by search keywords
+            if (firstWord && firstWord.length > 2) {
                 q = query(q, where('searchKeywords', 'array-contains', firstWord));
             }
         }
 
-        // Limit results to avoid massive lockups
-        q = query(q, limit(500));
+        // 3. Normalized Attribute Filters (Server-side where possible)
+        // Note: Firestore only allows one 'in' or 'array-contains' per query.
+        // We prioritize Category > Search > Filters.
+        if (filters) {
+            if (filters.genders && filters.genders.length > 0) {
+                if (filters.genders.length === 1) {
+                    q = query(q, where('gender', '==', filters.genders[0]));
+                } else if (!searchQuery) { // Can't combine searchKeywords array-contains with 'in'
+                    q = query(q, where('gender', 'in', filters.genders.slice(0, 10)));
+                }
+            }
+
+            if (filters.brands && filters.brands.length > 0) {
+                if (filters.brands.length === 1) {
+                    q = query(q, where('brand', '==', filters.brands[0]));
+                } else if (!searchQuery && (!filters.genders || filters.genders.length <= 1)) {
+                    q = query(q, where('brand', 'in', filters.brands.slice(0, 10)));
+                }
+            }
+
+            if (filters.subcategories && filters.subcategories.length > 0) {
+                if (filters.subcategories.length === 1) {
+                    q = query(q, where('subcategory', '==', filters.subcategories[0]));
+                } else if (!searchQuery && (!filters.brands || filters.brands.length <= 1) && (!filters.genders || filters.genders.length <= 1)) {
+                     q = query(q, where('subcategory', 'in', filters.subcategories.slice(0, 10)));
+                }
+            }
+        }
+
+        // Limit results for performance
+        q = query(q, limit(1000));
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
             if (!isMounted) return;
@@ -364,9 +400,6 @@ export function useRealTimeProducts(category?: string, searchQuery?: string, sor
                     createdAt: raw.createdAt?.toDate?.()?.toISOString() || raw.createdAt || null,
                     updatedAt: raw.updatedAt?.toDate?.()?.toISOString() || raw.updatedAt || null,
                     price: Number(raw.price || 0),
-                    originalPrice: raw.originalPrice ? Number(raw.originalPrice) : (raw.marketPrice ? Number(raw.marketPrice) : (raw.oldPrice ? Number(raw.oldPrice) : null)),
-                    marketPrice: raw.marketPrice ? Number(raw.marketPrice) : null,
-                    oldPrice: raw.oldPrice ? Number(raw.oldPrice) : null,
                     stock: Number(raw.stock || 0)
                 } as Product;
             });
@@ -381,7 +414,7 @@ export function useRealTimeProducts(category?: string, searchQuery?: string, sor
             isMounted = false;
             unsubscribe();
         };
-    }, [category, searchQuery, sort]);
+    }, [category, searchQuery, sort, JSON.stringify(filters)]);
 
     return { products, loading };
 }

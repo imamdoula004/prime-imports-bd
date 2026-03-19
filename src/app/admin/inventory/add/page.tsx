@@ -85,6 +85,9 @@ export default function AddProductPage() {
         price: '',
         oldPrice: '',
         category: CATEGORIES[0],
+        subcategory: '',
+        productType: '',
+        gender: 'Unisex',
         stock: '',
         brand: '',
         sku: '',
@@ -252,6 +255,9 @@ export default function AddProductPage() {
             price: match.price ? String(match.price) : '',
             oldPrice: match.oldPrice || match.marketPrice ? String(match.oldPrice || match.marketPrice) : '',
             category: match.category || CATEGORIES[0],
+            subcategory: match.subcategory || '',
+            productType: match.productType || '',
+            gender: match.gender || 'Unisex',
             stock: match.stock ? String(match.stock) : '',
             brand: match.brand || '',
             sku: match.sku || '',
@@ -402,7 +408,9 @@ export default function AddProductPage() {
                             setSelectedDuplicate(null);
                             setFormData({
                                 title: '', description: '', price: '', oldPrice: '',
-                                category: CATEGORIES[0], stock: '', brand: '', sku: '',
+                                category: CATEGORIES[0], 
+                                subcategory: '', productType: '', gender: 'Unisex',
+                                stock: '', brand: '', sku: '',
                                 buyingPrice: '', status: 'active', weight: '', size: '',
                                 supplier: '', aliases: ''
                             });
@@ -665,6 +673,40 @@ export default function AddProductPage() {
                                             <option key={cat} value={cat}>{cat}</option>
                                         ))}
                                     </select>
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Gender Focus</label>
+                                    <select
+                                        value={formData.gender}
+                                        onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                                        className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-brand-blue-900 focus:bg-white focus:ring-2 focus:ring-brand-blue-100 transition-all outline-none appearance-none cursor-pointer"
+                                    >
+                                        <option value="Men">Men</option>
+                                        <option value="Women">Women</option>
+                                        <option value="Unisex">Unisex</option>
+                                        <option value="Kids">Kids</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Nike Subcategory</label>
+                                    <input
+                                        type="text"
+                                        value={formData.subcategory}
+                                        onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
+                                        className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-brand-blue-900 focus:bg-white focus:ring-2 focus:ring-brand-blue-100 transition-all outline-none"
+                                        placeholder="e.g. Laptop, Running, Casual"
+                                    />
+                                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1 px-1 italic">Used for category-specific tags</p>
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Product Type / Detail</label>
+                                    <input
+                                        type="text"
+                                        value={formData.productType}
+                                        onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
+                                        className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-brand-blue-900 focus:bg-white focus:ring-2 focus:ring-brand-blue-100 transition-all outline-none"
+                                        placeholder="e.g. Gaming Laptop, Ultrabook"
+                                    />
                                 </div>
                                 <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div>

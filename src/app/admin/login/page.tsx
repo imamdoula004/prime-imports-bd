@@ -8,12 +8,18 @@ import { Button } from '@/components/ui/Button';
 import Image from 'next/image';
 
 export default function AdminLoginPage() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { login } = useAdminAuth();
+    const { login, loading: authLoading, isAuthenticated } = useAdminAuth();
     const router = useRouter();
+
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+        router.push('/admin');
+        return null;
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -23,14 +29,20 @@ export default function AdminLoginPage() {
         // Simulate small delay for feel
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const success = await login(username, password);
+        const success = await login(email, password);
         if (success) {
             router.push('/admin');
         } else {
-            setError('Invalid credentials. Please try again.');
+            setError('Invalid credentials or unauthorized email. Please try again.');
             setIsLoading(false);
         }
     };
+
+    if (authLoading) return (
+        <div className="min-h-svh bg-slate-900 flex items-center justify-center p-4">
+            <p className="text-white text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">Verifying Access...</p>
+        </div>
+    );
 
     return (
         <div className="min-h-svh bg-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
@@ -66,15 +78,15 @@ export default function AdminLoginPage() {
 
                         <div className="space-y-4">
                             <div className="relative group">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Username</p>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2">Admin Email</p>
                                 <div className="relative">
                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-blue-600 transition-colors" size={18} />
                                     <input
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         className="w-full pl-11 pr-4 py-4 bg-slate-50 border-2 border-transparent focus:border-brand-blue-100 focus:bg-white rounded-2xl text-sm font-bold text-brand-blue-900 transition-all outline-none"
-                                        placeholder="admin"
+                                        placeholder="admin@primeimports.com"
                                         required
                                     />
                                 </div>

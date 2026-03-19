@@ -11,11 +11,11 @@ const CATEGORY_IMAGES = [
         textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
     },
     {
-        name: 'Beverages', image: '/category-images/beverages.jpg',
+        name: 'Beverages & Drinks', image: '/category-images/beverages.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/40'
     },
     {
-        name: 'Cosmetics', image: '/category-images/cosmetics.jpg',
+        name: 'Cosmetics & Beauty', image: '/category-images/cosmetics.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/30'
     },
     {
@@ -23,68 +23,24 @@ const CATEGORY_IMAGES = [
         textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
     },
     {
-        name: 'Snacks', image: '/category-images/snacks.jpg',
+        name: 'Snacks & Confectionery', image: '/category-images/snacks.jpg',
         textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
     },
     {
-        name: 'Skincare', image: '/category-images/skincare.jpg',
+        name: 'Health & Wellness', image: '/category-images/skincare.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/30'
     },
     {
-        name: 'Haircare', image: '/category-images/haircare.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
-    },
-    {
-        name: 'Perfumes', image: '/category-images/perfumes.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
-    },
-    {
-        name: 'Gift Sets', image: '/category-images/gift_sets.jpg',
-        textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/50'
-    },
-    {
-        name: 'Body Lotions', image: '/category-images/body_lotions.jpg',
-        textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/40'
-    },
-    {
-        name: 'Home & Living', image: '/category-images/home_living.jpg',
-        textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/40'
-    },
-    {
-        name: 'Kitchen', image: '/category-images/kitchen.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
-    },
-    {
-        name: 'Supplements', image: '/category-images/supplements.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/50'
-    },
-    {
-        name: 'Baby Care', image: '/category-images/baby_care.jpg',
+        name: 'Dairy & Cheese', image: '/category-images/dairy.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/30'
     },
     {
-        name: 'Pet Supplies', image: '/category-images/pet_supplies.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/30'
-    },
-    {
-        name: 'Stationery', image: '/category-images/stationery.jpg',
+        name: 'Home & Kitchen', image: '/category-images/home_living.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/40'
     },
     {
-        name: 'Electronics', image: '/category-images/electronics.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/50'
-    },
-    {
-        name: 'Dairy', image: '/category-images/dairy.jpg',
+        name: 'Baby Care Imports', image: '/category-images/baby_care.jpg',
         textColor: 'text-brand-blue-900', badgeClass: 'bg-brand-blue-900/10 text-brand-blue-900 border-brand-blue-900/20', overlay: 'bg-white/30'
-    },
-    {
-        name: 'Condiments', image: '/category-images/condiments.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
-    },
-    {
-        name: 'Spices', image: '/category-images/spices.jpg',
-        textColor: 'text-white', badgeClass: 'bg-white/20 text-white border-white/20', overlay: 'bg-brand-blue-950/40'
     }
 ];
 

@@ -50,6 +50,9 @@ export interface Product {
     supplier?: string; // New: for inventory tracking
     origin?: string; // New: for metadata
     gender?: string; // New: for filtering
+    ram?: string; // e.g. 8GB
+    storage?: string; // e.g. 128GB
+    colors?: string[]; // e.g. ['Midnight', 'Starlight']
     deletedAt?: any; // For backup
 }
 

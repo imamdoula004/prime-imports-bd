@@ -41,7 +41,7 @@ export default async function Home() {
               </Link>
             </div>
             <RealTimeProductGrid
-              pageSize={40}
+              pageSize={12}
               currentPage={1}
               category={category}
               layout="carousel"
@@ -59,7 +59,7 @@ export default async function Home() {
         </div>
 
         <RealTimeProductGrid
-          pageSize={24}
+          pageSize={12}
           currentPage={1}
           disableInfiniteScroll={true}
         />

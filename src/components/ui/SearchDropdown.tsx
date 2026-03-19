@@ -111,21 +111,43 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
 
                 // Client-side refinement: score and rank results by relevance
                 const scored = allProducts.map(p => {
-                    const searchable = `${p.name || ''} ${p.title || ''} ${p.brand || ''} ${p.category || ''} ${p.slug || ''} ${p.id || ''}`.toLowerCase();
+                    const name = (p.name || p.title || '').toLowerCase();
+                    const brand = (p.brand || '').toLowerCase();
+                    const category = (p.category || '').toLowerCase();
+                    const subcategory = (p.subcategory || '').toLowerCase();
+                    const type = (p.productType || '').toLowerCase();
+                    const gender = (p.gender || '').toLowerCase();
+                    const tags = (p.tags || []).join(' ').toLowerCase();
+                    const keywords = (p.searchKeywords || []).join(' ').toLowerCase();
+
                     let score = 0;
                     words.forEach(word => {
-                        if (searchable.includes(word)) score += 1;
+                        const lowWord = word.toLowerCase();
+                        if (name.includes(lowWord)) score += 50;
+                        if (name.startsWith(lowWord)) score += 20;
+                        if (brand.includes(lowWord)) score += 40;
+                        if (subcategory.includes(lowWord)) score += 30;
+                        if (type.includes(lowWord)) score += 30;
+                        if (gender.includes(lowWord)) score += 25;
+                        if (category.includes(lowWord)) score += 20;
+                        if (tags.includes(lowWord)) score += 10;
+                        if (keywords.includes(lowWord)) score += 10;
+
+                        // Exact match boosts
+                        if (name === lowWord) score += 100;
+                        if (brand === lowWord) score += 60;
+                        if (gender === lowWord) score += 50;
                     });
-                    // Bonus for exact match at start of name/title
-                    const name = (p.name || p.title || '').toLowerCase();
-                    if (name.startsWith(term)) score += 5;
-                    if (name.includes(term)) score += 3;
+
+                    // Match whole phrase
+                    if (name.includes(term.toLowerCase())) score += 40;
+
                     return { product: p, score };
                 });
 
                 // Filter to products that match at least one word, sort by score
                 const filtered = scored
-                    .filter(s => s.score > 0)
+                    .filter(s => s.score > 1) // Higher threshold for better relevance
                     .sort((a, b) => b.score - a.score)
                     .slice(0, 20)
                     .map(s => s.product);

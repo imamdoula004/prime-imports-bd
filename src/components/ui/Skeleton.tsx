@@ -18,7 +18,7 @@ export function Skeleton({ className, ...props }: SkeletonProps) {
 
 export function ProductCardSkeleton() {
     return (
-        <div className="bg-white rounded-[12px] p-3 border border-black/[0.04] shadow-[0_6px_16px_rgba(0,0,0,0.10),0_2px_6px_rgba(0,0,0,0.06)] flex flex-col gap-3">
+        <div className="bg-white rounded-[12px] p-3 border border-black/[0.05] shadow-[0_8px_20px_rgba(0,0,0,0.12),0_3px_8px_rgba(0,0,0,0.08)] flex flex-col gap-3">
             <Skeleton className="aspect-square w-full rounded-xl" />
             <div className="space-y-2">
                 <Skeleton className="h-3 w-1/3" />

@@ -42,7 +42,7 @@ body {
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  @apply bg-white text-slate-900 font-sans antialiased selection:bg-brand-blue-600 selection:text-white;
+  @apply bg-[#f7f7f7] text-slate-900 font-sans antialiased selection:bg-brand-blue-600 selection:text-white;
 }
 
 @layer components {

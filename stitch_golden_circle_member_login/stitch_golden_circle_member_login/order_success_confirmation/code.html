@@ -1,0 +1,178 @@
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#1152d4",
+            "background-light": "#f6f6f8",
+            "background-dark": "#101622",
+          },
+          fontFamily: {
+            "display": ["Be Vietnam Pro"]
+          },
+          borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<title>Order Success Confirmation</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden pb-20">
+<!-- Header -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 sticky top-0 z-10 border-b border-slate-200 dark:border-slate-800">
+<div class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">close</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-10">Order Confirmation</h2>
+</div>
+<!-- Success Hero Section -->
+<div class="flex flex-col px-6 py-8 items-center text-center gap-6">
+<div class="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined !text-6xl">check_circle</span>
+</div>
+<div class="flex flex-col gap-2">
+<h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Order Successfully Placed</h1>
+<p class="text-sm text-slate-600 dark:text-slate-400">
+          Thank you for shopping with Prime Imports BD. Your premium groceries are being prepared for delivery!
+        </p>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800/50 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700">
+<span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Order ID:</span>
+<span class="text-sm font-bold text-primary ml-1">#PI-88294021</span>
+</div>
+<button class="w-full max-w-xs flex items-center justify-center gap-2 rounded-xl h-14 bg-primary text-white text-base font-bold shadow-lg shadow-primary/25 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Track My Order</span>
+</button>
+</div>
+<!-- Delivery Status Preview -->
+<div class="px-4 mb-6">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">schedule</span>
+</div>
+<div class="flex flex-col">
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Estimated Delivery</p>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Today, 4:00 PM - 6:00 PM</p>
+</div>
+</div>
+</div>
+<!-- Summary Sections -->
+<div class="flex flex-col gap-6 px-4 pb-12">
+<!-- Shipping Address -->
+<section class="flex flex-col gap-3">
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100 px-1">Delivery Address</h3>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex gap-3">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div class="flex flex-col gap-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Home</p>
+<p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              House 12, Road 5, Block C, Banani<br/>
+              Dhaka, 1213, Bangladesh
+            </p>
+</div>
+</div>
+</section>
+<!-- Order Items -->
+<section class="flex flex-col gap-3">
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100 px-1">Order Summary</h3>
+<div class="bg-white dark:bg-slate-900 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
+<!-- Item 1 -->
+<div class="flex items-center p-4 gap-4 border-b border-slate-100 dark:border-slate-800">
+<div class="h-16 w-16 bg-slate-100 dark:bg-slate-800 rounded-lg bg-cover bg-center" data-alt="Fresh organic avocados on a wooden surface" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAaeUQ7ok2mFIPFk0ls5Fmvf_CIYzA9Cr04ih9cfSCcDjVpX8Uepd_dvd6AfcahSZ9EPFm7snHdqM5koBlBqeanmrSwkOlYNbu7LOUaTo_x49-jVH82_wnBXPhRzYBqstSIyEygXzdUWz-mXGVPe7oH4MM9MMq4x7WBq-17q2JjjwOYaEwGqOFWRS06d8oGA7eG2yf_aBlH3ftckXC8F97U9dg66AncaK-0S5SsGLpqJ6s0-XGk_PUN4pq2eDSSJVRHoIOKYOQXsd0')"></div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Australian Hass Avocados</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">2 Units • Premium Grade</p>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">৳ 850</p>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center p-4 gap-4 border-b border-slate-100 dark:border-slate-800">
+<div class="h-16 w-16 bg-slate-100 dark:bg-slate-800 rounded-lg bg-cover bg-center" data-alt="Bottle of premium extra virgin olive oil" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAdByI57PzosdFVbFGHYDnu1TtXADcB51Bj9JlDiXe95x4VdZ_Q4Jyaq58FGVHzDwwGR3eyy9AOef7N8I6s5zfeliB4kR_Q6x_Lxz8fDL269RvQRAQlS_00CSIo4iRyq4VjVL0AxjF_LCThFpkQHrdSK44AHT0TxRu0ybnFA5hq8RHS0HQSIX51Zm9tYWae4qtZ05QCvwaJTr9dLkE8GihVeM-H9-FequM-ntM-j4Ot22cywBoh2ylWwXM2uZ-wu6JutdxnUruNLA')"></div>
+<div class="flex-1">
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">Extra Virgin Olive Oil (500ml)</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">1 Bottle • Italy Import</p>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-slate-100">৳ 1,200</p>
+</div>
+<!-- Pricing Breakdown -->
+<div class="bg-slate-50 dark:bg-slate-900/50 p-4 flex flex-col gap-2">
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">Subtotal</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">৳ 2,050</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">Delivery Fee</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">৳ 60</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500 dark:text-slate-400">Service Fee</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">৳ 25</span>
+</div>
+<div class="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+<div class="flex justify-between text-base">
+<span class="font-bold text-slate-900 dark:text-slate-100">Total Amount</span>
+<span class="font-bold text-primary">৳ 2,135</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Payment Method -->
+<section class="flex flex-col gap-3">
+<h3 class="text-base font-bold text-slate-900 dark:text-slate-100 px-1">Payment Method</h3>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex h-8 w-12 items-center justify-center rounded bg-slate-100 dark:bg-slate-800 p-1">
+<img alt="bkash" class="h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ18MhxSMcrwRJn2NR63LpsC5lGPZoSjaJyPVXSVqn8et6fzpuEcRsyePhCm073JOWOpQKhjib6GzbV7nZEo0Hr05NAjcdFKBWZfT5z9P7iz7UxiPxbGsNF6Fl4YPpBbfeUuJRfpxvrFXP8ZAjgDHUEMWnZNH62G5pi8wDSbD7RjtTQ95ZAhQle-2Ue0lY7-eoS4Yq5o40uQU07EUBckvZ4QxOPzePUksqFkqb3o2zrQaMPuHN0GF6E1_OEYHvvez445IWGHXdHT8"/>
+</div>
+<p class="text-sm font-medium text-slate-900 dark:text-slate-100">bKash Personal (**** 021)</p>
+</div>
+<span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded">Paid</span>
+</div>
+</section>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mt-4">
+<button class="flex items-center justify-center gap-2 rounded-xl h-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span>Download Invoice</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-12 text-primary font-bold hover:bg-primary/5 transition-colors">
+<span>Continue Shopping</span>
+</button>
+</div>
+</div>
+<!-- Bottom Nav Bar Component -->
+<div class="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex px-6 py-3 items-center justify-between z-20">
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="text-[10px] font-medium">Shop</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined !fill-1">receipt</span>
+<span class="text-[10px] font-medium">Orders</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</div>
+</body></html>

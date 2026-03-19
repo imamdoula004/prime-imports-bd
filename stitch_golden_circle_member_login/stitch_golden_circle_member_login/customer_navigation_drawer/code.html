@@ -1,0 +1,167 @@
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4", // Navy Blue
+                        "accent-gold": "#C5A059", // Gold for Premium feel
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<title>Customer Navigation Drawer - Prime Imports BD</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased">
+<!-- Mobile Screen Wrapper (iOS Simulation) -->
+<div class="relative mx-auto h-[844px] w-[390px] overflow-hidden bg-white shadow-2xl border-[8px] border-slate-900 rounded-[3rem]">
+<!-- Status Bar (iOS) -->
+<div class="flex justify-between items-center px-8 pt-4 pb-2 text-slate-900 bg-white">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex gap-1.5 items-center">
+<span class="material-symbols-outlined text-sm">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">battery_full</span>
+</div>
+</div>
+<!-- Main Content Area (Background) -->
+<div class="p-6 opacity-40">
+<header class="flex justify-between items-center mb-6">
+<div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+<span class="material-symbols-outlined">menu</span>
+</div>
+<div class="w-24 h-8 bg-slate-200 rounded"></div>
+<div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+</header>
+<div class="h-40 w-full bg-slate-100 rounded-xl mb-4"></div>
+<div class="grid grid-cols-2 gap-4">
+<div class="h-32 bg-slate-100 rounded-lg"></div>
+<div class="h-32 bg-slate-100 rounded-lg"></div>
+</div>
+</div>
+<!-- Navigation Drawer Overlay -->
+<div class="absolute inset-0 z-50 flex">
+<!-- Semi-transparent backdrop -->
+<div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+<!-- Drawer Container -->
+<div class="relative flex h-full w-[310px] flex-col bg-background-light shadow-2xl">
+<!-- Profile Header -->
+<div class="px-6 pt-12 pb-8 bg-white border-b border-slate-200">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Profile" class="size-16 rounded-full object-cover ring-2 ring-primary/10" data-alt="Close up portrait of a male customer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFFYFGQcuKhItWK-rxRO5p3s4LgFWW48uE3XzcGlN-TxdT_XMc4CrSmSiddasDTpcQDzokvObxvqqolSqKN0olnKGAkOZSGHBSoZeA4N2T5RASBdFVIia6Aw0WkMP8nwVPaJm6PbH0Zuym9h_ma0hrqb2Qj2tpHtFvK3qtxPeXYjn7mH8FPAs_uKEDxSMkitlJK_l6EUJ98IguPwDwE__7gFC9KCkRgV2YAJcxDjCCgf14gaDm9E5ySCJ_lOWrmihNG94eol33wBs"/>
+<div class="absolute -bottom-1 -right-1 size-6 bg-accent-gold rounded-full flex items-center justify-center border-2 border-white">
+<span class="material-symbols-outlined text-white text-[14px]">stars</span>
+</div>
+</div>
+<div>
+<p class="text-slate-900 text-xl font-bold leading-tight">Alex Thompson</p>
+<p class="text-slate-500 text-xs font-medium uppercase tracking-wider mt-1">Prime Member</p>
+</div>
+</div>
+<!-- Loyalty Card -->
+<div class="mt-6 bg-gradient-to-br from-primary to-slate-900 p-4 rounded-xl shadow-lg relative overflow-hidden">
+<div class="absolute -top-4 -right-4 size-20 bg-white/5 rounded-full"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start">
+<span class="text-accent-gold text-[10px] font-bold uppercase tracking-[0.2em]">Golden Circle</span>
+<span class="material-symbols-outlined text-accent-gold text-lg">workspace_premium</span>
+</div>
+<p class="text-white text-sm font-medium mt-2">Points Balance</p>
+<div class="flex items-baseline gap-1">
+<p class="text-white text-2xl font-bold">2,450</p>
+<span class="text-accent-gold text-xs font-semibold">Pts</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Navigation List -->
+<nav class="flex-1 overflow-y-auto px-4 py-6">
+<ul class="flex flex-col gap-2">
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-base font-semibold leading-tight">Dashboard</p>
+</a>
+</li>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<p class="text-base font-semibold leading-tight">Order History</p>
+</a>
+</li>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<p class="text-base font-semibold leading-tight">Saved Items</p>
+</a>
+</li>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<p class="text-base font-semibold leading-tight">Delivery Addresses</p>
+</a>
+</li>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<p class="text-base font-semibold leading-tight">Payment Methods</p>
+</a>
+</li>
+<div class="my-4 border-t border-slate-200 mx-4"></div>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<p class="text-base font-semibold leading-tight">Support</p>
+</a>
+</li>
+<li>
+<a class="flex h-12 items-center gap-4 rounded-xl px-4 text-slate-600 hover:bg-slate-100 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-base font-semibold leading-tight">Settings</p>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Footer / Logout -->
+<div class="p-6 bg-slate-50 border-t border-slate-200">
+<button class="flex w-full h-12 items-center gap-4 rounded-xl px-4 text-red-600 hover:bg-red-50 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-base font-bold leading-tight">Logout</p>
+</button>
+<p class="mt-4 text-[10px] text-center text-slate-400 font-medium tracking-widest uppercase">Prime Imports BD v1.2.4</p>
+</div>
+</div>
+<!-- Close area (clickable to close) -->
+<div class="flex-1 h-full"></div>
+</div>
+<!-- iOS Home Indicator -->
+<div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-slate-900/20 rounded-full"></div>
+</div>
+</body></html>

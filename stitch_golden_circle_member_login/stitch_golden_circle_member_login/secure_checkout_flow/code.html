@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Secure Checkout - Prime Imports BD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#002D62", // Deep Navy from Logo
+              accent: "#F4C46D",  // Gold from Logo
+              "background-light": "#F8FAFC",
+              "background-dark": "#0B1120",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "12px",
+              'xl': '16px',
+            },
+          },
+        },
+      };
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ios-blur { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="h-12 w-full bg-white/80 dark:bg-slate-900/80 sticky top-0 z-50 ios-blur flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
+<button class="p-1 -ml-2 text-primary dark:text-accent">
+<span class="material-icons-round">arrow_back_ios_new</span>
+</button>
+<h1 class="font-bold text-lg tracking-tight">Checkout</h1>
+<div class="w-8"></div> 
+</div>
+<main class="max-w-md mx-auto p-4 pb-32 space-y-4">
+<div class="flex justify-center py-2">
+<img alt="Prime Imports BD Logo" class="h-16 w-16 rounded-full border-2 border-accent shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKN69KlSMR4ljCPbnrUereu1oaxrWV9bxT9QsLKA5_t63luLP2cYuW9vD8a4MgdKFwhx7OuibON78FR1skJtOJxN1zEh4fWSxTDtvkvp8Fj2cESyO0tQMdvYHErna_o2Ni_OhWyPGM-SU2lHSWlk7PLsnm7GclOaqZkTmI_pDTjHmrfGIu9pqEOSt-ZQjlN5s8wMJqsAv4rHzXD4V_vL5lyX-VEe3bMahpzH2befGYPqrW6SsY0KcABbRNU75jWhQSIb6fX9lrZ4"/>
+</div>
+<section class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-icons-round text-primary dark:text-accent">location_on</span>
+<h2 class="font-semibold">Delivery Address</h2>
+</div>
+<button class="text-primary dark:text-accent text-sm font-medium">Edit</button>
+</div>
+<div class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+<p class="font-medium text-slate-900 dark:text-white">Home - Rahat Ahmed</p>
+<p>House 42, Road 12, Block D</p>
+<p>Banani, Dhaka - 1213</p>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-icons-round text-primary dark:text-accent">verified_user</span>
+<h2 class="font-semibold">Contact Verification</h2>
+</div>
+<div class="space-y-3">
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg py-3 px-4 text-sm font-medium focus:ring-primary focus:border-primary" readonly="" type="tel" value="+880 1712-345678"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-green-500">
+<span class="material-icons-round text-sm mr-1">check_circle</span>
+<span class="text-xs font-bold">VERIFIED</span>
+</span>
+</div>
+<p class="text-[11px] text-slate-400">Required for order tracking and delivery updates.</p>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-icons-round text-primary dark:text-accent">account_balance_wallet</span>
+<h2 class="font-semibold">Payment Method</h2>
+</div>
+<div class="space-y-3">
+<label class="flex items-center justify-between p-3 border-2 border-primary bg-primary/5 dark:bg-primary/20 rounded-xl cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-pink-100 flex items-center justify-center rounded-lg">
+<span class="text-pink-600 font-black text-xs">bKash</span>
+</div>
+<div>
+<p class="font-semibold text-sm">bKash Payment</p>
+<p class="text-xs text-slate-500">Pay securely with bKash Wallet</p>
+</div>
+</div>
+<input checked="" class="text-primary focus:ring-primary w-5 h-5" name="payment" type="radio"/>
+</label>
+<label class="flex items-center justify-between p-3 border-2 border-slate-100 dark:border-slate-800 rounded-xl cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-green-100 flex items-center justify-center rounded-lg text-green-600">
+<span class="material-icons-round">payments</span>
+</div>
+<div>
+<p class="font-semibold text-sm">Cash on Delivery</p>
+<p class="text-xs text-slate-500">Pay when you receive items</p>
+</div>
+</div>
+<input class="text-primary focus:ring-primary w-5 h-5 border-slate-300" name="payment" type="radio"/>
+</label>
+</div>
+</section>
+<section class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+<h2 class="font-semibold mb-4">Order Summary</h2>
+<div class="space-y-2 text-sm">
+<div class="flex justify-between text-slate-500">
+<span>Subtotal (4 items)</span>
+<span>৳4,250.00</span>
+</div>
+<div class="flex justify-between text-slate-500">
+<span>Delivery Fee</span>
+<span>৳60.00</span>
+</div>
+<div class="flex justify-between text-green-600">
+<span>Discount (PRIME10)</span>
+<span>-৳425.00</span>
+</div>
+<div class="pt-3 mt-1 border-t border-dashed border-slate-200 dark:border-slate-700 flex justify-between items-center">
+<span class="font-bold text-lg">Total Amount</span>
+<span class="font-bold text-xl text-primary dark:text-accent">৳3,885.00</span>
+</div>
+</div>
+</section>
+<div class="bg-accent/10 border border-accent/30 p-3 rounded-xl flex items-center gap-3">
+<span class="material-icons-round text-accent">info</span>
+<p class="text-xs text-slate-700 dark:text-slate-300">Free delivery on your next import order over ৳10,000.</p>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 ios-blur border-t border-slate-200 dark:border-slate-800 p-4 pb-8 z-50">
+<div class="max-w-md mx-auto flex flex-col gap-3">
+<div class="flex justify-between items-center px-1">
+<span class="text-xs text-slate-500 uppercase tracking-widest font-bold">Total Payable</span>
+<span class="text-lg font-black text-primary dark:text-accent">৳3,885.00</span>
+</div>
+<button class="w-full bg-primary hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98] flex items-center justify-center gap-2">
+                Place Order
+                <span class="material-icons-round">arrow_forward</span>
+</button>
+<p class="text-[10px] text-center text-slate-400">By placing this order you agree to Prime Imports BD Terms of Service.</p>
+</div>
+</div>
+<button class="fixed top-20 right-4 w-10 h-10 bg-white dark:bg-slate-800 shadow-xl rounded-full flex items-center justify-center border border-slate-200 dark:border-slate-700 z-50" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons-round text-primary dark:text-accent text-sm">dark_mode</span>
+</button>
+
+</body></html>

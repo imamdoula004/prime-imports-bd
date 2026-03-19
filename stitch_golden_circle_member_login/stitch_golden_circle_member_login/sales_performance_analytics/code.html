@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sales Performance Analytics - Prime Imports BD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#f4d125",
+                "background-light": "#f8f8f5",
+                "background-dark": "#221f10",
+                "navy-accent": "#1a1c2c",
+                "gold-accent": "#c5a021"
+              },
+              fontFamily: {
+                "display": ["Manrope"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #494222;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen pb-20">
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-primary rounded-lg p-1.5 flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark text-xl font-bold">import_export</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-tight">Prime Imports BD</h1>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest">Sales Analytics</p>
+</div>
+</div>
+<button class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-3 py-1.5 rounded-lg transition-colors border border-primary/20">
+<span class="material-symbols-outlined text-sm">download</span>
+<span class="text-xs font-bold uppercase tracking-wider">CSV</span>
+</button>
+</header>
+<main class="p-4 space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-slate-50 dark:bg-navy-accent/40 border border-slate-200 dark:border-primary/10 rounded-xl p-4 flex flex-col justify-between min-h-[120px]">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-xl">payments</span>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">+12.5%</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Total Revenue</p>
+</div>
+<p class="text-xl font-extrabold text-slate-900 dark:text-slate-100">$128,450</p>
+</div>
+<div class="bg-slate-50 dark:bg-navy-accent/40 border border-slate-200 dark:border-primary/10 rounded-xl p-4 flex flex-col justify-between min-h-[120px]">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-xl">shopping_bag</span>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">+8.2%</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Order Count</p>
+</div>
+<p class="text-xl font-extrabold text-slate-900 dark:text-slate-100">1,240</p>
+</div>
+<div class="bg-slate-50 dark:bg-navy-accent/40 border border-slate-200 dark:border-primary/10 rounded-xl p-4 flex flex-col justify-between min-h-[120px]">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-xl">analytics</span>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">+3.1%</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Avg Order Value</p>
+</div>
+<p class="text-xl font-extrabold text-slate-900 dark:text-slate-100">$103.50</p>
+</div>
+<div class="bg-slate-50 dark:bg-navy-accent/40 border border-slate-200 dark:border-primary/10 rounded-xl p-4 flex flex-col justify-between min-h-[120px]">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="material-symbols-outlined text-primary text-xl">stars</span>
+<span class="text-[10px] font-bold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded">+15.4%</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">G.C. Savings</p>
+</div>
+<p class="text-xl font-extrabold text-slate-900 dark:text-slate-100">$12,300</p>
+</div>
+</div>
+<section class="bg-white dark:bg-navy-accent/20 border border-slate-200 dark:border-primary/5 rounded-2xl p-5 overflow-hidden shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-lg font-bold">Sales Trends</h2>
+<p class="text-xs text-slate-500">Last 30 days performance</p>
+</div>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-primary mt-1.5"></div>
+<span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Revenue</span>
+</div>
+</div>
+<div class="relative h-[200px] w-full">
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 472 150" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V150H0V109Z" fill="url(#chartGradient)"></path>
+<path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#f4d125" stroke-linecap="round" stroke-width="3"></path>
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#f4d125" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#f4d125" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="flex justify-between mt-4 px-1">
+<span class="text-[10px] font-bold text-slate-400">MAY 01</span>
+<span class="text-[10px] font-bold text-slate-400">MAY 15</span>
+<span class="text-[10px] font-bold text-slate-400">MAY 30</span>
+</div>
+</section>
+<section class="bg-white dark:bg-navy-accent/20 border border-slate-200 dark:border-primary/5 rounded-2xl p-5 shadow-sm">
+<h2 class="text-lg font-bold mb-6">Top Selling Categories</h2>
+<div class="space-y-5">
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold">
+<span>Electronics</span>
+<span class="text-primary">$42,300</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-primary/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold">
+<span>Accessories</span>
+<span class="text-primary">$28,150</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-primary/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold">
+<span>Home &amp; Living</span>
+<span class="text-primary">$18,900</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-primary/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-semibold">
+<span>Apparel</span>
+<span class="text-primary">$12,400</span>
+</div>
+<div class="w-full h-2 bg-slate-100 dark:bg-primary/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 30%"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-primary/10 px-6 py-2 pb-6 flex items-center justify-between z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-bold">Dash</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">bar_chart_4_bars</span>
+<span class="text-[10px] font-bold">Sales</span>
+</a>
+<div class="relative -top-6">
+<div class="bg-primary rounded-full p-4 shadow-lg shadow-primary/20 border-4 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-background-dark text-3xl font-bold">add</span>
+</div>
+</div>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-bold">Stock</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Config</span>
+</a>
+</nav>
+</body></html>

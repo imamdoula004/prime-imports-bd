@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prime Imports BD - Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#EBB960", // Gold from logo
+              secondary: "#0B2B5B", // Navy from logo
+              "background-light": "#F8FAFC",
+              "background-dark": "#07162E", // Deeper navy for dark mode
+              "card-dark": "#0B2B5B",
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "12px",
+            },
+          },
+        },
+      };
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-effect {
+            backdrop-filter: blur(8px);
+            background: rgba(11, 43, 91, 0.8);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen pb-20">
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 text-slate-600 dark:text-slate-300">
+<span class="material-icons-round">menu</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold tracking-tight text-secondary dark:text-primary">PRIME IMPORTS BD</h1>
+<p class="text-[10px] font-medium text-slate-500 uppercase tracking-widest">Admin Terminal</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="relative p-2 text-slate-600 dark:text-slate-300">
+<span class="material-icons-round">notifications_none</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<img alt="Admin Profile" class="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKAE41Y9GE6wDme-NBHVkI5O9SqDPXt75NL_ktg2alT_IOuhScbtkqZEyWKrLRy7A0T2fUMaHAHFwa9eSTM6S6w5TV8XFd5Gp2ZgCnFq85LakKHtkm3ijsEtEIk7klK-A0wWek8N7aAVb-GFRSglM5PPprY1UJZNqgU-REJpZWqVINFstnCnG-WYzHvzM7GsUdVCOW7kyb0FYuEGTwZncWmsGPmRPlhtTI4ptiHofeaLEGgotyOUnP0RuODchTuqdaozAigGhyaZU"/>
+</div>
+</header>
+<main class="p-4 space-y-6">
+<div class="flex items-center justify-between bg-white dark:bg-card-dark p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<button class="flex-1 py-2 text-xs font-semibold rounded-lg bg-primary text-secondary">Daily</button>
+<button class="flex-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400">Weekly</button>
+<button class="flex-1 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400">Monthly</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2 bg-secondary dark:bg-card-dark p-5 rounded-2xl relative overflow-hidden shadow-xl border border-white/10">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-icons-round text-primary text-sm">payments</span>
+<p class="text-xs font-medium text-slate-300">Total Revenue</p>
+</div>
+<div class="flex items-baseline gap-2">
+<h2 class="text-3xl font-bold text-white">$42,850.00</h2>
+<span class="text-[10px] font-bold text-emerald-400 flex items-center">
+<span class="material-icons-round text-xs">trending_up</span> 12%
+                        </span>
+</div>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-10">
+<img alt="Logo Watermark" class="w-40 h-40" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq5jy0h1mj1EIySBg2HN93A3VvT8csw_zJrrYkkOtwNGPPcx11ZYB8I9gFlDW506ELo-uitLASJ9tl4CCVntBwp3_5mZh6oKOmBY3XtPotqMiwiDZugS1SQhQFcZtdkUiiao2r-pZONMDN65M98asrWMdPr7Ur_ifjQaPQlGWYBe-hFqc1_fRQUCq2DJU3NCBtLeLHLGqBA0FTCfvwVuAS1ZvWCNT8pSpR5KqJkj4ijVPr0QtAWz5iEblgu4ZayXYcpNwjahZZeNc"/>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
+<span class="material-icons-round text-blue-600 dark:text-blue-400 text-lg">shopping_bag</span>
+</div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400">Total Orders</p>
+<h3 class="text-xl font-bold mt-1">1,284</h3>
+<p class="text-[10px] text-emerald-500 font-bold mt-1">+8.4% vs last period</p>
+</div>
+<div class="bg-white dark:bg-card-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="w-8 h-8 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-3">
+<span class="material-icons-round text-orange-600 dark:text-orange-400 text-lg">insights</span>
+</div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400">Conv. Rate</p>
+<h3 class="text-xl font-bold mt-1">3.24%</h3>
+<p class="text-[10px] text-slate-400 font-medium mt-1">Steady avg</p>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold text-sm">Sales Overview</h3>
+<span class="material-icons-round text-slate-400 text-lg">more_horiz</span>
+</div>
+<div class="h-32 flex items-end justify-between gap-2 px-1">
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[40%]"></div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[60%]"></div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[45%]"></div>
+<div class="w-full bg-primary rounded-t-md h-[90%]"></div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[55%]"></div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[75%]"></div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md h-[65%]"></div>
+</div>
+<div class="flex justify-between mt-3 text-[10px] font-medium text-slate-400 uppercase tracking-tighter">
+<span>Mon</span><span>Tue</span><span>Wed</span><span class="text-primary">Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-sm">Inventory Summary</h3>
+<button class="text-xs font-semibold text-primary">Manage</button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-4 bg-red-50 dark:bg-red-900/10 p-4 rounded-xl border border-red-100 dark:border-red-900/20">
+<div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
+<span class="material-icons-round text-red-600">priority_high</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-red-800 dark:text-red-400">Low Stock Alert</p>
+<p class="text-[11px] text-red-700/70 dark:text-red-400/70">12 items are below threshold level</p>
+</div>
+<span class="material-icons-round text-red-400 text-sm">chevron_right</span>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
+<span class="material-icons-round text-slate-500">inventory_2</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold">Active Listings</p>
+<p class="text-[11px] text-slate-500">2,482 SKUs live in store</p>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-emerald-500">+14</p>
+<p class="text-[9px] text-slate-400 uppercase font-medium">New today</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-sm">Recent Transactions</h3>
+<button class="text-xs font-semibold text-slate-500">View All</button>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-2xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-800">
+<div class="p-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<img alt="Customer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCij5Gl9m4GVhGgys3x0gheh9kLaa4e8j-t01rh8NqDEj5JoaSU97V9wmgEz5aJONgvXyB3D-A7xcgrZRRXJnsPCEWmBkzNq_4Vqy9rcllsl5v5vQeUPjDAdcLLz_rhZ4mBtIkUQG2Ur4Z3w-cwwhnEC9oMCzt4TpASWCXypWQnTZ00_-m9ecMoWPVj-m_73EII-8qdZzzeWOS3uSL2B0T_WoEnXUy3mPfxr1wB44SETNdw2gv7y-tmPOym0eoEhjZ94gXh4fz0FSo"/>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold">Johnathan Wick</p>
+<p class="text-[10px] text-slate-500">Order #PI-84920 • 2 mins ago</p>
+</div>
+<p class="text-xs font-bold">$124.50</p>
+</div>
+<div class="p-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+<img alt="Customer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi6wcFYclaALi5Fuonni77LOsL0XwgZz5O4HB-jM_Jj8PaoyAzobkdtq7hWQafhmiLUj0tXC5mSME_aqPh2togyItHB7ZZlfXhrSNOL-zeiJU254q7ZJ7OVLEx8Jv66LXSfqqu-ccs-lJewdp-k9kAPTeqR1U0G6iZ-cyzuDclei8PiDDPJeAl-aVzPth0bvdFOc_N240jKBlX1a3ygOLaXu47d7wvliZMkviCpHILFMhpwaXseLcq3AW5fxbM2_ksu-nuxoxxRJI"/>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold">Sarah Jenkins</p>
+<p class="text-[10px] text-slate-500">Order #PI-84919 • 15 mins ago</p>
+</div>
+<p class="text-xs font-bold">$48.00</p>
+</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 inset-x-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex items-center justify-between z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-icons-round text-2xl">dashboard</span>
+<span class="text-[10px] font-bold">Dashboard</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-icons-round text-2xl">receipt_long</span>
+<span class="text-[10px] font-medium">Orders</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-icons-round text-2xl">category</span>
+<span class="text-[10px] font-medium">Catalog</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-icons-round text-2xl">group</span>
+<span class="text-[10px] font-medium">Customers</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
+<span class="material-icons-round text-2xl">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</nav>
+<button class="fixed bottom-24 right-4 w-12 h-12 bg-primary rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-secondary z-40 active:scale-95 transition-transform">
+<span class="material-icons-round">add</span>
+</button>
+
+</body></html>

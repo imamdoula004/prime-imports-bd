@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Customer Support &amp; Inquiries</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between px-4 h-16">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Support Center</h1>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">help</span>
+</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-md mx-auto px-4 py-6 pb-32">
+<!-- Introduction -->
+<div class="mb-8">
+<h2 class="text-2xl font-bold leading-tight">Submit Inquiry</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Our team typically responds within 2 hours for premium imports.</p>
+</div>
+<!-- Inquiry Form -->
+<section class="space-y-6">
+<!-- Subject Dropdown -->
+<div class="space-y-2">
+<label class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Inquiry Type</label>
+<div class="relative">
+<select class="w-full h-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-base">
+<option disabled="" selected="" value="">Select inquiry type</option>
+<option value="order">Order Status &amp; Tracking</option>
+<option value="product">Product Availability</option>
+<option value="import">Special Import Request</option>
+<option value="billing">Billing &amp; Refunds</option>
+<option value="other">General Inquiry</option>
+</select>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Contact Number -->
+<div class="space-y-2">
+<label class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Contact Number</label>
+<div class="relative">
+<input class="w-full h-14 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-base placeholder:text-slate-400" placeholder="+880 1XXX-XXXXXX" type="tel"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-primary">
+<span class="material-symbols-outlined text-sm">call</span>
+</div>
+</div>
+</div>
+<!-- Message Textarea -->
+<div class="space-y-2">
+<label class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 ml-1">Message Detail</label>
+<textarea class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-base placeholder:text-slate-400 resize-none" placeholder="Describe your issue or request in detail..." rows="5"></textarea>
+</div>
+<!-- Attachment (New Component for Premium feel) -->
+<button class="w-full border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl py-4 flex flex-col items-center justify-center gap-2 text-slate-500 hover:border-primary/50 hover:bg-primary/5 transition-all">
+<span class="material-symbols-outlined">attach_file</span>
+<span class="text-sm font-medium">Attach photos (Optional)</span>
+</button>
+<!-- Submit Button -->
+<button class="w-full bg-primary text-white h-14 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform">
+                Submit Ticket
+            </button>
+</section>
+<!-- Active Tickets Section -->
+<section class="mt-12">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold">My Active Tickets</h3>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">2 Active</span>
+</div>
+<div class="space-y-4">
+<!-- Ticket Card 1 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-start justify-between shadow-sm">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-slate-400">#PI-8902</span>
+<span class="px-2 py-0.5 bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded-full text-[10px] font-bold uppercase tracking-wider">In Progress</span>
+</div>
+<h4 class="font-semibold text-slate-900 dark:text-slate-100">Australian Wagyu Delivery</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-1">Inquiring about the next batch arrival date...</p>
+<p class="text-[10px] text-slate-400 mt-2 italic">Last updated: 15 mins ago</p>
+</div>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+<!-- Ticket Card 2 -->
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-start justify-between shadow-sm opacity-80">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-slate-400">#PI-8841</span>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-[10px] font-bold uppercase tracking-wider">Replied</span>
+</div>
+<h4 class="font-semibold text-slate-900 dark:text-slate-100">Order Cancellation #122</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-1">Need to cancel my order for French Truffles.</p>
+<p class="text-[10px] text-slate-400 mt-2 italic">Last updated: 2 hours ago</p>
+</div>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex justify-between items-center z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-medium leading-none">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">shopping_basket</span>
+<span class="text-[10px] font-medium leading-none">Shop</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px] fill-current">support_agent</span>
+<span class="text-[10px] font-bold leading-none">Support</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="text-[10px] font-medium leading-none">Profile</span>
+</a>
+</nav>
+</body></html>

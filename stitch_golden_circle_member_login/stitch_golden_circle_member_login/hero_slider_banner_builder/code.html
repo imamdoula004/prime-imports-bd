@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hero Slider &amp; Banner Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f4d125",
+                        "background-light": "#f8f8f5",
+                        "background-dark": "#221f10",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4a4528;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex flex-col h-screen">
+<!-- TopAppBar -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 border-b border-primary/10 justify-between sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h1 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight">Banner Builder</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs">Prime Imports BD Admin</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary text-background-dark gap-2 text-sm font-bold transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm">save</span>
+                    Publish
+                </button>
+</div>
+</header>
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+<!-- Left Panel: Configuration -->
+<section class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-8">
+<div>
+<h2 class="text-xl font-bold text-primary mb-1">Configuration Panel</h2>
+<p class="text-slate-400 text-sm">Design your hero slider and promotional content.</p>
+</div>
+<!-- Image Upload Section -->
+<div class="space-y-4">
+<p class="text-sm font-semibold uppercase tracking-wider text-slate-500">Visuals</p>
+<div class="relative group cursor-pointer border-2 border-dashed border-primary/20 rounded-xl overflow-hidden aspect-video flex flex-col items-center justify-center bg-primary/5 hover:bg-primary/10 transition-colors" data-alt="Luxury watch display with gold accents background" style='background-image: linear-gradient(rgba(34, 31, 16, 0.6), rgba(34, 31, 16, 0.6)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuALqO5GziEQ6-33Fv9eXAZfGWGFpqv6Ta-tFOAlQQfJx4vQS8ylIL5yq_0aVDhO8kZN_qkx50UwXbZMR4pXn7UlIImreAHU3IrEOH3_6K2QHPMFBy8uE2cUlHHk52JQJsqHndqQLd0u8dr4aJE6Q76nZ4NBtIc7FfSXZL5N-qman50Dd2mFYopCCdU3q-8beE4vmkSq7x4CuPmTDjRxf9TQYx_QwkFEoi9gj624bup4N6gGgZqGPVsvl9SNuRDH0JLvkOn3tlDMWrU"); background-size: cover; background-position: center;'>
+<span class="material-symbols-outlined text-4xl text-primary mb-2">cloud_upload</span>
+<p class="text-white text-sm font-bold">Replace Banner Image</p>
+<p class="text-white/60 text-xs mt-1">Recommended: 1920x1080px</p>
+</div>
+</div>
+<!-- Text Configuration -->
+<div class="grid grid-cols-1 gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-sm font-medium">Header Text</label>
+<input class="w-full rounded-xl bg-background-dark/50 border border-primary/20 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary h-12 px-4 text-base transition-all" placeholder="e.g. Golden Circle Deals" type="text" value="Golden Circle Deals"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-sm font-medium">Subtext</label>
+<textarea class="w-full rounded-xl bg-background-dark/50 border border-primary/20 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary h-24 p-4 text-base resize-none transition-all" placeholder="Add promotional details...">Exclusive luxury imports at unbeatable prices. Limited time offer.</textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-sm font-medium">Button Link</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary/60">link</span>
+<input class="w-full rounded-xl bg-background-dark/50 border border-primary/20 text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary h-12 pl-12 pr-4 text-base transition-all" placeholder="https://primeimportsbd.com/deals" type="text" value="https://primeimportsbd.com/collection/golden-circle"/>
+</div>
+</div>
+</div>
+<!-- Settings & Scheduling -->
+<div class="bg-primary/5 rounded-xl p-6 border border-primary/10 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">play_circle</span>
+<div>
+<p class="font-bold text-sm">Auto-play Slider</p>
+<p class="text-xs text-slate-400">Slides change every 5 seconds</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-xs font-medium uppercase">Start Date</label>
+<input class="w-full rounded-lg bg-background-dark border border-primary/20 text-slate-100 h-10 px-3 text-sm focus:border-primary" type="date"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-slate-300 text-xs font-medium uppercase">End Date</label>
+<input class="w-full rounded-lg bg-background-dark border border-primary/20 text-slate-100 h-10 px-3 text-sm focus:border-primary" type="date"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Live Mobile Preview -->
+<section class="w-full md:w-[450px] bg-slate-900/50 flex flex-col items-center justify-center p-8 border-l border-primary/10">
+<div class="mb-6 text-center">
+<span class="bg-primary/20 text-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Live Mobile Preview</span>
+</div>
+<!-- iPhone Frame Mockup -->
+<div class="relative w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-slate-800 shadow-2xl overflow-hidden ring-4 ring-slate-800/50">
+<!-- Notch -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl z-20"></div>
+<!-- App Interface -->
+<div class="relative h-full w-full bg-background-dark overflow-y-auto">
+<!-- App Header -->
+<div class="p-4 flex items-center justify-between pt-8">
+<span class="material-symbols-outlined text-primary">menu</span>
+<div class="h-6 w-24 bg-primary/20 rounded flex items-center justify-center">
+<span class="text-[10px] font-black text-primary italic">PRIME IMPORTS</span>
+</div>
+<span class="material-symbols-outlined text-slate-100">shopping_bag</span>
+</div>
+<!-- Live Banner Preview Component -->
+<div class="mt-4 px-4">
+<div class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden group shadow-xl">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="Premium lifestyle banner showing luxury items" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq6hk9WKxJfwM4WKwPLDFPscopSCBanB-KZtryqMkvhFl1v-zjAJQVfDZyC5-V76VvC1S6ykTrp5XTDXy37gCxt9UOXp0zB6V88-TdIWC9aObSF2hbwHVTN--TJiwrHcDQt9RTJylW-S420LFhFi8z6K3FYj0YWxK5PLvAYbZcR-ey640UOcU0hf9GvTAANQ5nZbaOSYPEsXXwO7Q1YQ6OKoV-i1OGUOswFJ_RNH2icv-EvbJiYH5GUP0Tp4wao0p-xFrVZNptidA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full space-y-2">
+<h3 class="text-white text-3xl font-extrabold leading-tight">Golden Circle Deals</h3>
+<p class="text-white/80 text-sm font-medium line-clamp-2">Exclusive luxury imports at unbeatable prices. Limited time offer.</p>
+<button class="mt-4 w-full bg-primary text-background-dark font-bold py-3 rounded-xl shadow-lg flex items-center justify-center gap-2">
+                                        Shop Now
+                                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Slider Dots -->
+<div class="absolute bottom-4 right-6 flex gap-1.5">
+<div class="w-6 h-1 bg-primary rounded-full"></div>
+<div class="w-1.5 h-1 bg-white/30 rounded-full"></div>
+<div class="w-1.5 h-1 bg-white/30 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Mock Content -->
+<div class="p-4 mt-4 space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold text-slate-100">Flash Sales</span>
+<span class="text-xs text-primary">View All</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-primary/5 h-32 rounded-xl border border-primary/10"></div>
+<div class="bg-primary/5 h-32 rounded-xl border border-primary/10"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex gap-3">
+<div class="flex flex-col items-center gap-1 opacity-50">
+<span class="material-symbols-outlined text-slate-400">smartphone</span>
+<span class="text-[10px] text-slate-400">iOS</span>
+</div>
+<div class="flex flex-col items-center gap-1 opacity-100 scale-110">
+<span class="material-symbols-outlined text-primary">desktop_windows</span>
+<span class="text-[10px] text-primary">Desktop</span>
+</div>
+<div class="flex flex-col items-center gap-1 opacity-50">
+<span class="material-symbols-outlined text-slate-400">tablet_mac</span>
+<span class="text-[10px] text-slate-400">Tablet</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

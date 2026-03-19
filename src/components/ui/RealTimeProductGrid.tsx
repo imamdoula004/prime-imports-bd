@@ -158,13 +158,13 @@ export function RealTimeProductGrid({
     
     if (displayedProducts.length === 0) {
         return (
-            <div className="py-12 flex flex-col items-center gap-10 w-full">
+            <div className="py-8 flex flex-col items-center gap-6 w-full">
                 <div className="flex flex-col items-center justify-center text-center px-4">
                     <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-3">
                         <PackageX size={24} />
                     </div>
-                    <h3 className="text-sm font-black text-brand-blue-900 uppercase tracking-tight">No Matches Found</h3>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">
+                    <h3 className="text-[16px] font-semibold text-brand-blue-900 uppercase tracking-tight">No Matches Found</h3>
+                    <p className="text-[12px] text-slate-400 font-medium uppercase tracking-widest mt-1">
                         Try adjusting your filters or search terms.
                     </p>
                 </div>
@@ -240,13 +240,13 @@ export function RealTimeProductGrid({
 
 
             {visibleCount < sortedProducts.length && layout === 'grid' && (
-                <div className="py-12 flex flex-col items-center gap-6 w-full border-t border-slate-50 mt-8">
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">
+                <div className="py-8 flex flex-col items-center gap-4 w-full border-t border-slate-100 mt-6">
+                    <p className="text-[12px] text-slate-400 font-semibold uppercase tracking-widest">
                         Showing {visibleCount} of {sortedProducts.length} Products
                     </p>
                     <button
                         onClick={() => setVisibleCount(prev => prev + (pageSize || 24))}
-                        className="h-16 px-12 bg-white border-2 border-brand-blue-900 text-brand-blue-900 hover:bg-brand-blue-900 hover:text-white font-black rounded-2xl transition-all shadow-xl shadow-brand-blue-900/5 active:scale-95 flex items-center gap-4 text-xs uppercase tracking-[0.2em] group"
+                        className="h-14 px-10 bg-white border-2 border-brand-blue-900 text-brand-blue-900 hover:bg-brand-blue-900 hover:text-white font-bold rounded-2xl transition-all shadow-xl shadow-brand-blue-900/5 active:scale-95 flex items-center gap-3 text-[14px] uppercase tracking-wider group"
                     >
                         Load More Product
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />

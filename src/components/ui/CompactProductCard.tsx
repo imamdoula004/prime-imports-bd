@@ -96,23 +96,23 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
             </Link>
 
             {/* Info Section */}
-            <div className="p-2 flex flex-col flex-1">
-                <Link href={`/products/${product.slug || product.id}`} className="block mb-1">
-                    <h3 className="text-brand-blue-950 font-bold text-[10px] md:text-xs leading-tight line-clamp-2 uppercase tracking-tighter h-[2.5em]">
+            <div className="p-4 flex flex-col flex-grow gap-2">
+                <Link href={`/products/${product.slug || product.id}`} className="block">
+                    <h3 className="text-brand-blue-950 font-semibold text-[14px] leading-tight line-clamp-2 uppercase tracking-tighter h-[2.8em]">
                         {product.name}
                     </h3>
                 </Link>
 
                 <div className="mt-auto">
                     {/* Pricing with Golden Circle */}
-                    <div className="flex flex-col gap-1.5 mb-2">
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-sm md:text-base font-black text-brand-blue-950">
-                                ৳{price}
+                    <div className="flex flex-col gap-1 mb-2">
+                        <div className="flex items-baseline gap-1.5 flex-wrap">
+                            <span className="text-[18px] font-bold text-brand-blue-950">
+                                ৳{price.toLocaleString()}
                             </span>
                             {originalPrice > price && (
-                                <span className="text-[10px] text-red-500 line-through font-bold">
-                                    ৳{originalPrice}
+                                <span className="text-[11px] text-red-500 line-through font-semibold">
+                                    ৳{originalPrice.toLocaleString()}
                                 </span>
                             )}
                         </div>
@@ -133,12 +133,12 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
                         )}
                     </div>
 
-                    {stock > 0 ? (
+                     {stock > 0 ? (
                         <button
                             onClick={handleAdd}
-                            className="w-full flex items-center justify-center gap-1.5 h-7 md:h-8 bg-brand-blue-600 text-white rounded-md text-[9px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all duration-150 active:scale-[0.98] shadow-sm"
+                            className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-brand-blue-900 text-white rounded-md text-[13px] font-semibold uppercase tracking-wider hover:bg-black transition-all duration-120 active:scale-[0.97] shadow-sm"
                         >
-                            <ShoppingCart size={10} /> Add
+                            <ShoppingCart size={14} /> Add
                         </button>
                     ) : (
                         <button
@@ -147,9 +147,9 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
                                 e.stopPropagation();
                                 openModal(product);
                             }}
-                            className="w-full flex items-center justify-center gap-1.5 h-7 md:h-8 bg-slate-100 text-slate-500 border border-slate-200 rounded-md text-[9px] font-black uppercase tracking-widest hover:bg-slate-200 hover:text-slate-700 transition-all active:scale-95 shadow-sm group"
+                            className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-slate-100 text-slate-500 border border-slate-200 rounded-md text-[13px] font-semibold uppercase tracking-wider hover:bg-slate-200 hover:text-slate-700 transition-all duration-120 active:scale-[0.97] shadow-sm group"
                         >
-                            <Bell size={10} className="group-hover:rotate-12 transition-transform" /> Notify Me
+                            <Bell size={14} className="group-hover:rotate-12 transition-transform" /> Notify Me
                         </button>
                     )}
                 </div>

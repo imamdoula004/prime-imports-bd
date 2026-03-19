@@ -81,7 +81,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     const isWishlisted = isInWishlist(product.id || '');
 
     return (
-        <div className="group bg-white flex flex-col w-full rounded-xl border border-slate-100 transition-all duration-300 overflow-hidden relative hover:shadow-lg hover:border-brand-blue-600 active:scale-[0.98] h-full">
+        <div className="group bg-white flex flex-col w-full rounded-[12px] border border-slate-100/50 transition-all duration-150 ease-out overflow-hidden relative shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:border-brand-blue-600 hover:scale-[1.02] active:scale-[0.98] h-full will-change-transform">
             {/* Wishlist Button */}
             <button
                 onClick={(e) => {
@@ -101,7 +101,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     alt={product.name || product.title || 'Premium Import'}
                     fill
                     sizes="(max-width: 768px) 50vw, 20vw"
-                    className="object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+                    className="object-contain p-3 transition-transform duration-500 group-hover:scale-105 rounded-[8px]"
                     priority={priority}
                 />
 
@@ -189,7 +189,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                         ) : (
                             <button
                                 onClick={handleAdd}
-                                className="w-full flex items-center justify-center gap-2 h-8 md:h-10 bg-brand-blue-600 text-white rounded-lg text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all active:scale-[0.97] shadow-lg shadow-brand-blue-900/10 group"
+                                className="w-full flex items-center justify-center gap-2 h-8 md:h-10 bg-brand-blue-600 text-white rounded-lg text-[10px] md:text-[11px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all duration-150 active:scale-[0.98] shadow-lg shadow-brand-blue-900/10 group"
                             >
                                 <ShoppingCart size={14} className="group-hover:translate-x-0.5 transition-transform" /> Add to Cart
                             </button>

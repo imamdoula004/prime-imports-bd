@@ -39,7 +39,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
     const isWishlisted = isInWishlist(product.id || '');
 
     return (
-        <div className="group bg-white flex flex-col w-full rounded-lg border border-slate-100 transition-all duration-300 overflow-hidden relative hover:shadow-md hover:border-brand-blue-600 active:scale-[0.98] h-full">
+        <div className="group bg-white flex flex-col w-full rounded-[12px] border border-slate-100/50 transition-all duration-150 ease-out overflow-hidden relative shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] hover:border-brand-blue-600 hover:scale-[1.02] active:scale-[0.98] h-full will-change-transform">
             {/* Wishlist Button */}
             <button
                 onClick={(e) => {
@@ -59,7 +59,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
                     alt={product.name || 'Product'}
                     fill
                     sizes="(max-width: 768px) 33vw, 12vw"
-                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-110"
+                    className="object-contain p-2 transition-transform duration-500 group-hover:scale-110 rounded-[8px]"
                 />
 
                 {/* Business Logo Watermark - Solid and Accurate */}
@@ -136,7 +136,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
                     {stock > 0 ? (
                         <button
                             onClick={handleAdd}
-                            className="w-full flex items-center justify-center gap-1.5 h-7 md:h-8 bg-brand-blue-600 text-white rounded-md text-[9px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all active:scale-95 shadow-sm"
+                            className="w-full flex items-center justify-center gap-1.5 h-7 md:h-8 bg-brand-blue-600 text-white rounded-md text-[9px] font-black uppercase tracking-widest hover:bg-brand-blue-900 transition-all duration-150 active:scale-[0.98] shadow-sm"
                         >
                             <ShoppingCart size={10} /> Add
                         </button>

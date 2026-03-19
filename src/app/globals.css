@@ -54,11 +54,11 @@ body {
 
   /* Professional Navy Buttons as requested */
   .premium-button {
-    @apply bg-brand-blue-600 text-white px-6 py-3 rounded-md font-bold uppercase tracking-widest text-[11px] transition-all duration-200 hover:bg-brand-blue-700 hover:shadow-xl active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed border-none flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-900/10;
+    @apply bg-brand-blue-600 text-white px-6 py-3 rounded-md font-bold uppercase tracking-widest text-[11px] transition-all duration-150 ease-out hover:bg-brand-blue-700 hover:shadow-xl active:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed border-none flex items-center justify-center gap-2 shadow-lg shadow-brand-blue-900/10;
   }
 
   .glass-panel {
-    @apply bg-white/90 backdrop-blur-md border border-slate-100 shadow-sm;
+    @apply bg-white/90 backdrop-blur-md border border-slate-100 shadow-sm transition-all duration-150 active:scale-[0.98];
   }
 
   .badge-instock {

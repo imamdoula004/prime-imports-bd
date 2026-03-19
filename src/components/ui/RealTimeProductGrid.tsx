@@ -199,7 +199,7 @@ export function RealTimeProductGrid({
 
                 <div
                     ref={scrollContainerRef}
-                    className="flex carousel-container no-scrollbar pb-8 overflow-x-auto px-4 md:px-0 gap-3 md:gap-6 py-3"
+                    className="flex carousel-container no-scrollbar pb-8 overflow-x-auto px-4 md:px-0 gap-3 md:gap-4 py-3"
                 >
                     {sortedProducts.slice(0, 40).map((product) => (
                         <div key={product.id || product.slug} className="carousel-item-standard py-1 px-1">

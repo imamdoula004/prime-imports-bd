@@ -39,7 +39,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
     const isWishlisted = isInWishlist(product.id || '');
 
     return (
-        <div className="group bg-white flex flex-col w-full rounded-[12px] border border-black/[0.05] transition-all duration-150 ease-out overflow-hidden relative shadow-[0_8px_20px_rgba(0,0,0,0.12),0_3px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.16),0_6px_12px_rgba(0,0,0,0.10)] hover:border-brand-blue-600/20 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] h-full will-change-transform">
+        <div className="group bg-white flex flex-col w-full rounded-[12px] border border-black/[0.08] transition-all duration-120 ease-out overflow-hidden relative shadow-[0_10px_24px_rgba(0,0,0,0.18),0_4px_10px_rgba(0,0,0,0.12)] hover:shadow-[0_14px_32px_rgba(0,0,0,0.22),0_6px_14px_rgba(0,0,0,0.14)] hover:border-brand-blue-600/20 hover:-translate-y-0.75 hover:scale-[1.02] active:scale-[0.97] h-full will-change-transform">
             {/* Wishlist Button */}
             <button
                 onClick={(e) => {

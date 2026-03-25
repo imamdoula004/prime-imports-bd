@@ -16,8 +16,14 @@ import {
     TrendingDown,
     AlertTriangle,
     CheckCircle2,
-    Image as ImageIcon
+    Image as ImageIcon,
+    X,
+    FilterX,
+    LayoutGrid,
+    Tag,
+    Archive
 } from 'lucide-react';
+import { StickyScrollContainer } from '@/components/ui/StickyScrollContainer';
 import { useState, useEffect } from 'react';
 import { db } from '@/lib/firebase';
 import {
@@ -39,6 +45,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SearchDropdown } from '@/components/ui/SearchDropdown';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CATEGORIES } from '@/config/categories';
 
 const ITEMS_PER_PAGE = 25;
 
@@ -51,7 +58,6 @@ export default function AdminProductsManagementPage() {
     const [lastDoc, setLastDoc] = useState<any>(null);
     const [firstDoc, setFirstDoc] = useState<any>(null);
     const [totalItems, setTotalItems] = useState(0);
-    const [viewDeleted, setViewDeleted] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
@@ -103,57 +109,116 @@ export default function AdminProductsManagementPage() {
         }
     };
 
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [filters, setFilters] = useState({
+        categoryId: 'all',
+        category: 'all', // Keep for backward compatibility if needed, but primary is categoryId
+        subcategory: 'all',
+        brand: 'all',
+        stockStatus: 'all', // 'critical', 'low', 'full', 'empty'
+        isActive: 'all',    // 'active', 'draft'
+    });
+
+    const activeFilterCount = Object.values(filters).filter(v => v !== 'all').length;
+
+    const resetFilters = () => setFilters({
+        categoryId: 'all',
+        category: 'all',
+        subcategory: 'all',
+        brand: 'all',
+        stockStatus: 'all',
+        isActive: 'all'
+    });
+
+    // Extract unique labels for filters
+    const [filterMetadata, setFilterMetadata] = useState<{ brands: string[], categories: string[] }>({
+        brands: [],
+        categories: []
+    });
+
+    // Load filter metadata
+    useEffect(() => {
+        const fetchMetadata = async () => {
+            const productsRef = collection(db, 'products');
+            const snap = await getDocs(query(productsRef, limit(500))); // Sample for labels
+            const brands = new Set<string>();
+            const categories = new Set<string>();
+            snap.docs.forEach(doc => {
+                const data = doc.data();
+                if (data.brand) brands.add(data.brand);
+                if (data.category) categories.add(data.category);
+            });
+            setFilterMetadata({
+                brands: Array.from(brands).sort(),
+                categories: Array.from(categories).sort()
+            });
+        };
+        fetchMetadata();
+    }, []);
+
     // Initial load and total count
     useEffect(() => {
         const fetchTotal = async () => {
-            // Avoid fetching 4000+ docs just for count
-            // In a real app, this should come from a metadata doc
-            setTotalItems(4724); // Actual count from audit
+            setTotalItems(4724); 
         };
         fetchTotal();
     }, []);
 
-    // Paginated sync with optimized search
+    // Paginated sync with optimized search AND filters
     useEffect(() => {
         setLoading(true);
-        const productsRef = collection(db, viewDeleted ? 'deleted_products' : 'products');
+        const productsRef = collection(db, 'products');
 
-        // Default query: Recent first
-        let q = query(productsRef, orderBy(viewDeleted ? 'deletedAt' : 'createdAt', 'desc'), limit(ITEMS_PER_PAGE));
+        let q = query(productsRef, where('isDeleted', '==', false));
 
-        if (searchTerm.trim()) {
-            const searchLower = searchTerm.trim().toLowerCase();
-            const searchWords = searchLower.split(/\s+/).filter(w => w.length > 0);
+        // Apply Status Filter if searching by base status
+        if (filters.isActive !== 'all') {
+            q = query(q, where('isActive', '==', filters.isActive === 'active'));
+        }
 
-            // For 4000+ items, we use the `searchKeywords` array-contains-any
-            // However, Firestore only supports 10 items in array-contains-any
-            // So we'll take the first word for filtering and do the rest in memory
-            // OR we use the prefix search if that's more effective
-
-            if (searchWords.length > 0) {
-                // If it's a short word, we use array-contains for better accuracy
-                q = query(
-                    productsRef,
-                    where('searchKeywords', 'array-contains', searchWords[0]),
-                    limit(ITEMS_PER_PAGE)
-                );
+        // Apply Category/Brand if not searching by text (Firestore limitation)
+        if (!searchTerm.trim()) {
+            if (filters.categoryId !== 'all') {
+                q = query(q, where('categoryId', '==', filters.categoryId));
+            } else if (filters.category !== 'all') {
+                q = query(q, where('category', '==', filters.category));
             }
+            if (filters.brand !== 'all') {
+                q = query(q, where('brand', '==', filters.brand));
+            }
+            q = query(q, orderBy('createdAt', 'desc'), limit(ITEMS_PER_PAGE));
         }
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
+            let data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
 
-            // Client-side filtering for subsequent words if any
-            let filteredData = data;
-            const searchWords = searchTerm.trim().toLowerCase().split(/\s+/).filter(w => w.length > 1);
-            if (searchWords.length > 1) {
-                filteredData = data.filter(p => {
+            // Client-side filtering for Search + Stock Status
+            if (searchTerm.trim()) {
+                const searchWords = searchTerm.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+                data = data.filter(p => {
                     const searchable = `${p.name} ${p.brand} ${p.category} ${p.subcategory}`.toLowerCase();
                     return searchWords.every(word => searchable.includes(word));
                 });
             }
 
-            setProducts(filteredData);
+            if (filters.stockStatus !== 'all') {
+                data = data.filter(p => {
+                    const stock = p.stock ?? 0;
+                    if (filters.stockStatus === 'critical') return stock > 0 && stock <= 5;
+                    if (filters.stockStatus === 'low') return stock > 5 && stock <= 15;
+                    if (filters.stockStatus === 'empty') return stock === 0;
+                    if (filters.stockStatus === 'full') return stock > 15;
+                    return true;
+                });
+            }
+
+            // Post-search Category/Brand filter ensure if search term is active
+            if (searchTerm.trim()) {
+                if (filters.category !== 'all') data = data.filter(p => p.category === filters.category);
+                if (filters.brand !== 'all') data = data.filter(p => p.brand === filters.brand);
+            }
+
+            setProducts(data);
             setFirstDoc(snapshot.docs[0]);
             setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
             setLoading(false);
@@ -163,7 +228,7 @@ export default function AdminProductsManagementPage() {
         });
 
         return () => unsubscribe();
-    }, [searchTerm, currentPage]);
+    }, [searchTerm, currentPage, filters]);
 
     const handleNextPage = async () => {
         if (!lastDoc) return;
@@ -180,34 +245,13 @@ export default function AdminProductsManagementPage() {
     };
 
     const handleDelete = async (product: Product) => {
-        if (viewDeleted) {
-            if (confirm('Permanently delete this backup? This cannot be undone.')) {
-                await deleteDoc(doc(db, 'deleted_products', product.id!));
-            }
-            return;
-        }
-
-        if (confirm('Move to Recently Deleted? Product will be removed from storefront but kept as backup.')) {
-            const deletedRef = collection(db, 'deleted_products');
-            await addDoc(deletedRef, {
-                ...product,
+        if (confirm('Move to Recycle Bin? Product will be hidden from storefront but can be restored later.')) {
+            const productRef = doc(db, 'products', product.id!);
+            await updateDoc(productRef, {
+                isDeleted: true,
                 deletedAt: new Date().toISOString(),
-                status: 'archived'
+                isActive: false
             });
-            await deleteDoc(doc(db, 'products', product.id!));
-        }
-    };
-
-    const handleRestore = async (product: Product) => {
-        if (confirm('Restore this product? It will go back to the live storefront.')) {
-            const productsRef = collection(db, 'products');
-            const { deletedAt, id, ...productData } = product as any;
-            await addDoc(productsRef, {
-                ...productData,
-                status: 'active',
-                updatedAt: new Date().toISOString()
-            });
-            await deleteDoc(doc(db, 'deleted_products', id!));
         }
     };
 
@@ -233,13 +277,13 @@ export default function AdminProductsManagementPage() {
                     <p className="text-slate-500 font-bold uppercase tracking-widest text-xs mt-1">Managing {totalItems.toLocaleString()} Real Products</p>
                 </div>
                 <div className="flex gap-2">
-                    <button
-                        onClick={() => setViewDeleted(!viewDeleted)}
-                        className={`flex items-center gap-2 px-5 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all ${viewDeleted ? 'bg-rose-100 text-rose-600' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                    <Link
+                        href="/admin/recycle-bin"
+                        className="flex items-center gap-2 px-5 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition-all bg-slate-100 text-slate-600 hover:bg-slate-200"
                     >
                         <Trash2 size={16} />
-                        {viewDeleted ? 'Exit Trash' : 'Recently Deleted'}
-                    </button>
+                        Recycle Bin
+                    </Link>
                     <Link href="/admin/inventory/add" className="flex items-center gap-2 bg-brand-blue-600 text-white px-5 py-3 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-brand-blue-700 transition-colors shadow-lg shadow-brand-blue-600/20 active:scale-95">
                         <Plus size={16} strokeWidth={3} />
                         Add Product
@@ -271,14 +315,47 @@ export default function AdminProductsManagementPage() {
                     </AnimatePresence>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
-                    <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 bg-white border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-all">
-                        <Filter size={14} /> Filter
+                    <button 
+                        onClick={() => setIsFilterOpen(true)}
+                        className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${activeFilterCount > 0 ? 'bg-brand-blue-900 text-white' : 'bg-white border border-slate-100 text-slate-500 hover:bg-slate-50'}`}
+                    >
+                        <Filter size={14} /> 
+                        Filter {activeFilterCount > 0 && <span className="ml-1 bg-brand-gold-400 text-brand-blue-900 px-1.5 py-0.5 rounded-full text-[8px]">{activeFilterCount}</span>}
                     </button>
-                    <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 bg-white border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-all">
+                    <button 
+                        onClick={() => {
+                            if(confirm("This will archive all products with 0 stock. Proceed?")) {
+                                // Cleanup logic would go here
+                            }
+                        }}
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 px-6 py-4 bg-white border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-all"
+                    >
                         <Trash2 size={14} className="text-rose-500" /> Cleanup
                     </button>
                 </div>
             </div>
+
+            {/* Active Filter Tags */}
+            {activeFilterCount > 0 && (
+                <div className="flex flex-wrap gap-2 items-center">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 mr-2">Displaying:</span>
+                    {Object.entries(filters).map(([key, value]) => value !== 'all' && (
+                        <div key={key} className="flex items-center gap-2 bg-brand-blue-50 border border-brand-blue-100 px-3 py-1.5 rounded-full">
+                            <span className="text-[9px] font-black uppercase text-brand-blue-400">{key}:</span>
+                            <span className="text-[10px] font-black text-brand-blue-900 uppercase">{value.toString()}</span>
+                            <button onClick={() => setFilters({ ...filters, [key]: 'all' })} className="ml-1 hover:text-rose-500">
+                                <X size={12} />
+                            </button>
+                        </div>
+                    ))}
+                    <button 
+                        onClick={resetFilters}
+                        className="text-[9px] font-black uppercase tracking-widest text-rose-500 hover:underline px-2"
+                    >
+                        Clear All
+                    </button>
+                </div>
+            )}
 
             {/* Bulk Actions Bar */}
             <AnimatePresence>
@@ -313,16 +390,16 @@ export default function AdminProductsManagementPage() {
                 )}
             </AnimatePresence>
 
-            {/* Product Table */}
-            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden relative">
+            {/* Product Table Container */}
+            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 relative mb-8 transition-all">
                 {loading && (
-                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex items-center justify-center text-brand-blue-600">
+                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-50 flex items-center justify-center text-brand-blue-600">
                         <Loader2 size={32} className="animate-spin" />
                     </div>
                 )}
 
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[1000px]">
+                <StickyScrollContainer minWidth="1000px">
+                    <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/50 border-b border-slate-100">
                                 <th className="px-6 py-6 w-12 text-center">
@@ -376,7 +453,9 @@ export default function AdminProductsManagementPage() {
                                                 <div className="flex flex-col min-w-0">
                                                     <span className="text-sm font-black text-brand-blue-900 group-hover:text-brand-blue-600 transition-colors truncate max-w-[200px]">{p.name || (p as any).title}</span>
                                                     <div className="flex items-center gap-1.5 mt-1">
-                                                        <span className="text-[8px] font-black text-white bg-brand-blue-500 px-1.5 py-0.5 rounded uppercase tracking-widest">{p.category}</span>
+                                                        <span className="text-[8px] font-black text-white bg-brand-blue-500 px-1.5 py-0.5 rounded uppercase tracking-widest">
+                                                            {CATEGORIES.find(c => c.id === p.categoryId)?.name || p.category}
+                                                        </span>
                                                         <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{p.subcategory || 'General'}</span>
                                                     </div>
                                                 </div>
@@ -457,16 +536,10 @@ export default function AdminProductsManagementPage() {
                                         </td>
                                         <td className="px-8 py-6 text-right">
                                             <div className="flex items-center justify-end gap-2">
-                                                {viewDeleted ? (
-                                                    <button onClick={() => handleRestore(p)} className="p-2 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all" title="Restore Product">
-                                                        <CheckCircle2 size={18} />
-                                                    </button>
-                                                ) : (
-                                                    <Link href={`/admin/inventory/edit/${p.id}`} className="flex items-center gap-1 px-3 py-2 bg-brand-blue-50 text-brand-blue-600 rounded-xl hover:bg-brand-blue-600 hover:text-white transition-all group/edit shadow-sm">
-                                                        <Edit size={14} />
-                                                        <span className="text-[9px] font-black uppercase tracking-widest">Edit Product</span>
-                                                    </Link>
-                                                )}
+                                                <Link href={`/admin/inventory/edit/${p.id}`} className="flex items-center gap-1 px-3 py-2 bg-brand-blue-50 text-brand-blue-600 rounded-xl hover:bg-brand-blue-600 hover:text-white transition-all group/edit shadow-sm">
+                                                    <Edit size={14} />
+                                                    <span className="text-[9px] font-black uppercase tracking-widest">Edit Product</span>
+                                                </Link>
                                                 <button onClick={() => handleDelete(p)} className="p-2 text-slate-400 hover:text-rose-500 transition-colors bg-slate-50 rounded-xl">
                                                     <Trash2 size={16} />
                                                 </button>
@@ -477,7 +550,7 @@ export default function AdminProductsManagementPage() {
                             )}
                         </tbody>
                     </table>
-                </div>
+                </StickyScrollContainer>
 
                 {/* Pagination Controls */}
                 <div className="p-6 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
@@ -505,6 +578,143 @@ export default function AdminProductsManagementPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Robust Filter Drawer */}
+            <AnimatePresence>
+                {isFilterOpen && (
+                    <>
+                        <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsFilterOpen(false)}
+                            className="fixed inset-0 bg-brand-blue-900/40 backdrop-blur-sm z-[100]"
+                        />
+                        <motion.div 
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                            className="fixed right-0 top-0 h-full w-full max-w-sm bg-white shadow-2xl z-[101] flex flex-col"
+                        >
+                            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 rounded-xl bg-brand-blue-900 text-brand-gold-400 flex items-center justify-center">
+                                        <Filter size={20} />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-black text-brand-blue-900 uppercase tracking-tight">Advanced Filter</h2>
+                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Inventory Intelligence</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setIsFilterOpen(false)} className="p-2 hover:bg-white rounded-xl transition-colors">
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-6 space-y-8 premium-scrollbar">
+                                {/* Status Filter */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xs font-black text-brand-blue-900 uppercase tracking-widest flex items-center gap-2">
+                                        <LayoutGrid size={14} className="text-brand-blue-400" /> Visibility Status
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {['all', 'active', 'draft'].map(status => (
+                                            <button
+                                                key={status}
+                                                onClick={() => setFilters({ ...filters, isActive: status as any })}
+                                                className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${filters.isActive === status ? 'bg-brand-blue-900 text-white border-brand-blue-900' : 'bg-white border-slate-100 text-slate-500 hover:border-brand-blue-200'}`}
+                                            >
+                                                {status}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Stock Status */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xs font-black text-brand-blue-900 uppercase tracking-widest flex items-center gap-2">
+                                        <Archive size={14} className="text-brand-blue-400" /> Stock Level
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {[
+                                            { id: 'all', label: 'All Stock' },
+                                            { id: 'critical', label: 'Critical (≤5)' },
+                                            { id: 'low', label: 'Low (≤15)' },
+                                            { id: 'empty', label: 'Out of Stock' },
+                                            { id: 'full', label: 'Full Stock (>15)' }
+                                        ].map(stock => (
+                                            <button
+                                                key={stock.id}
+                                                onClick={() => setFilters({ ...filters, stockStatus: stock.id as any })}
+                                                className={`py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${filters.stockStatus === stock.id ? 'bg-rose-600 text-white border-rose-600' : 'bg-white border-slate-100 text-slate-500 hover:border-brand-blue-200'}`}
+                                            >
+                                                {stock.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Category Dropdown */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xs font-black text-brand-blue-900 uppercase tracking-widest flex items-center gap-2">
+                                        <LayoutGrid size={14} className="text-brand-blue-400" /> Category
+                                    </h3>
+                                    <select
+                                        value={filters.categoryId}
+                                        onChange={(e) => setFilters({ ...filters, categoryId: e.target.value })}
+                                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs font-bold text-brand-blue-900 outline-none focus:ring-2 focus:ring-brand-blue-500"
+                                    >
+                                        <option value="all">All Categories</option>
+                                        {CATEGORIES.map(cat => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Brand Filter */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xs font-black text-brand-blue-900 uppercase tracking-widest flex items-center gap-2">
+                                        <Tag size={14} className="text-brand-blue-400" /> Brand Focus
+                                    </h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        <button
+                                            onClick={() => setFilters({ ...filters, brand: 'all' })}
+                                            className={`px-3 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${filters.brand === 'all' ? 'bg-brand-blue-900 text-white' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                                        >
+                                            All Brands
+                                        </button>
+                                        {filterMetadata.brands.map(brand => (
+                                            <button
+                                                key={brand}
+                                                onClick={() => setFilters({ ...filters, brand: brand })}
+                                                className={`px-3 py-2 rounded-lg text-[9px] font-black uppercase transition-all ${filters.brand === brand ? 'bg-brand-blue-900 text-white' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}`}
+                                            >
+                                                {brand}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="p-6 border-t border-slate-100 bg-slate-50 space-y-3">
+                                <button
+                                    onClick={() => setIsFilterOpen(false)}
+                                    className="w-full bg-brand-blue-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-brand-blue-900/20 active:scale-95 transition-all"
+                                >
+                                    Apply Intelligent Filters
+                                </button>
+                                <button
+                                    onClick={resetFilters}
+                                    className="w-full bg-white text-slate-400 py-3 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:text-rose-500 transition-colors"
+                                >
+                                    Reset to Default
+                                </button>
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

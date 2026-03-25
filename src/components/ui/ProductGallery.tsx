@@ -70,7 +70,7 @@ export function ProductGallery({
                 <div
                     ref={scrollContainerRef}
                     onScroll={handleScroll}
-                    className="absolute inset-0 flex w-full h-full overflow-x-auto snap-x snap-mandatory no-scrollbar touch-pan-x"
+                    className="absolute inset-0 flex w-full h-full overflow-x-auto snap-x snap-mandatory premium-scrollbar touch-pan-x"
                 >
                     {galleryItems.map((item, idx) => (
                         <div key={item.id} className="min-w-full h-full snap-start relative flex items-center justify-center p-4">

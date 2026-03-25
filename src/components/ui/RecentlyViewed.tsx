@@ -19,7 +19,7 @@ export function RecentlyViewed({ currentProductId }: { currentProductId: string 
                 try {
                     const docRef = doc(db, 'products', id);
                     const snap = await getDoc(docRef);
-                    if (snap.exists()) {
+                    if (snap.exists() && !snap.data().isDeleted) {
                         fetchedProducts.push({ id: snap.id, ...snap.data() } as Product);
                     }
                 } catch (e) {

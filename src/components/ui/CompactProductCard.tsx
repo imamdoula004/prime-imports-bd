@@ -68,7 +68,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
                 </div>
 
                 {/* Stock Status Label */}
-                <div className="absolute top-1 right-1 flex flex-col gap-1 items-end z-20">
+                <div className="absolute top-2 left-2 flex flex-col gap-1 items-start z-20">
                     {stock <= 0 ? (
                         <span className="bg-slate-50 text-brand-blue-900/40 text-[7px] font-black px-1.5 py-0.5 rounded shadow-sm tracking-tighter uppercase">
                             Out of Stock

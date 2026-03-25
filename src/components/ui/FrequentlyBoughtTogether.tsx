@@ -98,7 +98,7 @@ export function FrequentlyBoughtTogether({ currentProductId, category }: FBTProp
 
             <div
                 ref={scrollContainerRef}
-                className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto pb-6 no-scrollbar snap-x snap-mandatory -mx-4 px-4 md:-mx-0 md:px-0"
+                className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto pb-6 premium-scrollbar snap-x snap-mandatory -mx-4 px-4 md:-mx-0 md:px-0"
             >
                 {products.map(product => (
                     <div

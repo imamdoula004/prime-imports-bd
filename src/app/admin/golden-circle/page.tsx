@@ -28,18 +28,25 @@ import {
     Phone, 
     Loader2, 
     CheckCircle2, 
-    XCircle, 
-    Clock,
-    ShieldCheck,
-    ArrowUpRight,
     Filter,
-    MoreHorizontal,
-    LayoutGrid,
-    List,
+    Edit,
+    Mail,
+    Calendar,
     Download,
+    ChevronLeft,
+    ChevronRight,
+    LayoutGrid,
+    MoreHorizontal,
+    Shield,
+    Clock,
     TrendingUp,
-    Shield
+    ArrowUpRight,
+    Save,
+    X,
+    ShieldCheck,
+    XCircle
 } from 'lucide-react';
+import { StickyScrollContainer } from '@/components/ui/StickyScrollContainer';
 import { sanitizePhone, isValidBDPhone } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { GoldenMember, GoldenCircleRequest } from '@/types';
@@ -261,9 +268,9 @@ export default function UnifiedGoldenCircleAdmin() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden"
+                            className="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 relative mb-24"
                         >
-                            <div className="overflow-x-auto">
+                            <StickyScrollContainer minWidth="1000px">
                                 <table className="w-full text-left">
                                     <thead>
                                         <tr className="bg-slate-50/50 border-b border-slate-50">
@@ -331,7 +338,7 @@ export default function UnifiedGoldenCircleAdmin() {
                                         ))}
                                     </tbody>
                                 </table>
-                            </div>
+                            </StickyScrollContainer>
                             {filteredMembers.length === 0 && (
                                 <div className="p-12 text-center space-y-3 opacity-50">
                                     <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">

@@ -217,7 +217,7 @@ export function useRealTimeAdminStats(timeRange: TimeRange = 'month', targetMont
         });
 
         // ── 2. Products listener (cost map + stock + valuation) ──
-        const qProducts = query(collection(db, 'products'), limit(1000));
+        const qProducts = query(collection(db, 'products'), where('isDeleted', '==', false), limit(1000));
         const unsubProducts = onSnapshot(qProducts, snap => {
             if (!isMounted) return;
             const costMap = new Map<string, number>();
@@ -326,8 +326,9 @@ export function useRealTimeMembers() {
 }
 
 export function useRealTimeProducts(
-    category?: string, 
-    searchQuery?: string, 
+    category?: string,
+    categoryId?: string,
+    searchQuery?: string,
     sort?: string,
     filters?: {
         brands?: string[];
@@ -343,10 +344,12 @@ export function useRealTimeProducts(
         if (products.length === 0) setLoading(true);
 
         const productsRef = collection(db, 'products');
-        let q = query(productsRef);
+        let q = query(productsRef, where('isDeleted', '==', false));
 
-        // 1. Category Filter (Primary)
-        if (category && category !== 'All Imports') {
+        // 1. Category Filter (Primary) - Prioritize categoryId
+        if (categoryId && categoryId !== 'all') {
+            q = query(q, where('categoryId', '==', categoryId));
+        } else if (category && category !== 'All Imports' && category !== 'all') {
             q = query(q, where('category', '==', category));
         }
 

@@ -31,7 +31,7 @@ export function BundleSection({ currentProductId }: { currentProductId: string }
                 // Fetch each product in the bundle
                 for (const pid of bundleData.products) {
                     const pDoc = await getDoc(doc(db, 'products', pid));
-                    if (pDoc.exists()) {
+                    if (pDoc.exists() && !pDoc.data().isDeleted) {
                         products.push({ id: pDoc.id, ...pDoc.data() } as Product);
                     }
                 }

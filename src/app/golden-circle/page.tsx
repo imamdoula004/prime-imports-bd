@@ -56,7 +56,7 @@ export default function GoldenCirclePage() {
             </div>
 
             {/* Login & Features Section */}
-            <div className="max-w-6xl mx-auto px-4 -mt-16 pb-20">
+            <div className="max-w-6xl mx-auto px-4 -mt-16 pb-20 relative z-20">
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
                     {/* Left: Login & Join Portal */}
                     <div className="space-y-8 order-2 lg:order-1">
@@ -115,11 +115,11 @@ export default function GoldenCirclePage() {
 
                          <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                                <p className="text-3xl font-black text-brand-blue-900 italic">5,000+</p>
+                                <p className="text-3xl font-black text-brand-blue-900 italic">1,280+</p>
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Active Members</p>
                             </div>
                             <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                                <p className="text-3xl font-black text-brand-gold-600 italic">৳2M+</p>
+                                <p className="text-3xl font-black text-brand-gold-600 italic">৳850K+</p>
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Member Savings</p>
                             </div>
                          </div>

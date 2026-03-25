@@ -98,7 +98,7 @@ export default function AdminTicketDetailPage() {
                             </span>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+                        <div className="flex-1 overflow-y-auto p-6 space-y-6 premium-scrollbar">
                             {ticket.messages?.map((msg, i) => (
                                 <div key={i} className={`flex gap-4 ${msg.role === 'admin' ? 'flex-row-reverse' : ''}`}>
                                     <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-black ${msg.role === 'admin' ? 'bg-brand-gold-400 text-brand-blue-900' : 'bg-brand-blue-50 text-brand-blue-600'}`}>

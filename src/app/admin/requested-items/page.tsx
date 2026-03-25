@@ -118,7 +118,7 @@ export default function RequestedItemsAdmin() {
                         className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue-500 transition-all outline-none"
                     />
                 </div>
-                <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                <div className="flex gap-2 overflow-x-auto premium-scrollbar pb-1">
                     {['all', 'Pending', 'Reviewed', 'Sourced', 'Rejected'].map((status) => (
                         <button
                             key={status}

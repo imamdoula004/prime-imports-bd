@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingCart, User, Heart, SlidersHorizontal } from 'lucide-react';
+import { Search, ShoppingCart, User, Heart, SlidersHorizontal, Menu } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 
 import { useFilterStore } from '@/store/useFilterStore';
 import { SearchDropdown } from '../ui/SearchDropdown';
 import { MemberBadge } from '../ui/MemberBadge';
+import { CategoriesSheet } from './CategoriesSheet';
 
 export function Navbar() {
     const pathname = usePathname();
@@ -17,6 +18,7 @@ export function Navbar() {
     const { toggleCart, items } = useCartStore();
     const { setIsOpen: setIsFilterOpen } = useFilterStore();
     const [isHydrated, setIsHydrated] = useState(false);
+    const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
     useEffect(() => {
         setIsHydrated(true);
@@ -47,15 +49,27 @@ export function Navbar() {
         <header className={`fixed top-0 left-0 right-0 z-[1000] bg-white w-full isolate transform-gpu border-b h-16 md:h-20 flex items-center transition-shadow duration-500 ${isScrolled ? 'shadow-xl border-brand-blue-600/10' : 'border-slate-100'}`}>
             <div className="px-4 md:px-6 lg:px-8 w-full max-w-[1320px] mx-auto">
                 <div className="flex items-center gap-4 md:gap-8 min-h-[40px] md:min-h-[50px]">
-                    {/* Logo */}
-                    <Link href="/" className="shrink-0 flex items-center gap-2 group hover:opacity-80 transition-opacity">
-                        <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-slate-100">
-                            <Image src="/brand_logo.jpeg" alt="Logo" fill className="object-cover" priority />
-                        </div>
-                        <span className="hidden lg:block font-black text-brand-blue-900 uppercase tracking-tighter text-lg leading-none">
-                            <span className="text-brand-blue-600">PRIME</span> <span className="text-brand-gold-500">IMPORTS</span> <span className="text-brand-blue-600">BD</span>
-                        </span>
-                    </Link>
+                    {/* Logo & Category Toggle */}
+                    <div className="flex items-center gap-2 md:gap-4 shrink-0">
+                        <Link href="/" className="flex items-center gap-2 group hover:opacity-80 transition-opacity">
+                            <div className="relative w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-slate-100">
+                                <Image src="/brand_logo.jpeg" alt="Logo" fill className="object-cover" priority />
+                            </div>
+                            <span className="hidden lg:block font-black text-brand-blue-900 uppercase tracking-tighter text-lg leading-none">
+                                <span className="text-brand-blue-600">PRIME</span> <span className="text-brand-gold-500">IMPORTS</span> <span className="text-brand-blue-600">BD</span>
+                            </span>
+                        </Link>
+
+                        <div className="h-8 w-px bg-slate-100 hidden md:block mx-1" />
+
+                        <button 
+                            onClick={() => setIsCategoriesOpen(true)}
+                            className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-xl transition-all group"
+                        >
+                            <Menu size={20} className="text-brand-blue-600 group-hover:scale-110 transition-transform" />
+                            <span className="hidden md:block text-[10px] font-black uppercase tracking-widest text-brand-blue-900">Categories</span>
+                        </button>
+                    </div>
 
                     {/* Prominent Search Bar */}
                     <div className="flex-1 relative group">
@@ -119,6 +133,10 @@ export function Navbar() {
                     </div>
                 </div>
             </div>
+            <CategoriesSheet 
+                isOpen={isCategoriesOpen} 
+                onClose={() => setIsCategoriesOpen(false)} 
+            />
         </header>
     );
 }

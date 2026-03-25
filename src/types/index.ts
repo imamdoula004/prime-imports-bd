@@ -19,6 +19,8 @@ export interface Product {
     oldPrice?: number | null; // Keeping oldPrice as fallback
     originalPrice?: number | null; // Added for compatibility
     category: string;
+    categoryId?: string; // Canonical category ID
+    categoryKeywords?: string[]; // Keywords for better matching
     subcategory?: string; // New
     productType?: string; // New
     stock: number;
@@ -53,7 +55,8 @@ export interface Product {
     ram?: string; // e.g. 8GB
     storage?: string; // e.g. 128GB
     colors?: string[]; // e.g. ['Midnight', 'Starlight']
-    deletedAt?: any; // For backup
+    isDeleted: boolean; // Soft delete flag
+    deletedAt?: any; // For recovery and tracking
 }
 
 export interface CartItem extends Product {

@@ -3,17 +3,12 @@
 import { ShoppingBag, Truck, CheckCircle2, XCircle, Search, Filter, Loader2, ArrowRight, Eye } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { db } from '@/lib/firebase';
+import { collection, query, orderBy, onSnapshot, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import { StickyScrollContainer } from '@/components/ui/StickyScrollContainer';
 import { 
-    collection, 
-    query, 
-    orderBy, 
-    onSnapshot, 
-    doc, 
-    updateDoc, 
     where, 
     getDocs, 
-    addDoc, 
-    serverTimestamp 
+    addDoc 
 } from 'firebase/firestore';
 import { Order } from '@/types';
 import Link from 'next/link';
@@ -178,7 +173,7 @@ export default function AdminOrdersPage() {
                         className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue-500 transition-all outline-none"
                     />
                 </div>
-                <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                <div className="flex gap-2 overflow-x-auto premium-scrollbar pb-1">
                     {['all', 'Pending', 'Confirmed', 'Shipped', 'OutForDelivery', 'Delivered', 'Completed', 'cancelled'].map((status) => (
                         <button
                             key={status}
@@ -194,10 +189,10 @@ export default function AdminOrdersPage() {
                 </div>
             </div>
 
-            {/* Orders Table */}
-            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[1200px]">
+            {/* Orders Table Container */}
+            <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 relative mb-24 transition-all">
+                <StickyScrollContainer minWidth="1000px">
+                    <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/50 border-b border-slate-100">
                                 <th className="px-8 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Order Ref</th>
@@ -311,7 +306,7 @@ export default function AdminOrdersPage() {
                             )}
                         </tbody>
                     </table>
-                </div>
+                </StickyScrollContainer>
             </div>
         </div>
     );

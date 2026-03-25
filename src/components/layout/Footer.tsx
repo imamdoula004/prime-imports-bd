@@ -4,6 +4,7 @@ import { Facebook, Instagram, Twitter } from 'lucide-react';
 import { ProductRequestCard } from '../ui/ProductRequestCard';
 import { usePathname } from 'next/navigation';
 import { useFilterStore } from '@/store/useFilterStore';
+import { CATEGORIES } from '@/config/categories';
 
 export function Footer() {
     const pathname = usePathname();
@@ -56,11 +57,14 @@ export function Footer() {
                     <div>
                         <h4 className="text-brand-blue-900 font-black mb-4 uppercase tracking-widest text-xs">Premium Selection</h4>
                         <ul className="space-y-3 text-sm font-bold">
-                            <li><Link href="/products?category=Chocolate Bars" className="hover:text-brand-blue-600 transition-colors">Chocolate Bars</Link></li>
-                            <li><Link href="/products?category=Beverages & Drinks" className="hover:text-brand-blue-600 transition-colors">Beverages & Drinks</Link></li>
-                            <li><Link href="/products?category=Tea & Coffee" className="hover:text-brand-blue-600 transition-colors">Tea & Coffee</Link></li>
-                            <li><Link href="/products?category=Cosmetics & Beauty" className="hover:text-brand-blue-600 transition-colors">Cosmetics & Beauty</Link></li>
-                            <li><Link href="/products" className="text-brand-blue-600 font-black flex items-center gap-1 group">Shop All <span className="group-hover:translate-x-1 transition-transform">→</span></Link></li>
+                            {CATEGORIES.filter(c => c.featured).slice(0, 4).map(cat => (
+                                <li key={cat.id}>
+                                    <Link href={`/category/${cat.slug}`} className="hover:text-brand-blue-600 transition-colors uppercase tracking-tight">
+                                        {cat.name}
+                                    </Link>
+                                </li>
+                            ))}
+                            <li><Link href="/products" className="text-brand-blue-600 font-black flex items-center gap-1 group uppercase tracking-tight">Shop All <span className="group-hover:translate-x-1 transition-transform">→</span></Link></li>
                         </ul>
                     </div>
 

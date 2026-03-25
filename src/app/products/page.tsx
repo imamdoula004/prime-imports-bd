@@ -19,7 +19,9 @@ async function getProductCount(category?: string) {
         let countQ = query(productsRef);
 
         if (category && category !== 'All Imports') {
-            countQ = query(productsRef, where('category', '==', category));
+            countQ = query(productsRef, where('category', '==', category), where('isDeleted', '==', false));
+        } else {
+            countQ = query(productsRef, where('isDeleted', '==', false));
         }
 
         const snapshot = await getCountFromServer(countQ);

@@ -45,9 +45,11 @@ async function getProductData(slugOrId: string) {
         const docRef = doc(db, 'products', slugOrId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.isDeleted) return null; // Prevent viewing deleted products
             currentProduct = sanitizeProduct(docSnap);
         } else {
-            const q = query(productsRef, where('slug', '==', slugOrId), limit(1));
+            const q = query(productsRef, where('slug', '==', slugOrId), where('isDeleted', '==', false), limit(1));
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) currentProduct = sanitizeProduct(querySnapshot.docs[0]);
         }
@@ -58,20 +60,21 @@ async function getProductData(slugOrId: string) {
         const fetchSimilar = async () => {
             if (!currentProduct?.category) return [];
             try {
-                const snap = await getDocs(query(productsRef, where('category', '==', currentProduct.category), limit(12)));
+                const q = query(productsRef, where('category', '==', currentProduct.category), where('isDeleted', '==', false), limit(12));
+                const snap = await getDocs(q);
                 if (!snap.empty) return snap.docs.map(sanitizeProduct);
-                const fallback = await getDocs(query(productsRef, limit(12)));
+                const fallback = await getDocs(query(productsRef, where('isDeleted', '==', false), limit(12)));
                 return fallback.docs.map(sanitizeProduct);
             } catch (e) {
-                const fallback = await getDocs(query(productsRef, limit(12)));
+                const fallback = await getDocs(query(productsRef, where('isDeleted', '==', false), limit(12)));
                 return fallback.docs.map(sanitizeProduct);
             }
         };
 
         const [similar, popular, trending] = await Promise.all([
             fetchSimilar(),
-            getDocs(query(productsRef, limit(12))).then(s => s.docs.map(sanitizeProduct)).catch(() => []),
-            getDocs(query(productsRef, limit(12))).then(s => s.docs.map(sanitizeProduct)).catch(() => [])
+            getDocs(query(productsRef, where('isDeleted', '==', false), limit(12))).then(s => s.docs.map(sanitizeProduct)).catch(() => []),
+            getDocs(query(productsRef, where('isDeleted', '==', false), limit(12))).then(s => s.docs.map(sanitizeProduct)).catch(() => [])
         ]);
 
         return {

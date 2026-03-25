@@ -35,7 +35,7 @@ export function CartNudge() {
                 <h3 className="text-[11px] font-black text-brand-blue-900 uppercase tracking-widest">Complete Your Selection</h3>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
+            <div className="flex gap-3 overflow-x-auto pb-4 premium-scrollbar scroll-smooth">
                 {nudgeProducts.map((product) => (
                     <div
                         key={product.id}

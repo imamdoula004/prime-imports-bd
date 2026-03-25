@@ -41,6 +41,7 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                 try {
                     const q1 = query(
                         productsRef,
+                        where('isDeleted', '==', false),
                         where('searchKeywords', 'array-contains', firstWord),
                         limit(30)
                     );
@@ -64,6 +65,7 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                         const slugTerm = firstWord.toLowerCase();
                         const q2 = query(
                             productsRef,
+                            where('isDeleted', '==', false),
                             where('slug', '>=', slugTerm),
                             where('slug', '<=', slugTerm + '\uf8ff'),
                             limit(30)
@@ -88,12 +90,12 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                 // Strategy 3: Broad fetch and client-side filter (fallback if above strategies fail)
                 if (allProducts.length < 3) {
                     try {
-                        const q3 = query(productsRef, limit(200));
+                        const q3 = query(productsRef, where('isDeleted', '==', false), limit(200));
                         const snap3 = await getDocs(q3);
                         snap3.docs.forEach(doc => {
                             if (!allProducts.find(p => p.id === doc.id)) {
                                 const data = doc.data();
-                                const searchable = `${data.name || ''} ${data.title || ''} ${data.brand || ''} ${data.category || ''} ${doc.id}`.toLowerCase();
+                                const searchable = `${data.name || ''} ${data.title || ''} ${data.brand || ''} ${data.category || ''} ${data.categoryId || ''} ${(data.categoryKeywords || []).join(' ')} ${doc.id}`.toLowerCase();
                                 if (words.some(word => searchable.includes(word))) {
                                     allProducts.push({
                                         ...data,
@@ -114,6 +116,8 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                     const name = (p.name || p.title || '').toLowerCase();
                     const brand = (p.brand || '').toLowerCase();
                     const category = (p.category || '').toLowerCase();
+                    const categoryId = (p.categoryId || '').toLowerCase();
+                    const categoryKeywords = (p.categoryKeywords || []).join(' ').toLowerCase();
                     const subcategory = (p.subcategory || '').toLowerCase();
                     const type = (p.productType || '').toLowerCase();
                     const gender = (p.gender || '').toLowerCase();
@@ -130,6 +134,8 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                         if (type.includes(lowWord)) score += 30;
                         if (gender.includes(lowWord)) score += 25;
                         if (category.includes(lowWord)) score += 20;
+                        if (categoryId.includes(lowWord)) score += 25;
+                        if (categoryKeywords.includes(lowWord)) score += 15;
                         if (tags.includes(lowWord)) score += 10;
                         if (keywords.includes(lowWord)) score += 10;
 
@@ -137,6 +143,7 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                         if (name === lowWord) score += 100;
                         if (brand === lowWord) score += 60;
                         if (gender === lowWord) score += 50;
+                        if (categoryId === lowWord) score += 40;
                     });
 
                     // Match whole phrase

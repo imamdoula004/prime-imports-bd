@@ -125,14 +125,54 @@ body {
   }
 }
 
-/* Hide scrollbar utility */
+/* Hide scrollbar utility (Keep for legacy/mobile) */
 @utility no-scrollbar {
   &::-webkit-scrollbar {
     display: none;
   }
-
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Premium Horizontal Scrollbar - High Visibility Transparent Grey */
+@utility premium-scrollbar {
+  overflow-x: scroll !important;
+  scrollbar-width: auto !important;
+  scrollbar-color: rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.05) !important;
+  display: block;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    height: 12px !important;
+    display: block !important;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  & {
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Specific container for Admin tables to ensure scrollbar behavior is clean */
+@utility admin-table-container {
+  overflow-x: auto !important;
+  display: block !important;
+  scrollbar-gutter: stable;
 }
 
 /* Scroll Snapping */
@@ -198,8 +238,29 @@ body {
 }
 
 .carousel-container {
-  @apply flex overflow-x-auto gap-4 md:gap-5 scroll-smooth no-scrollbar snap-x;
+  display: flex !important;
+  overflow-x: scroll !important;
+  gap: 1rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Ensure carousel-container also gets the premium-scrollbar treatment */
+.carousel-container::-webkit-scrollbar {
+  height: 12px !important;
+  display: block !important;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+  background: #000e1f !important;
+  border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+  background: #D4AF37 !important;
+  border-radius: 10px;
+  border: 2px solid #000e1f;
 }
 
 .carousel-item-compact {

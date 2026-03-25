@@ -46,8 +46,9 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
             }
             await signInWithEmailAndPassword(auth, email, pass);
             return true;
-        } catch (error) {
-            console.error('Login error:', error);
+        } catch (error: any) {
+            console.error('Login error code:', error.code);
+            console.error('Login error message:', error.message);
             return false;
         }
     };

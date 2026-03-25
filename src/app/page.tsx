@@ -4,17 +4,9 @@ import Link from 'next/link';
 import { HeroCarousel } from '@/components/ui/HeroCarousel';
 import { RealTimeProductGrid } from '@/components/ui/RealTimeProductGrid';
 import { CategoryBoxGrid } from '@/components/ui/CategoryBoxGrid';
-import { db } from '@/lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-
-async function getCategories() {
-  const snap = await getDocs(collection(db, 'categories'));
-  return snap.docs.map(doc => doc.data().name).filter(Boolean);
-}
+import { CATEGORIES } from '@/config/categories';
 
 export default async function Home() {
-  const categories = await getCategories();
-
   return (
     <div className="flex flex-col min-h-screen bg-white pb-0">
       {/* 1. Hero Section */}
@@ -25,25 +17,41 @@ export default async function Home() {
 
 
 
-      {/* 3. Dynamic Category Sections */}
-      <div className="mx-auto max-w-[1320px] px-4 md:px-6 lg:px-8 w-full space-y-4">
-        {categories.slice(0, 5).map((category, idx) => (
-          <section key={category} className="py-2">
-            <div className="flex items-center justify-between mb-3 px-0">
+      {/* 2. Category Explorer Grid */}
+      <section className="mx-auto max-w-[1320px] px-4 md:px-6 lg:px-8 w-full mb-12">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <span className="text-[10px] font-black text-brand-blue-600 uppercase tracking-[0.4em] mb-2 block leading-none">
+              Shop by Category
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-brand-blue-900 uppercase tracking-tighter leading-none">Global Collections</h2>
+          </div>
+        </div>
+        <CategoryBoxGrid />
+      </section>
+
+      {/* 3. Featured Category Rows */}
+      <div className="mx-auto max-w-[1320px] px-4 md:px-6 lg:px-8 w-full space-y-12">
+        {CATEGORIES.filter(c => c.featured).slice(0, 3).map((category, idx) => (
+          <section key={category.id} className="py-2">
+            <div className="flex items-center justify-between mb-4 px-0">
               <div>
                 <span className="text-[10px] font-black text-brand-blue-600 uppercase tracking-[0.4em] mb-2 block leading-none">
                   {idx === 0 ? 'International Arrivals' : 'Premium Selection'}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-black text-brand-blue-900 uppercase tracking-tighter leading-none">{category}</h2>
+                <h2 className="text-2xl md:text-3xl font-black text-brand-blue-900 uppercase tracking-tighter leading-none">{category.name}</h2>
               </div>
-              <Link href={`/products?category=${encodeURIComponent(category)}`} className="group flex items-center gap-2.5 text-[10px] font-black text-brand-blue-900/40 hover:text-brand-blue-600 transition-colors uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-xl hover:bg-brand-blue-50">
-                Show All <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <Link 
+                href={`/category/${category.slug}`} 
+                className="group flex items-center gap-2.5 text-[10px] font-black text-brand-blue-900/40 hover:text-brand-blue-600 transition-colors uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-xl hover:bg-brand-blue-50"
+              >
+                Explore More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
             <RealTimeProductGrid
               pageSize={12}
               currentPage={1}
-              category={category}
+              categoryId={category.id}
               layout="carousel"
             />
           </section>

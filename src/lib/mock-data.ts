@@ -23,6 +23,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1548907077-39e17aee6bc7?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-2",
@@ -46,6 +48,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1594631252845-29fc4586210f?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-3",
@@ -69,6 +73,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-4",
@@ -92,6 +98,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-5",
@@ -115,6 +123,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1543253337-024213241883?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-6",
@@ -138,6 +148,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1586444248902-2f64eddf13cf?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-7",
@@ -161,6 +173,8 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1512496011931-d00780be645c?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     },
     {
         id: "mock-8",
@@ -184,5 +198,7 @@ export const MOCK_PRODUCTS: Product[] = [
         imageURL: "https://images.unsplash.com/photo-1552763407-3d183307ec9b?auto=format&fit=crop&w=800&q=80",
         sourceURL: "#",
         sourceWebsite: "Prime Imports",
+        isDeleted: false,
+        deletedAt: null,
     }
 ];

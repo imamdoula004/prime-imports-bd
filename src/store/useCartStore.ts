@@ -123,7 +123,9 @@ export const useCartStore = create<CartStore>()(
                         searchKeywords: ['bundle', 'combo', bundle.name.toLowerCase()],
                         totalSales: 0,
                         weeklySales: 0,
-                        monthlySales: 0
+                        monthlySales: 0,
+                        isDeleted: false,
+                        deletedAt: null
                     };
                     set({ items: [...items, bundleItem] });
                 }

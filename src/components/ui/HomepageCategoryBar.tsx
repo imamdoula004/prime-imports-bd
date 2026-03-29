@@ -7,6 +7,7 @@ import {
     Refrigerator, Baby, Box, Gift, HeartPulse, ShieldCheck
 } from 'lucide-react';
 import { CATEGORIES } from '@/config/categories';
+import { HorizontalCarousel } from './HorizontalCarousel';
 
 // Mapping icons to our canonical category IDs
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -43,7 +44,10 @@ export function HomepageCategoryBar() {
     const displayCategories = CATEGORIES.filter(cat => visibleIds.includes(cat.id));
 
     return (
-        <div className="flex overflow-x-auto pt-4 pb-4 px-2 gap-4 md:gap-6 premium-scrollbar scroll-smooth -mt-4">
+        <HorizontalCarousel 
+            containerClassName="pt-4 pb-4 px-2 gap-4 md:gap-6 scroll-smooth -mt-4"
+            showArrows={true}
+        >
             {displayCategories.map((cat) => (
                 <Link
                     key={cat.id}
@@ -58,6 +62,7 @@ export function HomepageCategoryBar() {
                     </span>
                 </Link>
             ))}
-        </div>
+        </HorizontalCarousel>
     );
 }
+

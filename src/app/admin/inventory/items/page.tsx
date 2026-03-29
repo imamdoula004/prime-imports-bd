@@ -60,6 +60,12 @@ export default function AdminProductsManagementPage() {
     const [totalItems, setTotalItems] = useState(0);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [isBulkUpdating, setIsBulkUpdating] = useState(false);
+    const [statusMessage, setStatusMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+
+    const showStatus = (text: string, type: 'success' | 'error' = 'success') => {
+        setStatusMessage({ text, type });
+        setTimeout(() => setStatusMessage(null), 3000);
+    };
 
     const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.checked && products.length > 0) {
@@ -246,12 +252,18 @@ export default function AdminProductsManagementPage() {
 
     const handleDelete = async (product: Product) => {
         if (confirm('Move to Recycle Bin? Product will be hidden from storefront but can be restored later.')) {
-            const productRef = doc(db, 'products', product.id!);
-            await updateDoc(productRef, {
-                isDeleted: true,
-                deletedAt: new Date().toISOString(),
-                isActive: false
-            });
+            try {
+                const productRef = doc(db, 'products', product.id!);
+                await updateDoc(productRef, {
+                    isDeleted: true,
+                    deletedAt: new Date().toISOString(),
+                    isActive: false
+                });
+                showStatus(`"${product.name}" moved to Recycle Bin.`);
+            } catch (error) {
+                console.error(error);
+                showStatus('Error moving product to Recycle Bin.', 'error');
+            }
         }
     };
 
@@ -713,6 +725,22 @@ export default function AdminProductsManagementPage() {
                             </div>
                         </motion.div>
                     </>
+                )}
+            </AnimatePresence>
+
+            {/* Floating Status Message */}
+            <AnimatePresence>
+                {statusMessage && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 50, scale: 0.9 }}
+                        className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[200] px-8 py-4 rounded-2xl shadow-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 backdrop-blur-md border ${statusMessage.type === 'error' ? 'bg-rose-500/90 text-white border-rose-400' : 'bg-brand-blue-900/90 text-white border-brand-blue-800'}`}
+                    >
+                        {statusMessage.type === 'error' ? <AlertTriangle size={16} /> : <CheckCircle2 size={16} className="text-brand-gold-400" />}
+                        {statusMessage.text}
+                        <button onClick={() => setStatusMessage(null)} className="ml-4 opacity-50 hover:opacity-100 italic lowercase tracking-normal">close</button>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </div>

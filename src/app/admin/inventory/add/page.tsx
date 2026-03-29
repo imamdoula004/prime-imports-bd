@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { db, storage } from '@/lib/firebase';
-import { collection, addDoc, serverTimestamp, query, getDocs, limit, doc, updateDoc, where } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, getDocs, getDoc, limit, doc, updateDoc, where } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useRouter } from 'next/navigation';
+import type { ProductVariant } from '@/types';
 import {
     Package,
     Upload,
@@ -20,7 +21,10 @@ import {
     AlertTriangle,
     RefreshCw,
     Search,
-    Edit
+    Edit,
+    Plus,
+    GripVertical,
+    Trash2
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -98,6 +102,27 @@ export default function AddProductPage() {
         supplier: '',
         aliases: ''
     });
+
+    const VARIANT_TYPES = ['Weight', 'Size', 'Color', 'Pack Size', 'Flavor', 'Other'];
+    const [variants, setVariants] = useState<ProductVariant[]>([]);
+    const [newVariant, setNewVariant] = useState({ type: VARIANT_TYPES[0], label: '', priceAdjustment: '', stock: '' });
+
+    const addVariant = () => {
+        if (!newVariant.label.trim()) return;
+        const variant: ProductVariant = {
+            id: `var-${Date.now()}`,
+            type: newVariant.type.toLowerCase().replace(/\s+/g, '_'),
+            label: newVariant.label.trim(),
+            priceAdjustment: newVariant.priceAdjustment ? parseFloat(newVariant.priceAdjustment) : 0,
+            stock: newVariant.stock ? parseInt(newVariant.stock) : undefined
+        };
+        setVariants(prev => [...prev, variant]);
+        setNewVariant({ type: newVariant.type, label: '', priceAdjustment: '', stock: '' });
+    };
+
+    const removeVariant = (variantId: string) => {
+        setVariants(prev => prev.filter(v => v.id !== variantId));
+    };
 
     // Helper for title normalization
     const normalizeTitle = (title: string) => {
@@ -291,11 +316,14 @@ export default function AddProductPage() {
         setLoading(true);
 
         try {
-            let imageUrl = '';
+            let finalImageUrl = '';
             if (imageFile) {
                 const storageRef = ref(storage, `products/${Date.now()}-${imageFile.name}`);
                 const snapshot = await uploadBytes(storageRef, imageFile);
-                imageUrl = await getDownloadURL(snapshot.ref);
+                finalImageUrl = await getDownloadURL(snapshot.ref);
+            } else {
+                // If it was already set (e.g. from existing duplicate), keep it or clear it
+                finalImageUrl = imagePreview || '';
             }
 
             const productData: Record<string, any> = {
@@ -310,7 +338,8 @@ export default function AddProductPage() {
                 normalizedCategory: formData.category,
                 updatedAt: serverTimestamp(),
                 aliases: formData.aliases.split(',').map(s => s.trim()).filter(s => s),
-                slug: formData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '')
+                slug: formData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, ''),
+                variants: variants
             };
 
             // Final Duplicate Warning if NEW product
@@ -341,15 +370,43 @@ export default function AddProductPage() {
                 }
             }
 
-            if (imageUrl) {
-                productData.imageURL = imageUrl;
-                productData.image = imageUrl;
-            }
+            productData.imageURL = finalImageUrl;
+            productData.image = finalImageUrl;
 
             if (selectedDuplicate) {
-                // UPDATE existing product
+                // Fetch current data to preserve history
                 const docRef = doc(db, 'products', selectedDuplicate.id);
-                await updateDoc(docRef, productData);
+                const currentDoc = await getDoc(docRef);
+                const currentData = currentDoc.exists() ? currentDoc.data() : {};
+                
+                const previousDescription = currentData.description || '';
+                const previousImage = currentData.image || currentData.imageURL || '';
+                const existingDeletedDescriptions = currentData.deletedDescriptions || [];
+                const existingDeletedImages = currentData.deletedImages || [];
+
+                const updatedDeletedDescriptions = [...existingDeletedDescriptions];
+                if (formData.description !== previousDescription && previousDescription) {
+                    updatedDeletedDescriptions.push({
+                        text: previousDescription,
+                        deletedAt: new Date().toISOString()
+                    });
+                }
+
+                const updatedDeletedImages = [...existingDeletedImages];
+                if (finalImageUrl !== previousImage && previousImage) {
+                    updatedDeletedImages.push({
+                        url: previousImage,
+                        deletedAt: new Date().toISOString()
+                    });
+                }
+
+                // UPDATE existing product
+                const finalProductData = {
+                    ...productData,
+                    deletedDescriptions: updatedDeletedDescriptions,
+                    deletedImages: updatedDeletedImages
+                };
+                await updateDoc(docRef, finalProductData);
                 setSuccessMessage('Product Updated Successfully');
             } else {
                 // CREATE new product
@@ -752,6 +809,109 @@ export default function AddProductPage() {
                                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2 px-1 italic">Used for fuzzy search matching</p>
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Product Variants Section */}
+                        <div className="pt-8 border-t border-slate-50">
+                            <div className="flex items-center gap-2 mb-6">
+                                <div className="p-2 bg-brand-blue-50 text-brand-blue-600 rounded-lg">
+                                    <Layers size={18} />
+                                </div>
+                                <h2 className="text-sm font-black text-brand-blue-900 uppercase tracking-tight">Product Variants</h2>
+                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-auto">{variants.length} variants</span>
+                            </div>
+
+                            <div className="bg-slate-50 p-5 rounded-2xl mb-4">
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
+                                    <div>
+                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Type</label>
+                                        <select
+                                            value={newVariant.type}
+                                            onChange={(e) => setNewVariant({ ...newVariant, type: e.target.value })}
+                                            className="w-full px-3 py-3 bg-white border-none rounded-xl text-xs font-bold text-brand-blue-900 outline-none appearance-none cursor-pointer"
+                                        >
+                                            {VARIANT_TYPES.map(t => (
+                                                <option key={t} value={t}>{t}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Label</label>
+                                        <input
+                                            type="text"
+                                            value={newVariant.label}
+                                            onChange={(e) => setNewVariant({ ...newVariant, label: e.target.value })}
+                                            className="w-full px-3 py-3 bg-white border-none rounded-xl text-xs font-bold text-brand-blue-900 outline-none"
+                                            placeholder="e.g. 500g"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Price +/- (৳)</label>
+                                        <input
+                                            type="number"
+                                            value={newVariant.priceAdjustment}
+                                            onChange={(e) => setNewVariant({ ...newVariant, priceAdjustment: e.target.value })}
+                                            className="w-full px-3 py-3 bg-white border-none rounded-xl text-xs font-bold text-brand-blue-900 outline-none"
+                                            placeholder="0"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 block">Stock</label>
+                                        <input
+                                            type="number"
+                                            value={newVariant.stock}
+                                            onChange={(e) => setNewVariant({ ...newVariant, stock: e.target.value })}
+                                            className="w-full px-3 py-3 bg-white border-none rounded-xl text-xs font-bold text-brand-blue-900 outline-none"
+                                            placeholder="Optional"
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={addVariant}
+                                        disabled={!newVariant.label.trim()}
+                                        className="px-4 py-3 bg-brand-blue-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-brand-blue-800 transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    >
+                                        <Plus size={14} /> Add
+                                    </button>
+                                </div>
+                            </div>
+
+                            {variants.length > 0 && (
+                                <div className="space-y-2">
+                                    {variants.map((v) => (
+                                        <div key={v.id} className="flex items-center gap-3 p-3 bg-white border border-slate-100 rounded-xl group hover:border-brand-blue-200 transition-all">
+                                            <div className="text-slate-300"><GripVertical size={16} /></div>
+                                            <span className="text-[9px] font-black text-brand-blue-600 bg-brand-blue-50 px-2 py-1 rounded-lg uppercase tracking-widest whitespace-nowrap">
+                                                {v.type.replace(/_/g, ' ')}
+                                            </span>
+                                            <span className="text-xs font-bold text-brand-blue-900 flex-1">{v.label}</span>
+                                            {v.priceAdjustment ? (
+                                                <span className={`text-[10px] font-black ${(v.priceAdjustment || 0) > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                    {(v.priceAdjustment || 0) > 0 ? '+' : ''}{v.priceAdjustment}৳
+                                                </span>
+                                            ) : null}
+                                            {v.stock !== undefined && v.stock !== null && (
+                                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    Stock: {v.stock}
+                                                </span>
+                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeVariant(v.id)}
+                                                className="p-1.5 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {variants.length === 0 && (
+                                <p className="text-center text-[10px] font-bold text-slate-300 uppercase tracking-widest py-4 italic">
+                                    No variants added — use the form above to add sizes, weights, colors, etc.
+                                </p>
+                            )}
                         </div>
 
                         <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row gap-3">

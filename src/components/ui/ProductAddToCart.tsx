@@ -9,9 +9,11 @@ import type { Product } from '@/types';
 interface ProductAddToCartProps {
     product: Product;
     isMobileFooter?: boolean;
+    selectedVariant?: any;
+    priceOverride?: number;
 }
 
-export function ProductAddToCart({ product, isMobileFooter = false }: ProductAddToCartProps) {
+export function ProductAddToCart({ product, isMobileFooter = false, selectedVariant, priceOverride }: ProductAddToCartProps) {
     const [quantity, setQuantity] = useState(1);
     const { items, addItem, updateQuantity, toggleCart } = useCartStore();
     const { openModal } = useWaitlistStore();
@@ -20,7 +22,8 @@ export function ProductAddToCart({ product, isMobileFooter = false }: ProductAdd
     const stock = Number(product.stock) || 0;
     const isOutOfStock = stock <= 0;
 
-    const cartItem = items.find(item => item.id === product.id);
+    const cartItemId = selectedVariant ? `${product.id}-${selectedVariant.id}` : product.id;
+    const cartItem = items.find(item => item.id === cartItemId);
     const isInCart = !!cartItem;
 
     useEffect(() => {
@@ -36,7 +39,7 @@ export function ProductAddToCart({ product, isMobileFooter = false }: ProductAdd
 
     const handleMinus = () => {
         if (isInCart) {
-            if (quantity > 0) updateQuantity(product.id || '', quantity - 1);
+            if (quantity > 0) updateQuantity(cartItemId || '', quantity - 1);
         } else {
             if (quantity > 1) setQuantity(quantity - 1);
         }
@@ -44,7 +47,7 @@ export function ProductAddToCart({ product, isMobileFooter = false }: ProductAdd
 
     const handlePlus = () => {
         if (isInCart) {
-            if (quantity < stock) updateQuantity(product.id || '', quantity + 1);
+            if (quantity < stock) updateQuantity(cartItemId || '', quantity + 1);
         } else {
             if (quantity < stock) setQuantity(quantity + 1);
         }
@@ -54,7 +57,15 @@ export function ProductAddToCart({ product, isMobileFooter = false }: ProductAdd
         if (isInCart) {
             toggleCart(true);
         } else {
-            addItem(product, quantity);
+            const productToAdd = {
+                ...product,
+                id: cartItemId,
+                price: priceOverride !== undefined ? priceOverride : product.price,
+                name: selectedVariant ? `${product.title || product.name} - ${selectedVariant.label}` : product.title || product.name,
+                originalProductId: product.id,
+                variant: selectedVariant
+            };
+            addItem(productToAdd as any, quantity);
         }
     };
 

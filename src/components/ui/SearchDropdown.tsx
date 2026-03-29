@@ -225,7 +225,7 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                                 >
                                     <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-50 shrink-0 border border-slate-100">
                                         <Image
-                                            src={product.imageURL || `https://picsum.photos/seed/${product.id}/100/100`}
+                                            src={product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id}/100/100`}
                                             alt={product.name || product.title || ''}
                                             fill
                                             className="object-contain p-1 group-hover:scale-110 transition-transform duration-500"

@@ -92,7 +92,7 @@ export function StickyScrollContainer({ children, className = '', minWidth = '10
       {/* Mirror Scrollbar - Portaled to Body with Optimized Viewport Tracking */}
       {isMounted && isScrollable && createPortal(
         <div 
-          className="fixed bottom-0 z-[999999] overflow-x-auto overflow-y-hidden premium-scrollbar h-2.5 pointer-events-auto bg-white/60 backdrop-blur-md border-t border-slate-200 shadow-sm transition-opacity duration-300"
+          className="fixed bottom-0 z-[999999] overflow-x-auto overflow-y-hidden premium-scrollbar h-4 pointer-events-auto bg-brand-blue-900 border-t border-brand-blue-700 shadow-[0_-4px_20px_rgba(0,0,0,0.2)]"
           ref={dummyRef}
           onScroll={onDummyScroll}
           style={{ 

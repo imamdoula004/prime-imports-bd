@@ -143,24 +143,25 @@ body {
   width: 100%;
 
   &::-webkit-scrollbar {
-    height: 12px !important;
+    height: 14px !important;
     display: block !important;
   }
   
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05) !important;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.08) !important;
+    border-radius: 20px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.3) !important;
-    border-radius: 10px;
-    border: 2px solid transparent;
+    background: #002147 !important; /* Brand Blue 600 */
+    border-radius: 20px;
+    border: 3px solid transparent;
     background-clip: content-box;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.5) !important;
+    background: #D4AF37 !important; /* Brand Gold 400 */
   }
 
   & {

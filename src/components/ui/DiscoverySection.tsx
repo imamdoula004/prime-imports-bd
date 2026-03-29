@@ -2,6 +2,7 @@
 
 import { CompactProductCard } from './CompactProductCard';
 import { ProductCard } from './ProductCard';
+import { HorizontalCarousel } from './HorizontalCarousel';
 import type { Product } from '@/types';
 import { ChevronRight } from 'lucide-react';
 
@@ -57,7 +58,7 @@ export function DiscoverySection({
                     ))}
                 </div>
             ) : (
-                <div className="carousel-container pb-4">
+                <HorizontalCarousel containerClassName="pb-4 gap-3 md:gap-4 scroll-mt-4">
                     {products.map((product) => (
                         <div key={product.id} className={CarouselItemClass}>
                             {cardType === 'compact' ?
@@ -66,7 +67,7 @@ export function DiscoverySection({
                             }
                         </div>
                     ))}
-                </div>
+                </HorizontalCarousel>
             )}
         </section>
     );

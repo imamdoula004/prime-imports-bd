@@ -227,7 +227,7 @@ export function RealTimeProductGrid({
                 )}
                 <div className={layout === 'grid'
                     ? "flex-1 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3"
-                    : "flex gap-4 overflow-x-auto pb-4 premium-scrollbar"
+                    : "flex gap-4 overflow-x-auto pb-4 no-scrollbar"
                 }>
                     {[...Array(layout === 'grid' ? pageSize : 4)].map((_, i) => (
                         <div key={i} className={layout === 'carousel' ? "min-w-[160px] md:min-w-[200px]" : "w-full"}>
@@ -266,11 +266,11 @@ export function RealTimeProductGrid({
     if (layout === 'carousel') {
         return (
             <div className="relative group/carousel">
-                <div className="hidden lg:block lg:opacity-0 lg:group-hover/carousel:opacity-100 transition-opacity duration-300">
+                <div className="hidden lg:block transition-opacity duration-300">
                     {showLeftArrow && (
                         <button
                             onClick={() => scroll('left')}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-brand-blue-600 hover:text-white transition-all active:scale-90"
+                            className="absolute -left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-brand-blue-600 hover:text-white transition-all active:scale-90"
                         >
                             <ChevronLeft size={24} strokeWidth={2.5} />
                         </button>
@@ -278,7 +278,7 @@ export function RealTimeProductGrid({
                     {showRightArrow && (
                         <button
                             onClick={() => scroll('right')}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-brand-blue-600 hover:text-white transition-all active:scale-90"
+                            className="absolute -right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 bg-white/95 backdrop-blur-md rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-brand-blue-600 hover:text-white transition-all active:scale-90"
                         >
                             <ChevronRight size={24} strokeWidth={2.5} />
                         </button>
@@ -287,7 +287,7 @@ export function RealTimeProductGrid({
 
                 <div
                     ref={scrollContainerRef}
-                    className="flex carousel-container pb-8 overflow-x-auto px-4 md:px-0 gap-3 md:gap-4 py-3"
+                    className="flex carousel-container no-scrollbar pb-8 overflow-x-auto px-4 md:px-0 gap-3 md:gap-4 py-3"
                 >
                     {processedProducts.slice(0, 40).map((product) => (
                         <div key={product.id || product.slug} className="carousel-item-standard py-1 px-1">

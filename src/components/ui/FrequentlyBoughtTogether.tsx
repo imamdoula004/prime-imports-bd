@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { db } from '@/lib/firebase';
 import { collection, query, where, limit, getDocs } from 'firebase/firestore';
 import { Product } from '@/types';
 import { ProductCard } from './ProductCard';
 import { ProductCardSkeleton } from './Skeleton';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { HorizontalCarousel } from './HorizontalCarousel';
 
 interface FBTProps {
     currentProductId: string;
@@ -16,7 +16,6 @@ interface FBTProps {
 export function FrequentlyBoughtTogether({ currentProductId, category }: FBTProps) {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchRelated = async () => {
@@ -42,16 +41,6 @@ export function FrequentlyBoughtTogether({ currentProductId, category }: FBTProp
 
         if (category) fetchRelated();
     }, [category, currentProductId]);
-
-    const scroll = (direction: 'left' | 'right') => {
-        if (!scrollContainerRef.current) return;
-        const container = scrollContainerRef.current;
-        const scrollAmount = container.clientWidth * 0.8;
-        container.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        });
-    };
 
     if (loading) {
         return (
@@ -79,26 +68,11 @@ export function FrequentlyBoughtTogether({ currentProductId, category }: FBTProp
                     <h3 className="text-base font-black text-brand-blue-950 uppercase tracking-tight">Recommended For You</h3>
                     <p className="text-[9px] font-bold text-brand-blue-900/40 uppercase tracking-widest italic">Similar premium imports</p>
                 </div>
-
-                <div className="hidden md:flex gap-1.5">
-                    <button
-                        onClick={() => scroll('left')}
-                        className="w-8 h-8 rounded-full border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-slate-50 transition-all active:scale-90"
-                    >
-                        <ChevronLeft size={16} strokeWidth={3} />
-                    </button>
-                    <button
-                        onClick={() => scroll('right')}
-                        className="w-8 h-8 rounded-full border border-slate-100 flex items-center justify-center text-brand-blue-900 hover:bg-slate-50 transition-all active:scale-90"
-                    >
-                        <ChevronRight size={16} strokeWidth={3} />
-                    </button>
-                </div>
             </div>
 
-            <div
-                ref={scrollContainerRef}
-                className="flex gap-3 md:gap-4 lg:gap-5 overflow-x-auto pb-6 premium-scrollbar snap-x snap-mandatory -mx-4 px-4 md:-mx-0 md:px-0"
+            <HorizontalCarousel 
+                containerClassName="gap-3 md:gap-4 lg:gap-5 pb-6 snap-x snap-mandatory -mx-4 px-4 md:-mx-0 md:px-0"
+                arrowPosition="outside"
             >
                 {products.map(product => (
                     <div
@@ -108,7 +82,7 @@ export function FrequentlyBoughtTogether({ currentProductId, category }: FBTProp
                         <ProductCard product={product} />
                     </div>
                 ))}
-            </div>
+            </HorizontalCarousel>
         </div>
     );
 }

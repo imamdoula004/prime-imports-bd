@@ -55,7 +55,7 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
             {/* Image Section - Aspect Square */}
             <Link href={`/products/${product.slug || product.id}`} className="block relative aspect-square overflow-hidden bg-white shrink-0 border-b border-slate-50">
                 <Image
-                    src={product.images?.catalog || product.image || product.imageURL || '/placeholder.png'}
+                    src={product.image || product.imageURL || product.images?.catalog || '/placeholder.png'}
                     alt={product.name || 'Product'}
                     fill
                     sizes="(max-width: 768px) 33vw, 12vw"

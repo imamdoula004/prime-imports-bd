@@ -1,3 +1,12 @@
+export interface ProductVariant {
+    id: string;
+    label: string;        // e.g. "500g", "Large", "Red"
+    type: string;          // e.g. "weight", "size", "color", "pack"
+    priceAdjustment?: number;  // +/- from base price (e.g. +50 or -20)
+    stock?: number;
+    sku?: string;
+}
+
 export interface Product {
     id?: string;
     productID: string; // PI-1001
@@ -55,8 +64,11 @@ export interface Product {
     ram?: string; // e.g. 8GB
     storage?: string; // e.g. 128GB
     colors?: string[]; // e.g. ['Midnight', 'Starlight']
+    variants?: ProductVariant[]; // Product variants (sizes, weights, colors, packs)
     isDeleted: boolean; // Soft delete flag
     deletedAt?: any; // For recovery and tracking
+    deletedDescriptions?: { text: string; deletedAt: any }[]; // Archive for old descriptions
+    deletedImages?: { url: string; deletedAt: any }[]; // Archive for old images
 }
 
 export interface CartItem extends Product {

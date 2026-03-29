@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { Star, ArrowRight, Zap, TrendingUp, Sparkles, ShoppingBag, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
@@ -17,20 +20,7 @@ export default async function Home() {
 
 
 
-      {/* 2. Category Explorer Grid */}
-      <section className="mx-auto max-w-[1320px] px-4 md:px-6 lg:px-8 w-full mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <span className="text-[10px] font-black text-brand-blue-600 uppercase tracking-[0.4em] mb-2 block leading-none">
-              Shop by Category
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black text-brand-blue-900 uppercase tracking-tighter leading-none">Global Collections</h2>
-          </div>
-        </div>
-        <CategoryBoxGrid />
-      </section>
-
-      {/* 3. Featured Category Rows */}
+      {/* 2. Featured Category Rows */}
       <div className="mx-auto max-w-[1320px] px-4 md:px-6 lg:px-8 w-full space-y-12">
         {CATEGORIES.filter(c => c.featured).slice(0, 3).map((category, idx) => (
           <section key={category.id} className="py-2">

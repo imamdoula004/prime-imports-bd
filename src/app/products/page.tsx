@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, where, limit, getCountFromServer } from 'firebase/firestore';
 import type { Product } from '@/types';

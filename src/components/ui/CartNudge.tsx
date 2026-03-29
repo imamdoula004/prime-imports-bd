@@ -5,6 +5,7 @@ import { Product } from '@/types';
 import { useCartStore } from '@/store/useCartStore';
 import Image from 'next/image';
 import { Plus, Sparkles } from 'lucide-react';
+import { HorizontalCarousel } from './HorizontalCarousel';
 
 export function CartNudge() {
     const { items, addItem } = useCartStore();
@@ -35,7 +36,11 @@ export function CartNudge() {
                 <h3 className="text-[11px] font-black text-brand-blue-900 uppercase tracking-widest">Complete Your Selection</h3>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-4 premium-scrollbar scroll-smooth">
+            <HorizontalCarousel 
+                containerClassName="pb-4 gap-3 scroll-smooth"
+                showArrows={true}
+                arrowPosition="inside"
+            >
                 {nudgeProducts.map((product) => (
                     <div
                         key={product.id}
@@ -43,7 +48,7 @@ export function CartNudge() {
                     >
                         <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-50 mb-2">
                             <Image
-                                src={product.imageURL || `https://picsum.photos/seed/${product.id}/100/100`}
+                                src={product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id}/100/100`}
                                 alt={product.name || product.title || 'Product'}
                                 fill
                                 className="object-contain p-1 group-hover:scale-110 transition-transform duration-500"
@@ -63,7 +68,8 @@ export function CartNudge() {
                         </div>
                     </div>
                 ))}
-            </div>
+            </HorizontalCarousel>
         </div>
     );
 }
+

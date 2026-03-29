@@ -72,7 +72,7 @@ export function HeroSubProducts() {
                             <Link href={`/products/${product.slug || product.id}`} className="block">
                                 <div className="relative aspect-square bg-white rounded-lg overflow-hidden p-1 shadow-inner">
                                     <Image
-                                        src={product.imageURL || `https://picsum.photos/seed/${product.id}/200/200`}
+                                        src={product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id}/200/200`}
                                         alt={product.name || product.title || 'Product'}
                                         fill
                                         className="object-contain p-0.5 group-hover:scale-110 transition-transform duration-500"

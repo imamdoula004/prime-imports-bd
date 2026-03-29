@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { CompactProductCard } from './CompactProductCard';
+import { HorizontalCarousel } from './HorizontalCarousel';
 import type { Product } from '@/types';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
@@ -44,13 +45,13 @@ export function RecentlyViewed({ currentProductId }: { currentProductId: string 
             <h2 className="text-lg md:text-xl font-black text-brand-blue-950 uppercase tracking-tight mb-6">
                 Recently Viewed
             </h2>
-            <div className="carousel-container pb-0">
+            <HorizontalCarousel containerClassName="gap-3 md:gap-4 pb-4">
                 {products.map((product) => (
                     <div key={product.id} className="carousel-item-compact">
                         <CompactProductCard product={product} />
                     </div>
                 ))}
-            </div>
+            </HorizontalCarousel>
         </section>
     );
 }

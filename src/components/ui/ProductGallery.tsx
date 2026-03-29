@@ -24,13 +24,15 @@ export function ProductGallery({
     fallbackImage
 }: ProductGalleryProps) {
     const galleryItems = [];
-    if (images?.catalog) galleryItems.push({ id: 'catalog', src: images.catalog });
+    
+    if (fallbackImage) {
+        galleryItems.push({ id: 'main', src: fallbackImage });
+    } else if (images?.catalog) {
+        galleryItems.push({ id: 'catalog', src: images.catalog });
+    }
+
     if (images?.zoom) galleryItems.push({ id: 'zoom', src: images.zoom });
     if (images?.lifestyle) galleryItems.push({ id: 'lifestyle', src: images.lifestyle });
-
-    if (galleryItems.length === 0 && fallbackImage) {
-        galleryItems.push({ id: 'fallback', src: fallbackImage });
-    }
 
     // Placeholder if no images exist
     if (galleryItems.length === 0) {
@@ -70,7 +72,7 @@ export function ProductGallery({
                 <div
                     ref={scrollContainerRef}
                     onScroll={handleScroll}
-                    className="absolute inset-0 flex w-full h-full overflow-x-auto snap-x snap-mandatory premium-scrollbar touch-pan-x"
+                    className="absolute inset-0 flex w-full h-full overflow-x-auto snap-x snap-mandatory no-scrollbar touch-pan-x"
                 >
                     {galleryItems.map((item, idx) => (
                         <div key={item.id} className="min-w-full h-full snap-start relative flex items-center justify-center p-4">

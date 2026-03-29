@@ -43,7 +43,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     const cartItem = items.find(item => item.id === product.id);
     const quantity = isHydrated ? (cartItem?.quantity || 0) : 0;
 
-    const imagePlaceholder = product.images?.catalog || product.image || product.imageURL || `https://picsum.photos/seed/${product.id || product.slug}/400/400`;
+    const imagePlaceholder = product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id || product.slug}/400/400`;
 
     const price = Number(product.price || 0);
     const originalPrice = Number(product.originalPrice || product.marketPrice || product.oldPrice || 0);

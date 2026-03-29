@@ -209,9 +209,12 @@ export default function AdminStorefrontPage() {
     const handleImageUpload = async (idx: number, file: File) => {
         setUploadingImage(idx);
         try {
-            const storageRef = ref(storage, `hero-banners/slide-${idx + 1}-${Date.now()}.webp`);
+            const timestamp = Date.now();
+            const storageRef = ref(storage, `hero-banners/slide-${idx + 1}-${timestamp}.webp`);
             await uploadBytes(storageRef, file);
-            const url = await getDownloadURL(storageRef);
+            let url = await getDownloadURL(storageRef);
+            // Append version token to bust internal Next.js image caching
+            url = `${url}&v=${timestamp}`;
             setHeroBanners(prev => prev.map((b, i) => i === idx ? { ...b, imageURL: url } : b));
         } catch (err) {
             console.error('Upload error:', err);

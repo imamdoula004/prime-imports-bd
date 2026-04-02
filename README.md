@@ -156,12 +156,12 @@ Designed for **non-technical users**.
 ## 📁 Project Structure
 
 
-``/frontend → Next.js UI
+```/frontend → Next.js UI
 /admin → Admin dashboard
 /firebase → Firestore schema + rules
 /automation → n8n workflows
 /scraper → Firecrawl scripts
-/assets → Icons, SVG logo, media``
+/assets → Icons, SVG logo, media```
 
 
 ---

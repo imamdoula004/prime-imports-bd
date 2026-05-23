@@ -415,7 +415,7 @@ export default function AddProductPage() {
                 if (obj === null || typeof obj !== 'object') return obj;
                 
                 // If it's a Firestore FieldValue (like serverTimestamp), return as is
-                if (obj.constructor?.name?.includes('FieldValue')) return obj;
+                if (obj.constructor?.name?.includes('FieldValue') || '_methodName' in obj) return obj;
                 
                 if (Array.isArray(obj)) {
                     return obj.map(item => sanitizeForFirestore(item));

@@ -28,24 +28,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 
-const CATEGORIES = [
-    'Beverages & Drinks',
-    'Tea & Coffee',
-    'Chocolate Bars',
-    'Biscuits & Cookies',
-    'Snacks & Sweets Haven',
-    'Cosmetics & Beauty',
-    'Grocery and Essentials',
-    'Sauces & Condiments',
-    'Breakfast & Cereals',
-    'Dairy & Cheese',
-    'Baking Essentials',
-    'Baby Care Imports',
-    'Health & Wellness',
-    'Home & Kitchen',
-    'Gift Boxes & Hampers',
-    'Exotic Fruits'
-];
+import { CATEGORIES } from '@/config/categories';
 
 interface DuplicateMatch {
     id: string;
@@ -77,6 +60,7 @@ export default function AddProductPage() {
     const [imagePreview, setImagePreview] = useState<string>('');
     const [success, setSuccess] = useState(false);
     const [successMessage, setSuccessMessage] = useState('Product Initialized');
+    const [submissionError, setSubmissionError] = useState<{ message: string, code?: string } | null>(null);
 
     // Duplicate detection state
     const [duplicates, setDuplicates] = useState<DuplicateMatch[]>([]);
@@ -88,7 +72,8 @@ export default function AddProductPage() {
         description: '',
         price: '',
         oldPrice: '',
-        category: CATEGORIES[0],
+        categoryId: CATEGORIES[0].id,
+        category: CATEGORIES[0].name,
         subcategory: '',
         productType: '',
         gender: 'Unisex',
@@ -114,7 +99,7 @@ export default function AddProductPage() {
             type: newVariant.type.toLowerCase().replace(/\s+/g, '_'),
             label: newVariant.label.trim(),
             priceAdjustment: newVariant.priceAdjustment ? parseFloat(newVariant.priceAdjustment) : 0,
-            stock: newVariant.stock ? parseInt(newVariant.stock) : undefined
+            stock: newVariant.stock ? parseInt(newVariant.stock) : 0 // Default to 0 instead of undefined
         };
         setVariants(prev => [...prev, variant]);
         setNewVariant({ type: newVariant.type, label: '', priceAdjustment: '', stock: '' });
@@ -145,6 +130,27 @@ export default function AddProductPage() {
         return intersection.length / Math.max(words1.length, words2.length);
     };
 
+    // Helper to generate search keywords for Firestore indexing
+    const generateSearchKeywords = (title: string, brand: string, category: string) => {
+        const keywords = new Set<string>();
+        const fullString = `${title} ${brand} ${category}`.toLowerCase();
+        
+        // Split by non-alphanumeric characters and filter small words
+        const words = fullString.split(/[^a-z0-9]/).filter(w => w.length >= 2);
+        
+        words.forEach(word => {
+            // Add the full word
+            keywords.add(word);
+            // Add prefixes for partial matching (e.g. "apple" -> "app", "appl", "apple")
+            for (let i = 3; i <= word.length; i++) {
+                keywords.add(word.substring(0, i));
+            }
+        });
+
+        return Array.from(keywords);
+    };
+
+
     // Debounced duplicate detection with multi-strategy search
     useEffect(() => {
         const title = formData.title.trim();
@@ -174,7 +180,7 @@ export default function AddProductPage() {
                     );
                     const snapNorm = await getDocs(qNorm);
                     snapNorm.docs.forEach(doc => {
-                        rawMatches.push({ id: doc.id, ...doc.data() });
+                        rawMatches.push({ ...doc.data(), id: doc.id });
                     });
                 } catch (e) { /* might not be indexed */ }
 
@@ -191,7 +197,7 @@ export default function AddProductPage() {
                         const snapSlug = await getDocs(qSlug);
                         snapSlug.docs.forEach(doc => {
                             if (!rawMatches.find(p => p.id === doc.id)) {
-                                rawMatches.push({ id: doc.id, ...doc.data() });
+                                rawMatches.push({ ...doc.data(), id: doc.id });
                             }
                         });
                     } catch (e) { /* might not be indexed */ }
@@ -204,7 +210,7 @@ export default function AddProductPage() {
                         const snapSKU = await getDocs(qSKU);
                         snapSKU.docs.forEach(doc => {
                             if (!rawMatches.find(p => p.id === doc.id)) {
-                                rawMatches.push({ id: doc.id, ...doc.data() });
+                                rawMatches.push({ ...doc.data(), id: doc.id });
                             }
                         });
                     } catch (e) { /* might not be indexed */ }
@@ -214,7 +220,7 @@ export default function AddProductPage() {
                         const snapID = await getDocs(qID);
                         snapID.docs.forEach(doc => {
                             if (!rawMatches.find(p => p.id === doc.id)) {
-                                rawMatches.push({ id: doc.id, ...doc.data() });
+                                rawMatches.push({ ...doc.data(), id: doc.id });
                             }
                         });
                     } catch (e) { /* might not be indexed */ }
@@ -231,7 +237,7 @@ export default function AddProductPage() {
                         const snapKeywords = await getDocs(qKeywords);
                         snapKeywords.docs.forEach(doc => {
                             if (!rawMatches.find(p => p.id === doc.id)) {
-                                rawMatches.push({ id: doc.id, ...doc.data() });
+                                rawMatches.push({ ...doc.data(), id: doc.id });
                             }
                         });
                     } catch (e) { /* might not be indexed */ }
@@ -258,8 +264,8 @@ export default function AddProductPage() {
                     .slice(0, 10);
 
                 setDuplicates(scoredMatches.map(m => ({
-                    id: m.product.id,
                     ...m.product,
+                    id: m.product.id,
                     imageURL: m.product.imageURL || m.product.image
                 })));
             } catch (e) {
@@ -279,7 +285,8 @@ export default function AddProductPage() {
             description: match.description || '',
             price: match.price ? String(match.price) : '',
             oldPrice: match.oldPrice || match.marketPrice ? String(match.oldPrice || match.marketPrice) : '',
-            category: match.category || CATEGORIES[0],
+            categoryId: match.categoryId || CATEGORIES[0].id,
+            category: match.category || CATEGORIES[0].name,
             subcategory: match.subcategory || '',
             productType: match.productType || '',
             gender: match.gender || 'Unisex',
@@ -293,11 +300,20 @@ export default function AddProductPage() {
             supplier: match.supplier || '',
             aliases: match.aliases ? match.aliases.join(', ') : ''
         });
+        
+        // Populate variants if they exist
+        if (match.variants && Array.isArray(match.variants)) {
+            setVariants(match.variants);
+        } else {
+            setVariants([]);
+        }
+
         if (match.imageURL || match.image) {
             setImagePreview(match.imageURL || match.image);
         }
         setDuplicates([]);
     };
+
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -318,28 +334,47 @@ export default function AddProductPage() {
         try {
             let finalImageUrl = '';
             if (imageFile) {
-                const storageRef = ref(storage, `products/${Date.now()}-${imageFile.name}`);
-                const snapshot = await uploadBytes(storageRef, imageFile);
-                finalImageUrl = await getDownloadURL(snapshot.ref);
+                try {
+                    const storageRef = ref(storage, `products/${Date.now()}-${imageFile.name}`);
+                    const snapshot = await uploadBytes(storageRef, imageFile);
+                    finalImageUrl = await getDownloadURL(snapshot.ref);
+                } catch (storageErr: any) {
+                    console.error('Storage Upload Error:', storageErr);
+                    throw new Error(`Storage error: ${storageErr.code || storageErr.message}. Check permissions.`);
+                }
             } else {
-                // If it was already set (e.g. from existing duplicate), keep it or clear it
                 finalImageUrl = imagePreview || '';
             }
 
             const productData: Record<string, any> = {
                 ...formData,
                 name: formData.title,
+                title: formData.title,
+                lowercaseTitle: formData.title.toLowerCase(),
                 normalized_title: normalizeTitle(formData.title),
-                price: parseFloat(formData.price),
-                marketPrice: formData.oldPrice ? parseFloat(formData.oldPrice) : null,
-                oldPrice: formData.oldPrice ? parseFloat(formData.oldPrice) : null,
-                buyingPrice: formData.buyingPrice ? parseFloat(formData.buyingPrice) : null,
-                stock: parseInt(formData.stock),
-                normalizedCategory: formData.category,
+                price: parseFloat(formData.price) || 0,
+                marketPrice: formData.oldPrice ? (parseFloat(formData.oldPrice) || 0) : null,
+                oldPrice: formData.oldPrice ? (parseFloat(formData.oldPrice) || 0) : null,
+                originalPrice: formData.oldPrice ? (parseFloat(formData.oldPrice) || 0) : null,
+                buyingPrice: formData.buyingPrice ? (parseFloat(formData.buyingPrice) || 0) : null,
+                stock: parseInt(formData.stock) || 0,
+                categoryId: formData.categoryId,
+                category: formData.category,
+                normalizedCategory: formData.categoryId,
                 updatedAt: serverTimestamp(),
                 aliases: formData.aliases.split(',').map(s => s.trim()).filter(s => s),
                 slug: formData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, ''),
-                variants: variants
+                variants: variants,
+                // Add search keywords for optimized search discovery
+                searchKeywords: generateSearchKeywords(formData.title, formData.brand, formData.category),
+                isActive: true,
+                isDeleted: false,
+                status: formData.status || 'active',
+                statusLabel: parseInt(formData.stock) > 0 ? 'In Stock' : 'Out of Stock',
+                totalSales: 0,
+                weeklySales: 0,
+                monthlySales: 0,
+                tags: formData.aliases.split(',').map(s => s.trim()).filter(s => s) // Use aliases as initial tags
             };
 
             // Final Duplicate Warning if NEW product
@@ -351,7 +386,7 @@ export default function AddProductPage() {
                 );
                 const snapCheck = await getDocs(qCheck);
                 const possibleDuplicates = snapCheck.docs
-                    .map(doc => ({ id: doc.id, ...doc.data() as any }))
+                    .map(doc => ({ ...doc.data() as any, id: doc.id }))
                     .filter(p => {
                         const titleSim = checkProductSimilarity(p.name || p.title || '', formData.title);
                         const brandMatch = p.brand?.toLowerCase() === formData.brand.toLowerCase();
@@ -372,6 +407,30 @@ export default function AddProductPage() {
 
             productData.imageURL = finalImageUrl;
             productData.image = finalImageUrl;
+
+            // CRITICAL: Sanitize data to remove any undefined values which Firestore rejects
+            // We avoid JSON.stringify here because it destroys Firestore FieldValue objects (like serverTimestamp())
+            const sanitizeForFirestore = (obj: any): any => {
+                if (obj === undefined) return null;
+                if (obj === null || typeof obj !== 'object') return obj;
+                
+                // If it's a Firestore FieldValue (like serverTimestamp), return as is
+                if (obj.constructor?.name?.includes('FieldValue')) return obj;
+                
+                if (Array.isArray(obj)) {
+                    return obj.map(item => sanitizeForFirestore(item));
+                }
+                
+                const cleaned: any = {};
+                for (const key in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                        cleaned[key] = sanitizeForFirestore(obj[key]);
+                    }
+                }
+                return cleaned;
+            };
+
+            const sanitizedProductData = sanitizeForFirestore(productData);
 
             if (selectedDuplicate) {
                 // Fetch current data to preserve history
@@ -402,17 +461,32 @@ export default function AddProductPage() {
 
                 // UPDATE existing product
                 const finalProductData = {
-                    ...productData,
+                    ...currentData, // 1. Start with ALL existing data (preserves bundles, custom tags, etc.)
+                    ...sanitizedProductData, // 2. Overwrite with new fields from form
                     deletedDescriptions: updatedDeletedDescriptions,
-                    deletedImages: updatedDeletedImages
+                    deletedImages: updatedDeletedImages,
+                    // 3. Carefully manage metadata & status
+                    createdAt: currentData.createdAt || serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    productID: currentData.productID || selectedDuplicate.id,
+                    isActive: true,
+                    isDeleted: false,
+                    // 4. Explicitly preserve/merge critical merchandising fields
+                    totalSales: currentData.totalSales || 0,
+                    weeklySales: currentData.weeklySales || 0,
+                    monthlySales: currentData.monthlySales || 0,
+                    tags: Array.from(new Set([
+                        ...(currentData.tags || []),
+                        ...sanitizedProductData.tags
+                    ]))
                 };
                 await updateDoc(docRef, finalProductData);
                 setSuccessMessage('Product Updated Successfully');
             } else {
                 // CREATE new product
-                productData.createdAt = serverTimestamp();
-                productData.productID = `PI-${Date.now().toString().slice(-6)}`;
-                await addDoc(collection(db, 'products'), productData);
+                sanitizedProductData.createdAt = serverTimestamp();
+                sanitizedProductData.productID = `PI-${Date.now().toString().slice(-6)}`;
+                await addDoc(collection(db, 'products'), sanitizedProductData);
                 setSuccessMessage('Product Initialized');
             }
 
@@ -420,9 +494,33 @@ export default function AddProductPage() {
             setTimeout(() => {
                 router.push('/admin/inventory/items');
             }, 2000);
-        } catch (error) {
-            console.error('Error saving product:', error);
-            alert('Failed to save product. Check console.');
+        } catch (error: any) {
+            console.error('CRITICAL: Error saving product:', {
+                error,
+                code: error.code,
+                message: error.message,
+                details: error.details,
+                stack: error.stack,
+                formData,
+                productDataPreview: {
+                    title: formData.title,
+                    categoryId: formData.categoryId,
+                    price: formData.price,
+                    variantsCount: variants.length
+                }
+            });
+            
+            let userFriendlyMessage = error.message || 'Unknown error';
+            if (error.code === 'permission-denied') {
+                userFriendlyMessage = "Access Denied: You don't have permission to write to the database. Please ensure you are logged in with the correct admin account (primeimportsbdu@gmail.com).";
+            } else if (error.code === 'invalid-argument') {
+                userFriendlyMessage = "Invalid Data: One or more fields contain data that Firestore cannot accept. Check for special characters or empty values in variants.";
+            }
+
+            setSubmissionError({ message: userFriendlyMessage, code: error.code });
+            
+            // Scroll to error
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } finally {
             setLoading(false);
         }
@@ -465,7 +563,8 @@ export default function AddProductPage() {
                             setSelectedDuplicate(null);
                             setFormData({
                                 title: '', description: '', price: '', oldPrice: '',
-                                category: CATEGORIES[0], 
+                                categoryId: CATEGORIES[0].id,
+                                category: CATEGORIES[0].name,
                                 subcategory: '', productType: '', gender: 'Unisex',
                                 stock: '', brand: '', sku: '',
                                 buyingPrice: '', status: 'active', weight: '', size: '',
@@ -481,6 +580,27 @@ export default function AddProductPage() {
                     </button>
                 )}
             </div>
+
+            {submissionError && (
+                <div className="mb-8 p-6 bg-rose-50 border-2 border-rose-100 rounded-[2rem] flex flex-col gap-2 animate-in fade-in slide-in-from-top-4 duration-300">
+                    <div className="flex items-center gap-3 text-rose-600">
+                        <AlertCircle size={20} />
+                        <h3 className="text-sm font-black uppercase tracking-tight">Deployment Failed</h3>
+                    </div>
+                    <p className="text-[11px] font-bold text-rose-800 leading-relaxed">{submissionError.message}</p>
+                    {submissionError.code && (
+                        <div className="mt-2 inline-flex items-center gap-2 bg-rose-100/50 px-3 py-1 rounded-lg w-fit">
+                            <span className="text-[9px] font-black text-rose-600 uppercase tracking-widest">Error Code: {submissionError.code}</span>
+                        </div>
+                    )}
+                    <button 
+                        onClick={() => setSubmissionError(null)}
+                        className="mt-2 text-[9px] font-black text-rose-400 uppercase tracking-widest hover:text-rose-600 transition-colors text-left"
+                    >
+                        Dismiss Warning
+                    </button>
+                </div>
+            )}
 
             {selectedDuplicate && (
                 <div className="mb-8 p-4 bg-emerald-50 border border-emerald-100 rounded-[2rem] flex items-center justify-between animate-fade-in shadow-sm">
@@ -722,12 +842,19 @@ export default function AddProductPage() {
                                 <div>
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Global Category</label>
                                     <select
-                                        value={formData.category}
-                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                        value={formData.categoryId}
+                                        onChange={(e) => {
+                                            const cat = CATEGORIES.find(c => c.id === e.target.value);
+                                            setFormData({ 
+                                                ...formData, 
+                                                categoryId: e.target.value,
+                                                category: cat ? cat.name : formData.category
+                                            });
+                                        }}
                                         className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-brand-blue-900 focus:bg-white focus:ring-2 focus:ring-brand-blue-100 transition-all outline-none appearance-none cursor-pointer"
                                     >
                                         {CATEGORIES.map(cat => (
-                                            <option key={cat} value={cat}>{cat}</option>
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
                                         ))}
                                     </select>
                                 </div>

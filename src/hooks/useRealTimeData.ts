@@ -394,6 +394,9 @@ export function useRealTimeProducts(
         q = query(q, limit(1000));
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
+            if (process.env.NODE_ENV === 'development') {
+                console.log(`[useRealTimeProducts] Syncing ${snapshot.size} products. Query filters:`, { category, searchQuery, sort });
+            }
             if (!isMounted) return;
             const data = snapshot.docs.map(doc => {
                 const raw = doc.data();
@@ -409,7 +412,7 @@ export function useRealTimeProducts(
             setProducts(data);
             setLoading(false);
         }, (err) => {
-            console.error("Products sync error:", err);
+            console.error("[useRealTimeProducts] Sync error:", err.code, err.message);
             if (isMounted) setLoading(false);
         });
 
@@ -431,7 +434,7 @@ export function useRealTimeOrder(orderId: string) {
         const orderRef = doc(db, 'orders', orderId);
         const unsubscribe = onSnapshot(orderRef, (snapshot) => {
             if (snapshot.exists()) {
-                setOrder({ id: snapshot.id, ...snapshot.data() } as Order);
+                setOrder({ ...snapshot.data(), id: snapshot.id } as Order);
             }
             setLoading(false);
         }, (err) => {
@@ -453,7 +456,7 @@ export function useRealTimeTicket(ticketId: string) {
         const ticketRef = doc(db, 'tickets', ticketId);
         const unsubscribe = onSnapshot(ticketRef, (snapshot) => {
             if (snapshot.exists()) {
-                setTicket({ id: snapshot.id, ...snapshot.data() } as Ticket);
+                setTicket({ ...snapshot.data(), id: snapshot.id } as Ticket);
             }
             setLoading(false);
         }, (err) => {
@@ -475,7 +478,7 @@ export function useRealTimeMember(memberId: string) {
         const memberRef = doc(db, 'goldenCircleUsers', memberId);
         const unsubscribe = onSnapshot(memberRef, (snapshot) => {
             if (snapshot.exists()) {
-                setMember({ id: snapshot.id, ...snapshot.data() } as GoldenMember);
+                setMember({ ...snapshot.data(), id: snapshot.id } as GoldenMember);
             }
             setLoading(false);
         }, (err) => {

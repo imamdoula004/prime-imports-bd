@@ -53,8 +53,8 @@ export default function AdminBundlesPage() {
         const q = query(collection(db, 'bundles'), orderBy('priorityScore', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
+                ...doc.data(),
+                id: doc.id
             } as Bundle));
             setBundles(data);
             setLoading(false);
@@ -63,7 +63,7 @@ export default function AdminBundlesPage() {
         // Pre-fetch some products for selection
         const fetchProducts = async () => {
             const pSnap = await getDocs(query(collection(db, 'products'), limit(50)));
-            setProducts(pSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product)));
+            setProducts(pSnap.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product)));
         };
         fetchProducts();
 

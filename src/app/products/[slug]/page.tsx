@@ -9,8 +9,8 @@ import { notFound } from 'next/navigation';
 function sanitizeProduct(doc: any): Product {
     const data = doc.data();
     return {
-        id: doc.id,
         ...data,
+        id: doc.id,
         createdAt: data.createdAt?.toDate?.()?.toISOString() || null,
         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || null,
         lastSoldAt: data.lastSoldAt?.toDate?.()?.toISOString() || null,

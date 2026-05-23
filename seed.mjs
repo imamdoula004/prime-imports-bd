@@ -37,8 +37,9 @@ async function seed() {
             const batch = writeBatch(db);
             for (const product of chunks[i]) {
                 const docRef = doc(collRef, product.slug || product.id.toString());
-                batch.set(docRef, product);
+                batch.set(docRef, { ...product, isDeleted: false });
             }
+
             await batch.commit();
             console.log(`Committed batch ${i + 1}/${chunks.length}`);
         }

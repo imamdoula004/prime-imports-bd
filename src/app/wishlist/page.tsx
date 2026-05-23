@@ -34,7 +34,7 @@ export default function WishlistPage() {
                     const q = query(productsRef, where(documentId(), 'in', chunk));
                     const snapshot = await getDocs(q);
                     snapshot.forEach(doc => {
-                        allProducts.push({ id: doc.id, ...doc.data() } as Product);
+                        allProducts.push({ ...doc.data(), id: doc.id } as Product);
                     });
                 }
                 setProducts(allProducts);

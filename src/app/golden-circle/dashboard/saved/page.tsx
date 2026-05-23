@@ -31,7 +31,7 @@ export default function SavedItems() {
                         where('id', 'in', wishlist.slice(0, 10))
                     );
                     const snapshot = await getDocs(q);
-                    setItems(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                    setItems(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
                 } else {
                     setItems([]);
                 }

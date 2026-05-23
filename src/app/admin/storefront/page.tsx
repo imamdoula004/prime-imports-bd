@@ -74,7 +74,7 @@ export default function AdminStorefrontPage() {
             const productsRef = collection(db, 'products');
             const q = query(productsRef, where('__name__', 'in', featuredProductIds));
             const snapshot = await getDocs(q);
-            const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product));
+            const items = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
             const ordered = featuredProductIds.map(id => items.find(p => p.id === id)).filter(Boolean) as Product[];
             setFeaturedProducts(ordered);
         };
@@ -95,7 +95,7 @@ export default function AdminStorefrontPage() {
                 const productsRef = collection(db, 'products');
                 const q = query(productsRef, where('__name__', 'in', batch));
                 const snapshot = await getDocs(q);
-                allItems.push(...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product)));
+                allItems.push(...snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product)));
             }
             const ordered = heroSlide3ProductIds.map(id => allItems.find(p => p.id === id)).filter(Boolean) as Product[];
             setHeroSlide3Products(ordered);

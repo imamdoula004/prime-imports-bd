@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ShoppingCart, User, Heart, SlidersHorizontal, Menu } from 'lucide-react';
+import { Search, ShoppingCart, User, Heart, SlidersHorizontal } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/useCartStore';
 
@@ -60,15 +60,7 @@ export function Navbar() {
                             </span>
                         </Link>
 
-                        <div className="h-8 w-px bg-slate-100 hidden md:block mx-1" />
 
-                        <button 
-                            onClick={() => setIsCategoriesOpen(true)}
-                            className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-xl transition-all group"
-                        >
-                            <Menu size={20} className="text-brand-blue-600 group-hover:scale-110 transition-transform" />
-                            <span className="hidden md:block text-[10px] font-black uppercase tracking-widest text-brand-blue-900">Categories</span>
-                        </button>
                     </div>
 
                     {/* Prominent Search Bar */}

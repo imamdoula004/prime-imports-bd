@@ -55,13 +55,16 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
 
     const logout = async () => {
         await signOut(auth);
-        router.push('/admin/login');
+        router.push('/admin');
     };
 
     // Protect admin routes
     useEffect(() => {
-        if (!loading && pathname.startsWith('/admin') && pathname !== '/admin/login' && !isAuthenticated) {
-            router.push('/admin/login');
+        const publicAdminRoutes = ['/admin', '/admin/login', '/admin/signin'];
+        const isPublicRoute = publicAdminRoutes.includes(pathname);
+
+        if (!loading && pathname.startsWith('/admin') && !isPublicRoute && !isAuthenticated) {
+            router.push('/admin/signin');
         }
     }, [pathname, isAuthenticated, router, loading]);
 

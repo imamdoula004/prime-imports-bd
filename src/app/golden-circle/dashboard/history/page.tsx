@@ -53,8 +53,8 @@ export default function OrderHistory() {
             const ordersData = snapshot.docs.map(doc => {
                 const data = doc.data();
                 return {
-                    id: doc.id,
                     ...data,
+                    id: doc.id,
                     createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : (data.createdAt ? new Date(data.createdAt) : new Date())
                 };
             });

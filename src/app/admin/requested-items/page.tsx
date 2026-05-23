@@ -40,8 +40,8 @@ export default function RequestedItemsAdmin() {
         
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const items = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
+                ...doc.data(),
+                id: doc.id
             } as RequestedItem));
             setRequests(items);
             setLoading(false);

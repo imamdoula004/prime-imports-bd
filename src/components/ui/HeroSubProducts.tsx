@@ -28,7 +28,7 @@ export function HeroSubProducts() {
         }
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const fetched = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Product));
+            const fetched = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
             if (config?.heroSlide3ProductIds && config.heroSlide3ProductIds.length > 0) {
                 const ordered = config.heroSlide3ProductIds
                     .map(id => fetched.find(p => p.id === id))

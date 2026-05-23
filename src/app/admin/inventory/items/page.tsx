@@ -38,7 +38,8 @@ import {
     deleteDoc,
     updateDoc,
     where,
-    addDoc
+    addDoc,
+    getCountFromServer
 } from 'firebase/firestore';
 import { Product } from '@/types';
 import Link from 'next/link';
@@ -53,14 +54,23 @@ export default function AdminProductsManagementPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [lastDoc, setLastDoc] = useState<any>(null);
-    const [firstDoc, setFirstDoc] = useState<any>(null);
+    const [pageCursors, setPageCursors] = useState<(any | null)[]>([null]); // Store starting doc for each page
     const [totalItems, setTotalItems] = useState(0);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [isBulkUpdating, setIsBulkUpdating] = useState(false);
     const [statusMessage, setStatusMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+
+    // Debounce search term to prevent excessive resets
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 500);
+        return () => clearTimeout(handler);
+    }, [searchTerm]);
 
     const showStatus = (text: string, type: 'success' | 'error' = 'success') => {
         setStatusMessage({ text, type });
@@ -127,14 +137,19 @@ export default function AdminProductsManagementPage() {
 
     const activeFilterCount = Object.values(filters).filter(v => v !== 'all').length;
 
-    const resetFilters = () => setFilters({
-        categoryId: 'all',
-        category: 'all',
-        subcategory: 'all',
-        brand: 'all',
-        stockStatus: 'all',
-        isActive: 'all'
-    });
+    const resetFilters = () => {
+        setFilters({
+            categoryId: 'all',
+            category: 'all',
+            subcategory: 'all',
+            brand: 'all',
+            stockStatus: 'all',
+            isActive: 'all'
+        });
+        setSearchTerm('');
+        setCurrentPage(1);
+        setPageCursors([null]);
+    };
 
     // Extract unique labels for filters
     const [filterMetadata, setFilterMetadata] = useState<{ brands: string[], categories: string[] }>({
@@ -162,13 +177,47 @@ export default function AdminProductsManagementPage() {
         fetchMetadata();
     }, []);
 
-    // Initial load and total count
+    // Initial load and total count tracking
     useEffect(() => {
         const fetchTotal = async () => {
-            setTotalItems(4724); 
+            try {
+                const productsRef = collection(db, 'products');
+                let q = query(productsRef, where('isDeleted', '==', false));
+
+                if (filters.isActive !== 'all') {
+                    q = query(q, where('isActive', '==', filters.isActive === 'active'));
+                }
+
+                if (debouncedSearchTerm.trim()) {
+                    const words = debouncedSearchTerm.toLowerCase().split(/\s+/).filter(w => w.length >= 3);
+                    if (words.length > 0) {
+                        q = query(q, where('searchKeywords', 'array-contains', words[0]));
+                    }
+                } else {
+                    if (filters.categoryId !== 'all') {
+                        q = query(q, where('categoryId', '==', filters.categoryId));
+                    } else if (filters.category !== 'all') {
+                        q = query(q, where('category', '==', filters.category));
+                    }
+                    if (filters.brand !== 'all') {
+                        q = query(q, where('brand', '==', filters.brand));
+                    }
+                }
+
+                const snapshot = await getCountFromServer(q);
+                setTotalItems(snapshot.data().count);
+            } catch (error) {
+                console.error("Error fetching product count:", error);
+            }
         };
         fetchTotal();
-    }, []);
+    }, [filters, debouncedSearchTerm]);
+
+    // Handle search/filter changes - reset to page 1 ONLY when substantive filters change
+    useEffect(() => {
+        setCurrentPage(1);
+        setPageCursors([null]);
+    }, [debouncedSearchTerm, filters.categoryId, filters.category, filters.brand, filters.isActive, filters.stockStatus]);
 
     // Paginated sync with optimized search AND filters
     useEffect(() => {
@@ -177,32 +226,49 @@ export default function AdminProductsManagementPage() {
 
         let q = query(productsRef, where('isDeleted', '==', false));
 
-        // Apply Status Filter if searching by base status
+        // Apply Status Filter
         if (filters.isActive !== 'all') {
             q = query(q, where('isActive', '==', filters.isActive === 'active'));
         }
 
-        // Apply Category/Brand if not searching by text (Firestore limitation)
-        if (!searchTerm.trim()) {
+        // Get the cursor for the current page
+        const currentCursor = pageCursors[currentPage - 1];
+
+        let qFinal = q;
+        // Apply Server-side pagination and filters
+        if (debouncedSearchTerm.trim()) {
+            const words = debouncedSearchTerm.toLowerCase().split(/\s+/).filter(w => w.length >= 3);
+            if (words.length > 0) {
+                qFinal = query(qFinal, where('searchKeywords', 'array-contains', words[0]));
+            }
+        } else {
             if (filters.categoryId !== 'all') {
-                q = query(q, where('categoryId', '==', filters.categoryId));
+                qFinal = query(qFinal, where('categoryId', '==', filters.categoryId));
             } else if (filters.category !== 'all') {
-                q = query(q, where('category', '==', filters.category));
+                qFinal = query(qFinal, where('category', '==', filters.category));
             }
             if (filters.brand !== 'all') {
-                q = query(q, where('brand', '==', filters.brand));
+                qFinal = query(qFinal, where('brand', '==', filters.brand));
             }
-            q = query(q, orderBy('createdAt', 'desc'), limit(ITEMS_PER_PAGE));
         }
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
+        // Always order by createdAt for consistent pagination
+        qFinal = query(qFinal, orderBy('createdAt', 'desc'));
+        
+        // Start after the last doc of the previous page
+        if (currentCursor) {
+            qFinal = query(qFinal, startAfter(currentCursor));
+        }
+        qFinal = query(qFinal, limit(ITEMS_PER_PAGE));
+
+        const unsubscribe = onSnapshot(qFinal, (snapshot) => {
             let data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
 
-            // Client-side filtering for Search + Stock Status
-            if (searchTerm.trim()) {
-                const searchWords = searchTerm.toLowerCase().split(/\s+/).filter(w => w.length > 0);
+            // Client-side refinement for Search + Stock Status
+            if (debouncedSearchTerm.trim()) {
+                const searchWords = debouncedSearchTerm.toLowerCase().split(/\s+/).filter(w => w.length > 0);
                 data = data.filter(p => {
-                    const searchable = `${p.name} ${p.brand} ${p.category} ${p.subcategory}`.toLowerCase();
+                    const searchable = `${p.name} ${p.brand} ${p.category} ${p.subcategory} ${p.id}`.toLowerCase();
                     return searchWords.every(word => searchable.includes(word));
                 });
             }
@@ -218,15 +284,12 @@ export default function AdminProductsManagementPage() {
                 });
             }
 
-            // Post-search Category/Brand filter ensure if search term is active
-            if (searchTerm.trim()) {
-                if (filters.category !== 'all') data = data.filter(p => p.category === filters.category);
-                if (filters.brand !== 'all') data = data.filter(p => p.brand === filters.brand);
-            }
-
             setProducts(data);
-            setFirstDoc(snapshot.docs[0]);
-            setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+            if (snapshot.docs.length > 0) {
+                setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+            } else {
+                setLastDoc(null);
+            }
             setLoading(false);
         }, (err) => {
             console.error("Products management sync error:", err);
@@ -234,19 +297,22 @@ export default function AdminProductsManagementPage() {
         });
 
         return () => unsubscribe();
-    }, [searchTerm, currentPage, filters]);
+    }, [debouncedSearchTerm, currentPage, filters.categoryId, filters.category, filters.brand, filters.isActive, filters.stockStatus]);
 
-    const handleNextPage = async () => {
-        if (!lastDoc) return;
-        const productsRef = collection(db, 'products');
-        const nextQ = query(productsRef, orderBy('createdAt', 'desc'), startAfter(lastDoc), limit(ITEMS_PER_PAGE));
-        const snapshot = await getDocs(nextQ);
-        if (snapshot.docs.length > 0) {
-            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Product));
-            setProducts(data);
-            setFirstDoc(snapshot.docs[0]);
-            setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+    const handleNextPage = () => {
+        if (lastDoc && products.length === ITEMS_PER_PAGE) {
+            setPageCursors(prev => {
+                const next = [...prev];
+                next[currentPage] = lastDoc;
+                return next;
+            });
             setCurrentPage(prev => prev + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(prev => prev - 1);
         }
     };
 
@@ -572,7 +638,7 @@ export default function AdminProductsManagementPage() {
                     <div className="flex items-center gap-3">
                         <button
                             disabled={currentPage === 1}
-                            onClick={() => setCurrentPage(prev => prev - 1)}
+                            onClick={handlePrevPage}
                             className="p-3 bg-white border border-slate-100 rounded-xl text-slate-400 hover:text-brand-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
                         >
                             <ChevronLeft size={20} />

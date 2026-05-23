@@ -15,16 +15,18 @@ import {
     PanelLeftOpen,
     Bell,
     Zap,
-    PackageSearch
+    PackageSearch,
+    Activity
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function AdminSidebar() {
+    const router = useRouter();
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const { logout } = useAdminAuth();
@@ -61,7 +63,7 @@ export function AdminSidebar() {
     if (pathname === '/admin/login') return null;
 
     const navItems = [
-        { name: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
+        { name: 'Dashboard', icon: LayoutDashboard, path: '/admin/dashboard' },
         { name: 'Storefront', icon: PanelLeftOpen, path: '/admin/storefront' },
         { name: 'Inventory & Products', icon: Package, path: '/admin/inventory' },
         { name: 'Orders', icon: ShoppingBag, path: '/admin/orders' },
@@ -71,6 +73,7 @@ export function AdminSidebar() {
         { name: 'Restock Waitlist', icon: Bell, path: '/admin/waitlist' },
         { name: 'Snack Bundles', icon: Zap, path: '/admin/bundles' },
         { name: 'Requested Items', icon: PackageSearch, path: '/admin/requested-items' },
+        { name: 'System Health', icon: Activity, path: '/admin/diag' },
     ];
 
     return (
@@ -179,7 +182,7 @@ export function AdminSidebar() {
                                 </div>
                             </div>
                             <button
-                                onClick={logout}
+                                onClick={() => router.push('/admin/signout')}
                                 className="w-full flex items-center justify-center gap-2 py-3 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-lg transition-all font-black uppercase tracking-[0.2em] text-[10px] border border-rose-500/20"
                             >
                                 <LogOut size={14} strokeWidth={3} />
@@ -192,7 +195,7 @@ export function AdminSidebar() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            onClick={logout}
+                            onClick={() => router.push('/admin/signout')}
                             className="w-full flex items-center justify-center py-4 text-slate-400 hover:text-rose-500 transition-colors"
                             title="Logout"
                         >

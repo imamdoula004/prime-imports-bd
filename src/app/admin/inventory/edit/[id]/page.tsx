@@ -28,24 +28,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 
-const CATEGORIES = [
-    'Beverages & Drinks',
-    'Tea & Coffee',
-    'Chocolate Bars',
-    'Biscuits & Cookies',
-    'Snacks & Sweets Haven',
-    'Cosmetics & Beauty',
-    'Grocery and Essentials',
-    'Sauces & Condiments',
-    'Breakfast & Cereals',
-    'Dairy & Cheese',
-    'Baking Essentials',
-    'Baby Care Imports',
-    'Health & Wellness',
-    'Home & Kitchen',
-    'Gift Boxes & Hampers',
-    'Exotic Fruits'
-];
+import { CATEGORIES } from '@/config/categories';
 
 const VARIANT_TYPES = ['Weight', 'Size', 'Color', 'Pack Size', 'Flavor', 'Other'];
 
@@ -71,7 +54,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         description: '',
         price: '',
         oldPrice: '',
-        category: CATEGORIES[0],
+        category: CATEGORIES[0].name,
+        categoryId: CATEGORIES[0].id,
         subcategory: '',
         productType: '',
         gender: 'Unisex',
@@ -99,7 +83,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                         description: data.description || '',
                         price: data.price ? String(data.price) : '',
                         oldPrice: data.oldPrice || data.marketPrice ? String(data.oldPrice || data.marketPrice) : '',
-                        category: data.category || CATEGORIES[0],
+                        category: data.category || CATEGORIES[0].name,
+                        categoryId: data.categoryId || data.normalizedCategory || CATEGORIES[0].id,
                         subcategory: data.subcategory || '',
                         productType: data.productType || '',
                         gender: data.gender || 'Unisex',
@@ -151,6 +136,19 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
             .replace(/[^a-z0-9\s]/g, '')
             .replace(/\s+/g, ' ')
             .trim();
+    };
+
+    const generateSearchKeywords = (title: string, brand: string, category: string) => {
+        const keywords = new Set<string>();
+        const fullString = `${title} ${brand} ${category}`.toLowerCase();
+        const words = fullString.split(/[^a-z0-9]/).filter(w => w.length >= 2);
+        words.forEach(word => {
+            keywords.add(word);
+            for (let i = 3; i <= word.length; i++) {
+                keywords.add(word.substring(0, i));
+            }
+        });
+        return Array.from(keywords);
     };
 
     // Variant management
@@ -221,6 +219,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 ...formData,
                 name: formData.title,
                 title: formData.title,
+                lowercaseTitle: formData.title.toLowerCase(),
                 normalized_title: normalizeTitle(formData.title),
                 slug: formData.title.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, ''),
                 price: parseFloat(formData.price),
@@ -231,9 +230,15 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                 stock: newStock,
                 image: imageUrl,
                 imageURL: imageUrl,
-                normalizedCategory: formData.category,
+                categoryId: formData.categoryId,
+                normalizedCategory: formData.categoryId,
                 aliases: formData.aliases.split(',').map(s => s.trim()).filter(s => s),
                 variants: variants,
+                searchKeywords: generateSearchKeywords(formData.title, formData.brand, formData.category),
+                isActive: true,
+                isDeleted: false,
+                status: formData.status || 'active',
+                statusLabel: newStock > 0 ? 'In Stock' : 'Out of Stock',
                 updatedAt: serverTimestamp(),
                 deletedDescriptions: updatedDeletedDescriptions,
                 deletedImages: updatedDeletedImages
@@ -471,12 +476,17 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                                 <div>
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 block">Global Category</label>
                                     <select
-                                        value={formData.category}
-                                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                                        value={formData.categoryId}
+                                        onChange={(e) => {
+                                            const selectedCat = CATEGORIES.find(c => c.id === e.target.value);
+                                            if (selectedCat) {
+                                                setFormData({ ...formData, categoryId: selectedCat.id, category: selectedCat.name });
+                                            }
+                                        }}
                                         className="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-brand-blue-900 focus:bg-white focus:ring-2 focus:ring-brand-blue-100 transition-all outline-none appearance-none cursor-pointer"
                                     >
                                         {CATEGORIES.map(cat => (
-                                            <option key={cat} value={cat}>{cat}</option>
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
                                         ))}
                                     </select>
                                 </div>

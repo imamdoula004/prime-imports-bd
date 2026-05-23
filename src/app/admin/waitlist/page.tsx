@@ -36,13 +36,12 @@ export default function AdminWaitlistPage() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [notifying, setNotifying] = useState<string | null>(null);
-
     useEffect(() => {
         const q = query(collection(db, 'waitlists'), orderBy('updatedAt', 'desc'));
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
+                ...doc.data(),
+                id: doc.id
             } as WaitlistEntry));
             setWaitlists(data);
             setLoading(false);

@@ -38,7 +38,7 @@ export default function AdminOrdersPage() {
         const q = query(ordersRef, orderBy('createdAt', 'desc'));
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order));
+            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Order));
             setOrders(data);
             setLoading(false);
         }, (err) => {

@@ -1,78 +1,88 @@
-const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, doc, writeBatch, getDoc } = require('firebase/firestore');
+const admin = require('firebase-admin');
 const fs = require('fs');
 require('dotenv').config({ path: '.env.local' });
 
-const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+/**
+ * SETUP INSTRUCTIONS:
+ * -------------------
+ * This script uses the Firebase Admin SDK and requires credentials.
+ * 
+ * 1. Ensure you have the Firebase CLI installed and are logged in.
+ * 2. Run: gcloud auth application-default login
+ *    OR 
+ *    Download a Service Account JSON from Firebase Console and set:
+ *    $env:GOOGLE_APPLICATION_CREDENTIALS="path/to/key.json" (PowerShell)
+ *    set GOOGLE_APPLICATION_CREDENTIALS=path/to/key.json (CMD)
+ */
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app, process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || "primeimportsdb");
+// Initialize Firebase Admin
+if (admin.apps.length === 0) {
+    admin.initializeApp({
+        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    });
+}
 
-function normalizeCategory(rawCat) {
-    if (!rawCat) return 'Grocery and Essentials';
+const dbId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID;
+const db = (dbId && dbId !== '(default)') ? admin.firestore(dbId) : admin.firestore();
 
-    // Decode HTML entities like &amp;
-    let cat = rawCat.replace(/&amp;/g, '&')
-        .replace(/&#038;/g, '&')
-        .replace(/&quot;/g, '"')
-        .replace(/&apos;/g, "'")
-        .toLowerCase();
-
-    if (cat.includes('beauty') || cat.includes('cosmetic') || cat.includes('cleanser') || cat.includes('skincare') || cat.includes('scrub')) {
-        return 'Cosmetics & Beauty';
-    }
-    if (cat.includes('beverage') || cat.includes('drink') || cat.includes('soft drink') || cat.includes('juice') || cat.includes('soda')) {
-        return 'Beverages & Drinks';
-    }
-    if (cat.includes('tea') || cat.includes('coffee') || cat.includes('nestle') || cat.includes('nescafe')) {
-        return 'Tea & Coffee';
-    }
-    if (cat.includes('chocolate') || cat.includes('cadbury') || cat.includes('mars') || cat.includes('snickers')) {
-        return 'Chocolate Bars';
-    }
-    if (cat.includes('biscuit') || cat.includes('cookie') || cat.includes('wafer')) {
-        return 'Biscuits & Cookies';
-    }
-    if (cat.includes('snack') || cat.includes('sweet') || cat.includes('candy') || cat.includes('gum')) {
-        return 'Snacks & Sweets Haven';
-    }
-    if (cat.includes('sauce') || cat.includes('condiment') || cat.includes('oil') || cat.includes('ketchup') || cat.includes('vinegar')) {
-        return 'Sauces & Condiments';
-    }
-    if (cat.includes('breakfast') || cat.includes('cereal') || cat.includes('oat') || cat.includes('muesli')) {
-        return 'Breakfast & Cereals';
-    }
-    if (cat.includes('dairy') || cat.includes('cheese') || cat.includes('butter') || cat.includes('milk') || cat.includes('yogurt')) {
-        return 'Dairy & Cheese';
-    }
-    if (cat.includes('baking') || cat.includes('flour') || cat.includes('yeast') || cat.includes('sugar') || cat.includes('cake mix')) {
-        return 'Baking Essentials';
-    }
-    if (cat.includes('baby') || cat.includes('diaper') || cat.includes('feeder') || cat.includes('lactogen')) {
-        return 'Baby Care Imports';
-    }
-    if (cat.includes('health') || cat.includes('wellness') || cat.includes('supplement') || cat.includes('vitamin') || cat.includes('pain relief') || cat.includes('first aid')) {
-        return 'Health & Wellness';
-    }
-    if (cat.includes('home') || cat.includes('kitchen') || cat.includes('detergent') || cat.includes('cleaner') || cat.includes('dishwash') || cat.includes('tissue')) {
-        return 'Home & Kitchen';
-    }
-    if (cat.includes('gift') || cat.includes('hamper') || cat.includes('box')) {
-        return 'Gift Boxes & Hampers';
-    }
-    if (cat.includes('fruit') || cat.includes('exotic')) {
-        return 'Exotic Fruits';
+/**
+ * Recursively removes undefined values from an object to prevent Firestore errors.
+ */
+function sanitizeForFirestore(obj) {
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
     }
 
-    // Default fallback for everything else
-    return 'Grocery and Essentials';
+    if (Array.isArray(obj)) {
+        return obj.map(sanitizeForFirestore).filter(v => v !== undefined);
+    }
+
+    const sanitized = {};
+    for (const key in obj) {
+        if (obj[key] !== undefined) {
+            sanitized[key] = sanitizeForFirestore(obj[key]);
+        }
+    }
+    return sanitized;
+}
+
+const CATEGORY_MAP = [
+    { id: "beverages", name: "Beverages & Drinks", keywords: ["beverage", "drink", "juice", "soda", "water", "cola", "pepsi", "coke", "fanta", "sprite", "red bull", "monster", "prime", "smoothie", "shake", "tealive", "voss", "schweppes", "a&w", "7 up", "7up"] },
+    { id: "tea-coffee", name: "Tea & Coffee", keywords: ["tea", "coffee", "latte", "espresso", "cappuccino", "nescafe", "starbucks", "lipton", "matcha", "bean", "ah huat", "tesco coffee", "tesco tea", "yogi", "tora bika"] },
+    { id: "chocolates", name: "Chocolate Bars", keywords: ["chocolate", "choco", "candy", "cocoa", "hershey", "dairy milk", "kitkat", "snickers", "mars", "bounty", "ferrero", "lindt", "kinder", "toblerone", "aero", "reese", "roshen", "toren", "maltesers"] },
+    { id: "biscuits", name: "Biscuits & Cookies", keywords: ["biscuit", "cookie", "cracker", "oreo", "biscoff", "digestive", "mcvities", "lotus", "wafer", "tango", "white castle", "zess", "tower gate"] },
+    { id: "snacks", name: "Snacks & Confectionery", keywords: ["snack", "chip", "crisp", "popcorn", "pringles", "lays", "doritos", "confectionery", "sweet", "gummy", "pocky", "pretzel", "takis", "marshmallow", "trident", "cheetos", "kurkure"] },
+    { id: "beauty", name: "Cosmetics & Beauty", keywords: ["cosmetic", "beauty", "makeup", "skin", "face", "lotion", "cream", "shampoo", "soap", "body", "care", "perfume", "serum", "l'oreal", "moisturizer", "deodorant", "active woman"] },
+    { id: "health-wellness", name: "Health & Wellness", keywords: ["health", "wellness", "vitamin", "supplement", "medicine", "sanitizer", "mask", "advil", "actikid", "glutathione", "trunature", "seven seas"] },
+    { id: "grocery", name: "Grocery and Essentials", keywords: ["grocery", "essential", "oil", "rice", "spice", "salt", "sugar", "flour", "pasta", "noodle", "sauce", "ketchup", "mayo", "ragu", "agastya", "cardamom", "soy sauce", "mct oil", "vinegar", "honey", "7 bahar"] },
+    { id: "dairy", name: "Dairy & Cheese", keywords: ["dairy", "cheese", "milk", "butter", "yogurt", "cream", "mozzarella", "cheddar", "puck", "kiri", "almarai"] },
+    { id: "baby", name: "Baby Care Imports", keywords: ["baby", "diaper", "wipe", "formula", "pampers", "johnson", "huggies", "cerelac", "nappy", "breast pump", "similac"] },
+    { id: "home", name: "Home & Kitchen", keywords: ["home", "kitchen", "cleaning", "detergent", "dish", "towel", "air freshener", "tide", "finish", "fairy"] },
+    { id: "gifts", name: "Hampers & Gifts", keywords: ["hamper", "gift", "box", "present", "basket"] },
+];
+
+function determineCategory(product) {
+    const textToSearch = `${product.category || ''} ${product.title || ''} ${product.brand || ''}`.toLowerCase();
+    for (const cat of CATEGORY_MAP) {
+        if (cat.keywords.some(kw => textToSearch.includes(kw.toLowerCase()))) {
+            return { id: cat.id, name: cat.name };
+        }
+    }
+    return { id: "grocery", name: "Grocery and Essentials" };
+}
+
+function generateSearchKeywords(title, brand, category) {
+    const keywords = new Set();
+    const fullString = `${title || ''} ${brand || ''} ${category || ''}`.toLowerCase();
+    const cleanString = fullString.replace(/[^a-z0-9\s]/g, ' ');
+    const words = cleanString.split(/\s+/).filter(w => w.length >= 2);
+    words.forEach(word => {
+        keywords.add(word);
+        for (let i = 3; i <= word.length; i++) {
+            keywords.add(word.substring(0, i));
+        }
+    });
+    return Array.from(keywords);
 }
 
 async function uploadProducts() {
@@ -82,43 +92,56 @@ async function uploadProducts() {
         const products = JSON.parse(data);
         console.log(`Found ${products.length} products to upload.`);
 
+        // Admin SDK can handle 500 operations per batch
         const chunks = [];
-        for (let i = 0; i < products.length; i += 100) {
-            chunks.push(products.slice(i, i + 100));
+        for (let i = 0; i < products.length; i += 500) {
+            chunks.push(products.slice(i, i + 500));
         }
 
-        console.log(`Uploading in ${chunks.length} batches...`);
-        let count = 0;
+        console.log(`Uploading in ${chunks.length} batches (optimized with db.getAll)...`);
+        let globalCount = 0;
 
         for (const chunk of chunks) {
-            const batch = writeBatch(db);
-            const productsRef = collection(db, 'products');
+            const batch = db.batch();
+            const productsRef = db.collection('products');
+            
+            // Map chunk to doc references
+            const docRefs = chunk.map((product, index) => {
+                const docId = product.slug || product.id || `prod_${globalCount + index}`;
+                return productsRef.doc(docId);
+            });
 
-            for (const product of chunk) {
+            // Bulk fetch existing data for price comparison
+            console.log(`Fetching existing data for batch starting at ${globalCount}...`);
+            const snapshots = await db.getAll(...docRefs);
+            const existingDataMap = new Map();
+            snapshots.forEach(snap => {
+                if (snap.exists) {
+                    existingDataMap.set(snap.id, snap.data());
+                }
+            });
+
+            chunk.forEach((product, index) => {
+                const docRef = docRefs[index];
+                const existingData = existingDataMap.get(docRef.id);
+                
                 const scrapedPrice = parseFloat(product.price) || 0;
-                product.buyingPrice = scrapedPrice; // PI-BD Cost is the scraped price
+                product.buyingPrice = scrapedPrice;
 
-                // Fetch existing product for price comparison
-                const docId = product.slug || product.id || `prod_${count}`;
-                const productsRef = collection(db, 'products');
-                const docRef = doc(productsRef, docId);
-                const existingDoc = await getDoc(docRef);
                 let currentPrice = 0;
-                if (existingDoc.exists()) {
-                    currentPrice = parseFloat(existingDoc.data().price) || 0;
+                if (existingData) {
+                    currentPrice = parseFloat(existingData.price) || 0;
                 }
 
-                // ADMIN PRICE CONTROL: 
-                // Only update maximum 15BDT and min 10BDT for products above 1000BDT
-                // Keep same price for products below 1000BDT
+                // ADMIN PRICE CONTROL
                 let targetPrice = scrapedPrice;
                 if (scrapedPrice > 1000) {
-                    targetPrice = scrapedPrice + 15; // Applying standard 15 BDT markup
+                    targetPrice = scrapedPrice + 15; 
                 }
 
                 // NEVER DECREASE RULE
                 if (currentPrice > 0 && targetPrice < currentPrice) {
-                    product.price = currentPrice; // Stick to higher historical price
+                    product.price = currentPrice; 
                 } else {
                     product.price = targetPrice;
                 }
@@ -126,12 +149,11 @@ async function uploadProducts() {
                 product.originalPrice = parseFloat(product.originalPrice) || product.price;
                 product.stock = parseInt(product.stock) || 100;
 
-                // Add productID
                 if (!product.productID) {
-                    product.productID = `PI-${(product.id || Date.now() + count)}`;
+                    product.productID = `PI-${(product.id || Date.now() + globalCount + index)}`;
                 }
 
-                // FIX TITLES (e.g., L 'Oreal -> L'Oreal)
+                // FIX TITLES
                 if (product.title) {
                     product.title = product.title
                         .replace(/L\s+'Oreal/gi, "L'Oreal")
@@ -141,7 +163,7 @@ async function uploadProducts() {
                         .trim();
                 }
 
-                // FIX DESCRIPTION (Replace competitors)
+                // FIX DESCRIPTION
                 if (product.description) {
                     product.description = product.description
                         .replace(/marketdaybd\.com/gi, "primeimportsbd.com")
@@ -150,23 +172,31 @@ async function uploadProducts() {
                         .replace(/chocolateshopbd/gi, "primeimportsbd");
                 }
 
-                // NORMALIZE CATEGORY TO MATCH UI
-                product.rawCategory = product.category; // Preserve original
-                product.category = normalizeCategory(product.category);
-                product.normalizedCategory = product.category;
+                // NORMALIZE CATEGORY & GENERATE KEYWORDS
+                const { id: categoryId, name: categoryName } = determineCategory(product);
+                product.categoryId = categoryId;
+                product.category = categoryName;
+                product.normalizedCategory = categoryName;
+                product.searchKeywords = generateSearchKeywords(product.title, product.brand, categoryName);
+                product.lowercaseTitle = (product.title || '').toLowerCase();
+                product.isDeleted = false;
+                product.isActive = true;
+                
+                // Use Server Timestamps
+                product.createdAt = existingData ? (existingData.createdAt || admin.firestore.FieldValue.serverTimestamp()) : admin.firestore.FieldValue.serverTimestamp();
+                product.updatedAt = admin.firestore.FieldValue.serverTimestamp();
 
-                const docId = product.slug || product.id || `prod_${count}`;
-                const docRef = doc(productsRef, docId);
-
-                batch.set(docRef, product, { merge: true });
-                count++;
-            }
+                // Sanitize and add to batch
+                const sanitizedProduct = sanitizeForFirestore(product);
+                batch.set(docRef, sanitizedProduct, { merge: true });
+            });
 
             await batch.commit();
-            console.log(`Committed batch. Total uploaded: ${count} / ${products.length}`);
+            globalCount += chunk.length;
+            console.log(`Committed batch. Total processed: ${globalCount} / ${products.length}`);
 
-            // Wait 5 seconds between batches to avoid RESOURCE_EXHAUSTED (very safe)
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            // Small delay to prevent hitting rate limits
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
         console.log("Successfully uploaded and normalized all products in Firestore!");
@@ -177,4 +207,6 @@ async function uploadProducts() {
     }
 }
 
+
 uploadProducts();
+

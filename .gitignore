@@ -54,3 +54,9 @@ resolved_products.json
 *.png
 *.gif
 *.svg
+
+# puppeteer profiles & sandbox
+/scripts/pipeline/sandbox/
+/sandbox/
+puppeteer_profile/
+

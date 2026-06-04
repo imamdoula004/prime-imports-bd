@@ -14,6 +14,7 @@ interface ProductGalleryProps {
         lifestyle?: string;
     };
     fallbackImage?: string;
+    gallery?: string[];
 }
 
 export function ProductGallery({
@@ -21,9 +22,10 @@ export function ProductGallery({
     slug,
     discountPercentage,
     images,
-    fallbackImage
+    fallbackImage,
+    gallery
 }: ProductGalleryProps) {
-    const galleryItems = [];
+    const galleryItems: { id: string; src: string }[] = [];
     
     if (fallbackImage) {
         galleryItems.push({ id: 'main', src: fallbackImage });
@@ -34,13 +36,23 @@ export function ProductGallery({
     if (images?.zoom) galleryItems.push({ id: 'zoom', src: images.zoom });
     if (images?.lifestyle) galleryItems.push({ id: 'lifestyle', src: images.lifestyle });
 
+    // Append unique custom gallery images
+    if (gallery && Array.isArray(gallery)) {
+        gallery.forEach((url, idx) => {
+            if (url && !galleryItems.some(item => item.src === url)) {
+                galleryItems.push({ id: `gallery-${idx}`, src: url });
+            }
+        });
+    }
+
     // Placeholder if no images exist
     if (galleryItems.length === 0) {
         galleryItems.push({
             id: 'placeholder',
-            src: `https://picsum.photos/seed/${slug}/800/800`
+            src: '/brand_logo.png'
         });
     }
+
 
     const [activeIndex, setActiveIndex] = useState(0);
     const scrollContainerRef = useRef<HTMLDivElement>(null);

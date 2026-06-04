@@ -109,7 +109,9 @@ export function ProductDetailClient({ initialProduct, similar, popular, trending
                                 discountPercentage={discountPercentage}
                                 images={product.images}
                                 fallbackImage={product.image || product.imageURL}
+                                gallery={product.gallery}
                             />
+
                         </div>
 
                         {/* DESKTOP TRUST TILES */}

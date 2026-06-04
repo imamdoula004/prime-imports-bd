@@ -19,7 +19,7 @@ const projectRoot = path.resolve(__dirname, '../../');
 
 dotenv.config({ path: path.join(projectRoot, '.env.local') });
 
-const SERVICE_ACCOUNT_PATH = 'C:\\Users\\Imam Ud Doula\\Desktop\\PrimeImportsBD\\prime-imports-bd-firebase-adminsdk-fbsvc-13a44c67ef.json';
+const SERVICE_ACCOUNT_PATH = path.resolve(projectRoot, 'service-account.json');
 const SANDBOX_DIR = path.join(__dirname, 'sandbox');
 const PRECHECK_DIR = path.join(SANDBOX_DIR, 'precheck');
 const FINAL_DIR = path.join(SANDBOX_DIR, 'final');
@@ -50,8 +50,8 @@ function log(message) {
 }
 
 async function processProduct(browser, product, isPrecheck = false) {
-    const productId = product.id;
-    const productName = product.productName || product.name || product.title;
+    const productId = product.docId;
+    const productName = product.productName || product.name || product.title || product.lowercaseTitle || productId;
     const brand = product.brand || '';
     const category = product.category || 'General';
     const competitorUrl = product.competitorUrl || product.sourceURL || '';
@@ -148,7 +148,13 @@ async function run() {
         browser = await puppeteer.launch({
             headless: "new",
             userDataDir: profileDir, // Fix EBUSY on Windows by using persistent profile
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-features=SegmentationPlatform', // Prevent UKM/Segmentation locks on Windows
+                '--disable-extensions'
+            ]
         });
 
         const productsRef = db.collection('products');
@@ -168,7 +174,7 @@ async function run() {
             const data = doc.data();
             // Skip already completed products to avoid an endless loop
             if (!isPrecheck && data.processingStatus === 'COMPLETED') return;
-            products.push({ id: doc.id, ...data });
+            products.push({ ...data, docId: doc.id });
         });
 
         log(`Found ${products.length} products to map in queue.`);

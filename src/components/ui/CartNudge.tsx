@@ -48,7 +48,7 @@ export function CartNudge() {
                     >
                         <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-50 mb-2">
                             <Image
-                                src={product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id}/100/100`}
+                                src={product.image || product.imageURL || product.images?.catalog || '/brand_logo.png'}
                                 alt={product.name || product.title || 'Product'}
                                 fill
                                 className="object-contain p-1 group-hover:scale-110 transition-transform duration-500"

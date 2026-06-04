@@ -65,7 +65,9 @@ export interface Product {
     storage?: string; // e.g. 128GB
     colors?: string[]; // e.g. ['Midnight', 'Starlight']
     variants?: ProductVariant[]; // Product variants (sizes, weights, colors, packs)
+    gallery?: string[]; // Multiple custom gallery images
     isDeleted: boolean; // Soft delete flag
+
     deletedAt?: any; // For recovery and tracking
     deletedDescriptions?: { text: string; deletedAt: any }[]; // Archive for old descriptions
     deletedImages?: { url: string; deletedAt: any }[]; // Archive for old images

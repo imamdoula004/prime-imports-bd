@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { Search, Loader2, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { RequestProductCard } from './RequestProductCard';
+import { useRouter } from 'next/navigation';
+
 
 interface SearchDropdownProps {
     query: string;
@@ -17,9 +19,17 @@ interface SearchDropdownProps {
 }
 
 export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: SearchDropdownProps) {
+    const router = useRouter();
     const [results, setResults] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault();
+        router.push(href);
+        onClose();
+    };
+
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -220,12 +230,12 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                                 <Link
                                     key={product.id}
                                     href={isAdmin ? `/admin/inventory/edit/${product.id}` : `/products/${product.slug || product.id}`}
-                                    onClick={onClose}
+                                    onClick={(e) => handleLinkClick(e, isAdmin ? `/admin/inventory/edit/${product.id}` : `/products/${product.slug || product.id}`)}
                                     className="flex items-center gap-4 p-3.5 hover:bg-slate-50 rounded-2xl transition-all group border-b border-transparent hover:border-slate-100"
                                 >
                                     <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-slate-50 shrink-0 border border-slate-100">
                                         <Image
-                                            src={product.image || product.imageURL || product.images?.catalog || `https://picsum.photos/seed/${product.id}/100/100`}
+                                            src={product.image || product.imageURL || product.images?.catalog || '/brand_logo.png'}
                                             alt={product.name || product.title || ''}
                                             fill
                                             className="object-contain p-1 group-hover:scale-110 transition-transform duration-500"
@@ -251,10 +261,10 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                                 </Link>
                             ))}
                             <Link
-                                href={isAdmin ? `/admin/inventory/items?search=${encodeURIComponent(searchTerm)}` : `/products?search=${encodeURIComponent(searchTerm)}`}
-                                onClick={onClose}
-                                className="block text-center py-5 text-[10px] font-black text-brand-blue-600 uppercase tracking-[0.2em] hover:bg-brand-blue-50 transition-colors bg-white sticky bottom-0 border-t border-slate-50"
-                            >
+                                    href={isAdmin ? `/admin/inventory/items?search=${encodeURIComponent(searchTerm)}` : `/products?search=${encodeURIComponent(searchTerm)}`}
+                                    onClick={(e) => handleLinkClick(e, isAdmin ? `/admin/inventory/items?search=${encodeURIComponent(searchTerm)}` : `/products?search=${encodeURIComponent(searchTerm)}`)}
+                                    className="block text-center py-5 text-[10px] font-black text-brand-blue-600 uppercase tracking-[0.2em] hover:bg-brand-blue-50 transition-colors bg-white sticky bottom-0 border-t border-slate-50"
+                                >
                                 View all {results.length}+ Matches for &quot;{searchTerm}&quot;
                             </Link>
                         </div>
@@ -270,7 +280,7 @@ export function SearchDropdown({ query: searchTerm, onClose, isAdmin = false }: 
                                     <>
                                         <Link 
                                             href="/request-product" 
-                                            onClick={onClose}
+                                            onClick={(e) => handleLinkClick(e, '/request-product')}
                                             className="inline-flex items-center gap-2 bg-brand-blue-50 text-brand-blue-600 px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-blue-600 hover:text-white transition-all active:scale-95"
                                         >
                                             Can&apos;t find it? Request Product

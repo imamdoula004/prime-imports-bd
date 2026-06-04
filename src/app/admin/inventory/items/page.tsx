@@ -24,7 +24,7 @@ import {
     Archive
 } from 'lucide-react';
 import { StickyScrollContainer } from '@/components/ui/StickyScrollContainer';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { db } from '@/lib/firebase';
 import {
     collection,
@@ -44,7 +44,7 @@ import {
 import { Product } from '@/types';
 import Link from 'next/link';
 import Image from 'next/image';
-import { SearchDropdown } from '@/components/ui/SearchDropdown';
+import { InlineEditForm } from '@/components/admin/InlineEditForm';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CATEGORIES } from '@/config/categories';
 
@@ -63,6 +63,7 @@ export default function AdminProductsManagementPage() {
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [isBulkUpdating, setIsBulkUpdating] = useState(false);
     const [statusMessage, setStatusMessage] = useState<{ text: string, type: 'success' | 'error' } | null>(null);
+    const [expandedEditProductId, setExpandedEditProductId] = useState<string | null>(null);
 
     // Debounce search term to prevent excessive resets
     useEffect(() => {
@@ -379,18 +380,9 @@ export default function AdminProductsManagementPage() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onFocus={() => setIsSearchFocused(true)}
+                        onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                         className="w-full pl-12 pr-4 py-4 bg-white border border-slate-100 rounded-2xl text-sm font-bold shadow-sm focus:ring-4 focus:ring-brand-blue-100 transition-all outline-none"
                     />
-
-                    <AnimatePresence>
-                        {isSearchFocused && searchTerm.length >= 2 && (
-                            <SearchDropdown
-                                query={searchTerm}
-                                onClose={() => setIsSearchFocused(false)}
-                                isAdmin
-                            />
-                        )}
-                    </AnimatePresence>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
                     <button 
@@ -506,126 +498,155 @@ export default function AdminProductsManagementPage() {
                                 </tr>
                             ) : (
                                 products.map((p) => (
-                                    <tr key={p.id} className={`hover:bg-slate-50/50 transition-colors group ${selectedIds.has(p.id!) ? 'bg-brand-blue-50/30' : ''}`}>
-                                        <td className="px-6 py-6 w-12 text-center" onClick={() => handleSelectItem(p.id!)}>
-                                            <div className="flex items-center justify-center cursor-pointer" onClick={e => e.stopPropagation()}>
-                                                <input 
-                                                    type="checkbox" 
-                                                    className="w-4 h-4 rounded border-slate-300 text-brand-blue-600 focus:ring-brand-blue-500 cursor-pointer"
-                                                    checked={selectedIds.has(p.id!)}
-                                                    onChange={() => handleSelectItem(p.id!)}
-                                                />
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-6">
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-14 h-14 rounded-xl bg-slate-100 relative overflow-hidden flex-shrink-0 border border-slate-100">
-                                                    {p.image ? (
-                                                        <Image src={p.image} alt={p.name || (p as any).title} fill className="object-cover transition-transform group-hover:scale-110" />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-slate-300">
-                                                            <ImageIcon size={20} />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className="flex flex-col min-w-0">
-                                                    <span className="text-sm font-black text-brand-blue-900 group-hover:text-brand-blue-600 transition-colors truncate max-w-[200px]">{p.name || (p as any).title}</span>
-                                                    <div className="flex items-center gap-1.5 mt-1">
-                                                        <span className="text-[8px] font-black text-white bg-brand-blue-500 px-1.5 py-0.5 rounded uppercase tracking-widest">
-                                                            {CATEGORIES.find(c => c.id === p.categoryId)?.name || p.category}
-                                                        </span>
-                                                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{p.subcategory || 'General'}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-6">
-                                            <div className="flex flex-col items-center">
-                                                <div className="flex items-center gap-1 mb-2">
-                                                    <span className="text-sm font-black text-brand-blue-900 font-mono">৳{p.price?.toLocaleString()}</span>
-                                                    <span className="text-[7px] font-black bg-brand-blue-900 text-white px-1 rounded uppercase">Discounted</span>
-                                                </div>
-                                                <div className="w-full max-w-[140px] flex flex-col gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest">Market Price</span>
-                                                        <span className="text-[9px] font-bold text-slate-400 line-through">৳{p.originalPrice?.toLocaleString() || p.price?.toLocaleString()}</span>
-                                                    </div>
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest">Purchase Price</span>
-                                                        <span className="text-[9px] font-black text-brand-blue-600">৳{p.buyingPrice?.toLocaleString() || '0'}</span>
-                                                    </div>
-                                                    {p.buyingPrice && p.buyingPrice > 0 ? (
-                                                        <>
-                                                            <div className="h-px bg-slate-200 my-0.5" />
-                                                            <div className="flex items-center justify-between gap-2">
-                                                                <span className="text-[7px] font-black text-emerald-600 uppercase tracking-widest">Net Profit</span>
-                                                                <span className="text-[9px] font-black text-emerald-600">৳{(p.price - (p.buyingPrice || 0)).toLocaleString()}</span>
-                                                            </div>
-                                                        </>
-                                                    ) : (
-                                                        <div className="mt-1 flex justify-center">
-                                                            <span className="text-[6px] font-bold text-slate-300 uppercase tracking-tighter">Cost data required for profit analysis</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-6">
-                                            <div className="flex flex-col items-center gap-2">
-                                                <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-100">
-                                                    <input
-                                                        type="number"
-                                                        defaultValue={p.stock || 0}
-                                                        onBlur={(e) => updateStock(p, Number(e.target.value))}
-                                                        className="w-14 px-1.5 py-1 bg-white border border-slate-100 rounded-lg text-[10px] font-black text-brand-blue-900 focus:ring-2 focus:ring-brand-blue-500 outline-none transition-all text-center"
+                                    <Fragment key={p.id}>
+                                        <tr className={`hover:bg-slate-50/50 transition-colors group ${selectedIds.has(p.id!) ? 'bg-brand-blue-50/30' : ''} ${expandedEditProductId === p.id ? 'bg-slate-50' : ''}`}>
+                                            <td className="px-6 py-6 w-12 text-center" onClick={() => handleSelectItem(p.id!)}>
+                                                <div className="flex items-center justify-center cursor-pointer" onClick={e => e.stopPropagation()}>
+                                                    <input 
+                                                        type="checkbox" 
+                                                        className="w-4 h-4 rounded border-slate-300 text-brand-blue-600 focus:ring-brand-blue-500 cursor-pointer"
+                                                        checked={selectedIds.has(p.id!)}
+                                                        onChange={() => handleSelectItem(p.id!)}
                                                     />
-                                                    <span className={`text-[9px] font-black uppercase tracking-widest pr-1 ${p.stock && p.stock <= 5 ? 'text-rose-500' : 'text-slate-400'}`}>
-                                                        Stock
-                                                    </span>
                                                 </div>
-                                                {p.stock !== undefined && p.stock <= 5 && (
-                                                    <span className="text-[7px] font-black text-rose-400 uppercase tracking-[0.2em] flex items-center gap-1">
-                                                        <AlertTriangle size={8} /> Critical
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-6">
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex flex-col">
-                                                    <span className="text-[10px] font-black text-brand-blue-900 uppercase">৳{((p.totalSales || 0) * (p.price || 0)).toLocaleString()}</span>
-                                                    <span className={`text-[8px] font-bold uppercase tracking-widest mt-1 flex items-center gap-0.5 ${(p.totalSales || 0) > 0 ? 'text-emerald-500' : 'text-slate-400'}`}>
-                                                        <TrendingUp size={8} /> {p.totalSales || 0} Sold
-                                                    </span>
+                                            </td>
+                                            <td className="px-4 py-6">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-14 h-14 rounded-xl bg-slate-100 relative overflow-hidden flex-shrink-0 border border-slate-100">
+                                                        {(p.image || p.imageURL || p.images?.catalog) ? (
+                                                            <Image src={p.image || p.imageURL || p.images?.catalog || ''} alt={p.name || (p as any).title} fill className="object-cover transition-transform group-hover:scale-110" />
+                                                        ) : (
+                                                            <Image src="/brand_logo.png" alt={p.name || (p as any).title} fill className="object-contain p-1" />
+                                                        )}
+                                                    </div>
+                                                    <div className="flex flex-col min-w-0">
+                                                        <span className="text-sm font-black text-brand-blue-900 group-hover:text-brand-blue-600 transition-colors truncate max-w-[200px]">{p.name || (p as any).title}</span>
+                                                        <div className="flex items-center gap-1.5 mt-1">
+                                                            <span className="text-[8px] font-black text-white bg-brand-blue-500 px-1.5 py-0.5 rounded uppercase tracking-widest">
+                                                                {CATEGORIES.find(c => c.id === p.categoryId)?.name || p.category}
+                                                            </span>
+                                                            <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{p.subcategory || 'General'}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-6">
-                                            <button
-                                                onClick={() => toggleStatus(p)}
-                                                className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${p.isActive
-                                                    ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                                                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
-                                                    }`}
-                                            >
-                                                {p.isActive ? <CheckCircle2 size={10} /> : <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />}
-                                                {p.isActive ? 'active' : 'draft'}
-                                            </button>
-                                        </td>
-                                        <td className="px-8 py-6 text-right">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Link href={`/admin/inventory/edit/${p.id}`} className="flex items-center gap-1 px-3 py-2 bg-brand-blue-50 text-brand-blue-600 rounded-xl hover:bg-brand-blue-600 hover:text-white transition-all group/edit shadow-sm">
-                                                    <Edit size={14} />
-                                                    <span className="text-[9px] font-black uppercase tracking-widest">Edit Product</span>
-                                                </Link>
-                                                <button onClick={() => handleDelete(p)} className="p-2 text-slate-400 hover:text-rose-500 transition-colors bg-slate-50 rounded-xl">
-                                                    <Trash2 size={16} />
+                                            </td>
+                                            <td className="px-8 py-6">
+                                                <div className="flex flex-col items-center">
+                                                    <div className="flex items-center gap-1 mb-2">
+                                                        <span className="text-sm font-black text-brand-blue-900 font-mono">৳{p.price?.toLocaleString()}</span>
+                                                        <span className="text-[7px] font-black bg-brand-blue-900 text-white px-1 rounded uppercase">Discounted</span>
+                                                    </div>
+                                                    <div className="w-full max-w-[140px] flex flex-col gap-1.5 p-2 bg-slate-50 rounded-xl border border-slate-100">
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest">Market Price</span>
+                                                            <span className="text-[9px] font-bold text-slate-400 line-through">৳{p.originalPrice?.toLocaleString() || p.price?.toLocaleString()}</span>
+                                                        </div>
+                                                        <div className="flex items-center justify-between gap-2">
+                                                            <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest">Purchase Price</span>
+                                                            <span className="text-[9px] font-black text-brand-blue-600">৳{p.buyingPrice?.toLocaleString() || '0'}</span>
+                                                        </div>
+                                                        {p.buyingPrice && p.buyingPrice > 0 ? (
+                                                            <>
+                                                                <div className="h-px bg-slate-200 my-0.5" />
+                                                                <div className="flex items-center justify-between gap-2">
+                                                                    <span className="text-[7px] font-black text-emerald-600 uppercase tracking-widest">Net Profit</span>
+                                                                    <span className="text-[9px] font-black text-emerald-600">৳{(p.price - (p.buyingPrice || 0)).toLocaleString()}</span>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div className="mt-1 flex justify-center">
+                                                                <span className="text-[6px] font-bold text-slate-300 uppercase tracking-tighter">Cost data required for profit analysis</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-6">
+                                                <div className="flex flex-col items-center gap-2">
+                                                    <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-100">
+                                                        <input
+                                                            type="number"
+                                                            defaultValue={p.stock || 0}
+                                                            onBlur={(e) => updateStock(p, Number(e.target.value))}
+                                                            className="w-14 px-1.5 py-1 bg-white border border-slate-100 rounded-lg text-[10px] font-black text-brand-blue-900 focus:ring-2 focus:ring-brand-blue-500 outline-none transition-all text-center"
+                                                        />
+                                                        <span className={`text-[9px] font-black uppercase tracking-widest pr-1 ${p.stock && p.stock <= 5 ? 'text-rose-500' : 'text-slate-400'}`}>
+                                                            Stock
+                                                        </span>
+                                                    </div>
+                                                    {p.stock !== undefined && p.stock <= 5 && (
+                                                        <span className="text-[7px] font-black text-rose-400 uppercase tracking-[0.2em] flex items-center gap-1">
+                                                            <AlertTriangle size={8} /> Critical
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-6">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] font-black text-brand-blue-900 uppercase">৳{((p.totalSales || 0) * (p.price || 0)).toLocaleString()}</span>
+                                                        <span className={`text-[8px] font-bold uppercase tracking-widest mt-1 flex items-center gap-0.5 ${(p.totalSales || 0) > 0 ? 'text-emerald-500' : 'text-slate-400'}`}>
+                                                            <TrendingUp size={8} /> {p.totalSales || 0} Sold
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-6">
+                                                <button
+                                                    onClick={() => toggleStatus(p)}
+                                                    className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all ${p.isActive
+                                                        ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                                                        : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                                                        }`}
+                                                >
+                                                    {p.isActive ? <CheckCircle2 size={10} /> : <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />}
+                                                    {p.isActive ? 'active' : 'draft'}
                                                 </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td className="px-8 py-6 text-right">
+                                                <div className="flex items-center justify-end gap-2">
+                                                    <button 
+                                                        type="button"
+                                                        onClick={() => setExpandedEditProductId(prev => prev === p.id ? null : p.id!)} 
+                                                        className="flex items-center gap-1 px-3 py-2 bg-brand-blue-50 text-brand-blue-600 rounded-xl hover:bg-brand-blue-600 hover:text-white transition-all group/edit shadow-sm"
+                                                    >
+                                                        <Edit size={14} />
+                                                        <span className="text-[9px] font-black uppercase tracking-widest">Edit Product</span>
+                                                    </button>
+                                                    <button onClick={() => handleDelete(p)} className="p-2 text-slate-400 hover:text-rose-500 transition-colors bg-slate-50 rounded-xl">
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {expandedEditProductId === p.id && (
+                                            <tr className="bg-slate-50/50">
+                                                <td colSpan={7} className="p-0 border-b border-slate-100">
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: 'auto', opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                                        className="overflow-hidden px-8 py-6"
+                                                    >
+                                                                                        <InlineEditForm 
+                                                            product={p} 
+                                                            onClose={() => setExpandedEditProductId(null)} 
+                                                            onSaveSuccess={(updatedProduct) => {
+                                                                setProducts(prev => prev.map(item => item.id === updatedProduct.id ? updatedProduct : item));
+                                                                showStatus(`"${updatedProduct.name}" updated successfully.`);
+                                                            }}
+                                                        />
+                                                    </motion.div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </Fragment>
+
                                 ))
                             )}
+
+
                         </tbody>
                     </table>
                 </StickyScrollContainer>

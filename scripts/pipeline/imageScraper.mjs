@@ -16,10 +16,38 @@ export async function getCandidateImages(browser, productName, brand, competitor
                 await page.goto(competitorUrl, { waitUntil: 'networkidle2', timeout: 30000 });
 
                 const images = await page.evaluate(() => {
+                    // Prioritize WooCommerce main product images / galleries
+                    const mainSelectors = [
+                        'img.wp-post-image',
+                        '.woocommerce-product-gallery__image img',
+                        '.woocommerce-product-gallery img',
+                        'img[data-large_image]',
+                        '.product-image-slider img',
+                        '.main-image img'
+                    ];
+                    
+                    for (const sel of mainSelectors) {
+                        const imgs = Array.from(document.querySelectorAll(sel));
+                        const srcs = imgs
+                            .map(img => img.src || img.dataset.src || img.dataset.lazySrc || img.getAttribute('data-large_image'))
+                            .filter(src => src && src.startsWith('http') && !src.includes('logo') && !src.includes('icon') && !src.includes('banner') && !src.includes('payment') && !src.includes('ssl'));
+                        if (srcs.length > 0) {
+                            return srcs;
+                        }
+                    }
+                    
+                    // Fallback to og:image meta tag
+                    const ogImage = document.querySelector('meta[property="og:image"]');
+                    if (ogImage && ogImage.getAttribute('content')) {
+                        const src = ogImage.getAttribute('content');
+                        if (src.startsWith('http')) return [src];
+                    }
+
+                    // Fallback to all images (excluding related widgets/sidebars where possible)
                     const imgs = Array.from(document.querySelectorAll('img'));
                     return imgs
                         .map(img => img.src || img.dataset.src || img.dataset.lazySrc)
-                        .filter(src => src && src.startsWith('http') && !src.includes('logo') && !src.includes('icon') && !src.includes('banner'));
+                        .filter(src => src && src.startsWith('http') && !src.includes('logo') && !src.includes('icon') && !src.includes('banner') && !src.includes('payment') && !src.includes('ssl'));
                 });
 
                 candidates.push(...images);

@@ -204,7 +204,7 @@ export function CartDrawer() {
                                                         </div>
                                                     ) : (
                                                         <Image
-                                                            src={item.imageURL || item.image || `https://picsum.photos/seed/${item.slug || item.id}/150/150`}
+                                                            src={item.imageURL || item.image || '/brand_logo.png'}
                                                             alt={item.name || item.title || 'Product'}
                                                             fill
                                                             className="object-contain p-1.5"

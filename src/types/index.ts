@@ -61,7 +61,9 @@ export interface Product {
     supplier?: string; // New: for inventory tracking
     origin?: string; // New: for metadata
     gender?: string; // New: for filtering
+    sku?: string; // New: for inventory tracking
     ram?: string; // e.g. 8GB
+
     storage?: string; // e.g. 128GB
     colors?: string[]; // e.g. ['Midnight', 'Starlight']
     variants?: ProductVariant[]; // Product variants (sizes, weights, colors, packs)

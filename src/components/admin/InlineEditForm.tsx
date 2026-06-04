@@ -563,7 +563,7 @@ export function InlineEditForm({ product, onClose, onSaveSuccess }: InlineEditFo
                                 <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 block">Visibility Status</label>
                                 <select
                                     value={formData.status}
-                                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                                    onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'draft' | 'archived' })}
                                     className="w-full px-3 py-2.5 bg-slate-50 border rounded-xl text-xs font-bold text-brand-blue-900 focus:bg-white outline-none cursor-pointer"
                                 >
                                     <option value="active">Active</option>
